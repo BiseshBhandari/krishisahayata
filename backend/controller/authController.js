@@ -61,4 +61,8 @@ exports.login = async (req, res) => {
 
 };
 
+exports.forgotPassword = async (req, res) =>{
+    
+};
+
 //api for the forgot password feature
