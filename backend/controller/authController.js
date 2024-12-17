@@ -95,11 +95,14 @@ exports.forgotPassword = async (req, res) => {
 
         return res.status(200).json({ message: 'Reset Mail Sent Successfully' });
 
-
     } catch (error) {
         return res.status(500).json({ message: "Error occured in the system", error: error.message });
     }
-
 };
 
-//api for the forgot password feature
+//api for the reset password function
+exports.resetPassword = async (req, res) => {
+
+    const { token } = req.params;
+    const { new_password } = req.body
+};
