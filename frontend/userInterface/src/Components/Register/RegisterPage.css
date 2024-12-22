@@ -12,7 +12,7 @@
 .container {
     background-color: rgba(115, 184, 91, 1);
     max-width: 50%;
-    height: 60vh;
+    height: 62vh;
     margin: 140px auto;
     display: flex;
     border-radius: 5px;
@@ -21,7 +21,6 @@
 }
 
 .login_form {
-    /* background-color: aqua; */
     height: inherit;
     width: 59%;
     text-align: center;
@@ -97,6 +96,7 @@
 .register {
     width: 125px;
     height: 45px;
+    margin-top: 20px;
     background-color: transparent;
     border: 3px solid white;
     border-radius: 5px;
@@ -105,4 +105,9 @@
     font-size: 18px;
     box-shadow: 8px 8px 8px rgba(0, 0, 0, 0.18);
 
+}
+
+.footer p a {
+    color: red;
+    font-weight: 800;
 }

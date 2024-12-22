@@ -21,14 +21,17 @@ function RegisterPage() {
                             <input type="password" name="password" id="password" placeholder="Password" />
                             <input type="password" name="confirm_pass" id="confirm_pass" placeholder="Confirm Password" />
                         </div>
-                        <div className="text">
+                        {/* <div className="text">
                             <div className="box">
                                 <input type="checkbox" name="remember" id="remeber" />
                                 <label htmlFor="remember">Remember me</label>
                             </div>
                             <p>Forgot password?</p>
-                        </div>
+                        </div> */}
                         <button className="register" type="submit">Sign Up</button>
+                        <div className="footer">
+                            <p>Already have an account <a href="/login">SIGN UP</a></p>
+                        </div>
                     </form>
                 </div>
             </div>

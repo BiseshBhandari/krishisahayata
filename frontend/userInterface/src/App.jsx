@@ -1,9 +1,8 @@
-import { useState } from 'react'
+import { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
-// import reactLogo from './assets/react.svg'
-// import viteLogo from '/vite.svg'
-import RegisterPage from './components/register/RegisterPage'
-import './App.css'
+import RegisterPage from './Components/Register/RegisterPage';
+import LoginPage from './Components/Login/LoginPage';
+import './App.css';
 
 
 function App() {
@@ -17,6 +16,7 @@ function App() {
     <>
       <Routes>
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="login" element={<LoginPage />} />
       </Routes>
     </>
   )

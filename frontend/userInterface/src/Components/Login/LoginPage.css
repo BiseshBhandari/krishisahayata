@@ -1,0 +1,68 @@
+.log-container {
+    background-color: rgba(115, 184, 91, 1);
+    max-width: 50%;
+    height: 62vh;
+    margin: 140px auto;
+    display: flex;
+    border-radius: 5px;
+    box-shadow: 8px 8px 8px rgba(0, 0, 0, 0.18);
+}
+
+.login-image {
+    width: 55%;
+    height: inherit;
+    align-items: center;
+
+}
+
+.login-head h2 {
+    margin-bottom: 4%;
+}
+
+.login-head p {
+    margin-bottom: 20px;
+}
+
+.login_form #emails,
+#pass {
+    height: 37px;
+    width: 275px;
+    margin-top: 8px;
+    border: none;
+    box-shadow: 2px 5px 8px rgba(0, 0, 0, 0.18);
+    margin-bottom: 5px;
+}
+
+
+#emails,
+#pass {
+    outline: none;
+    text-indent: 10px;
+}
+
+.forgot a {
+    color: white;
+    text-underline-offset: 5px;
+
+
+}
+
+.login {
+    width: 125px;
+    height: 45px;
+    margin-top: 20px;
+    background-color: transparent;
+    border: 3px solid white;
+    border-radius: 5px;
+    color: white;
+    font-family: inria sans;
+    font-size: 18px;
+    box-shadow: 8px 8px 8px rgba(0, 0, 0, 0.18);
+
+}
+
+
+.foot p a {
+    color: red;
+    font-weight: 800;
+}

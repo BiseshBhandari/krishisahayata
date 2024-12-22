@@ -81,7 +81,7 @@ exports.forgotPassword = async (req, res) => {
 
         const verification_token = jwt.sign({ userId: checkUser.user_id, }, process.env.JWT_SECRET, { expiresIn: '8m' });
 
-        const updated_user = await checkUser.update({
+        await checkUser.update({
             reset_Token: verification_token,
             reset_token_exp: Date.now() + 8 * 60 * 1000
         })
@@ -90,7 +90,7 @@ exports.forgotPassword = async (req, res) => {
             from: process.env.MY_MAIL,
             to: email,
             subject: 'Password reset mail',
-            text: `CLick to reset Password ${process.env.RESET_LINK}/${verification_token}`
+            text: `CLick to reset Password: ${process.env.RESET_LINK}/${verification_token}`
         });
 
         return res.status(200).json({ message: 'Reset Mail Sent Successfully' });
@@ -104,5 +104,32 @@ exports.forgotPassword = async (req, res) => {
 exports.resetPassword = async (req, res) => {
 
     const { token } = req.params;
-    const { new_password } = req.body
+    const { new_password } = req.body;
+
+    try {
+        const tokenDecode = jwt.verify(token, process.env.JWT_SECRET);
+
+        const findUser = await User.findOne({ where: { user_id: tokenDecode.userId, reset_Token: token } });
+
+        if (!findUser || findUser.reset_token_exp < Date.now) {
+            return res.status(400).json({ message: 'Expired token' });
+        }
+
+        const hashsalt = await bcrypt.genSalt(10);
+
+        const newHash = await bcrypt.hash(new_password, hashsalt);
+
+        await findUser.update({
+            password_hash: newHash,
+            reset_Token: null,
+            reset_token_exp: null
+        });
+
+        return res.status(200).json({ message: 'Password updated sucessfully' });
+
+    } catch (error) {
+        return res.status(400).json({ message: 'Token did not match', error: error.message })
+    }
+
+
 };
