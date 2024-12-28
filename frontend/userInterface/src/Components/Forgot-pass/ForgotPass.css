@@ -1,0 +1,49 @@
+.main {
+    background-color: rgba(115, 184, 91, 1);
+    width: 25%;
+    height: 290px;
+    margin: 190px auto;
+    text-align: center;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 8px 8px 8px rgba(0, 0, 0, 0.18);
+}
+
+.form {
+    width: 70%;
+    margin: 0 auto;
+    height: 170px;
+}
+
+#frogotmail {
+    height: 36px;
+    width: 270px;
+    border: none;
+    box-shadow: 2px 5px 8px rgba(0, 0, 0, 0.18);
+    margin-bottom: 10px;
+    border-radius: 4px;
+    margin: 10px;
+    outline: none;
+    text-indent: 10px;
+}
+
+.submit {
+    width: 175px;
+    height: 45px;
+    margin-top: 20px;
+    margin-bottom: 19px;
+    background-color: transparent;
+    border: 3px solid white;
+    border-radius: 5px;
+    color: white;
+    font-family: inria sans;
+    font-size: 16px;
+    box-shadow: 8px 8px 8px rgba(0, 0, 0, 0.18);
+}
+
+a {
+    text-decoration: none;
+    font-size: 18px;
+    color: white;
+    font-weight: 900;
+}

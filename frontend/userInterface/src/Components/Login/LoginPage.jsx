@@ -1,10 +1,53 @@
-import React from "react";
+import React, { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
 import './LoginPage.css';
 
+
 function LoginPage() {
+    const [formData, setFormData] = useState({
+        email: "",
+        password: "",
+    });
+
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setFormData({
+            ...formData,
+            [name]: value,
+        });
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            const response = await fetch("http://localhost:3000/auth/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(formData),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                toast.success("Login successful!");
+                window.location.href = "/dashboard";
+                // navigate("/dashboard", { state: { message: "Login successful!" } });
+
+            } else {
+                toast.error(data.message || "Invalid login credentials.");
+            }
+        } catch (err) {
+            toast.error("An error occurred. Please try again later.");
+        }
+    };
+
     return (
         <>
             <div className="log-container">
+                <ToastContainer />
                 <div className="login-image">
 
                 </div>
@@ -15,14 +58,14 @@ function LoginPage() {
                         <p>Provide your login details to continue</p>
                     </div>
                     <div className="form_container">
-                        <form action="">
+                        <form onSubmit={handleSubmit}>
                             <div className="userName">
-                                <input type="text" name="email" id="emails" placeholder="Enter your Email" />
+                                <input type="text" name="email" id="emails" placeholder="Enter your Email" value={formData.email} onChange={handleInputChange} />
                             </div>
                             <div className="password">
-                                <input type="password" name="password" id="pass" placeholder="Password" />
+                                <input type="password" name="password" id="pass" placeholder="Password" value={formData.password} onChange={handleInputChange} />
                             </div>
-                            <p className="forgot"><a href="">Forgot password ?</a></p>
+                            <p className="forgot"><a href="/forgot-pass">Forgot password ?</a></p>
                             <button className="login" type="submit">Sign in</button>
                         </form>
                         <div className="foot">

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
-import './RegisterPage.css'
+import registerimage from '../../assets/Images/login-register-image.png';
+
+import './RegisterPage.css';
 
 function RegisterPage() {
     const [formData, setFormData] = useState({
@@ -56,7 +58,7 @@ function RegisterPage() {
         <div className="container">
             <ToastContainer />
             <div className="image">
-                <img src="" alt="" />
+                <img src={registerimage} alt="" />
             </div>
             <div className="login_form">
                 <div className="head">
@@ -67,11 +69,9 @@ function RegisterPage() {
                     <form onSubmit={handleSubmit}>
                         <input type="text" name="UserName" id="UserName" placeholder="UserName" value={formData.UserName} onChange={handleInputChange} /> <br />
                         <input type="email" name="email" id="email" placeholder="Email" value={formData.email} onChange={handleInputChange} />
+                        <input type="password" name="password" id="password" placeholder="Password" value={formData.password} onChange={handleInputChange} />
+                        <input type="password" name="confirm_pass" id="confirm_pass" placeholder="Confirm Password" value={formData.confirm_pass} onChange={handleInputChange} /> <br />
 
-                        <div className="pass">
-                            <input type="password" name="password" id="password" placeholder="Password" value={formData.password} onChange={handleInputChange} />
-                            <input type="password" name="confirm_pass" id="confirm_pass" placeholder="Confirm Password" value={formData.confirm_pass} onChange={handleInputChange} />
-                        </div>
                         {/* <div className="text">
                             <div className="box">
                                 <input type="checkbox" name="remember" id="remeber" />
@@ -90,4 +90,4 @@ function RegisterPage() {
     )
 }
 
-export default RegisterPage
+export default RegisterPage;

@@ -1,0 +1,10 @@
+.resetForm {
+    background-color: rebeccapurple;
+    width: 300px;
+    margin: 0 auto;
+    height: 150px;
+}
+
+.resetpassword{
+    color: green;
+}
