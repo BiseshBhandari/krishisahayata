@@ -111,7 +111,7 @@ exports.resetPassword = async (req, res) => {
 
         const findUser = await User.findOne({ where: { user_id: tokenDecode.userId, reset_Token: token } });
 
-        if (!findUser || findUser.reset_token_exp < Date.now) {
+        if (!findUser || findUser.reset_token_exp < Date.now()) {
             return res.status(400).json({ message: 'Expired token' });
         }
 

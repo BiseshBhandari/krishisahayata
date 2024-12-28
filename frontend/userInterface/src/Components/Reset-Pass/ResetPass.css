@@ -1,10 +1,42 @@
-.resetForm {
-    background-color: rebeccapurple;
-    width: 300px;
-    margin: 0 auto;
-    height: 150px;
+.main_div {
+    background-color: rgba(115, 184, 91, 1);
+    width: 25%;
+    height: 310px;
+    margin: 190px auto;
+    text-align: center;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 8px 8px 8px rgba(0, 0, 0, 0.18);
 }
 
-.resetpassword{
-    color: green;
+.resetForm {
+    width: 300px;
+    margin: 0 auto;
+    height: 190px;
+}
+
+#resetpassword,
+#confirmPassword {
+    height: 36px;
+    width: 270px;
+    border: none;
+    box-shadow: 2px 5px 8px rgba(0, 0, 0, 0.18);
+    margin-bottom: 10px;
+    border-radius: 4px;
+    margin: 10px;
+    outline: none;
+    text-indent: 10px;
+}
+
+.reset {
+    width: 175px;
+    height: 45px;
+    margin-top: 10px;
+    background-color: transparent;
+    border: 3px solid white;
+    border-radius: 5px;
+    color: white;
+    font-family: inria sans;
+    font-size: 16px;
+    box-shadow: 8px 8px 8px rgba(0, 0, 0, 0.18);
 }

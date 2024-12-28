@@ -21,7 +21,7 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/forgot-pass" element={<ForgotPass />} />
-        <Route path="/reset-pass" element={<ResetPass />} />
+        <Route path="/reset-pass/:token" element={<ResetPass />} />
         <Route path="/dashboard" element={<Dashboard />} />
 
       </Routes>
