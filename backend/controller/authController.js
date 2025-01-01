@@ -31,7 +31,7 @@ exports.register = async (req, res) => {
             password_hash: hashPassword
         })
 
-        return res.status(201).json({ message: 'User created Sucessfully', newUser })
+        return res.status(201).json({ message: 'User created Sucessfully' })
     } catch (error) {
         return res.status(500).json({ message: 'Error registering user', error: error.message });
     }

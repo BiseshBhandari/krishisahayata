@@ -1,13 +1,19 @@
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
+// import jwtDecode from 'jwt-decode';
+
+import loginImage from '../../assets/Images/login-register-image.png';
+import { FaRegEye, } from "react-icons/fa";
 import './LoginPage.css';
 
-
 function LoginPage() {
+
     const [formData, setFormData] = useState({
         email: "",
         password: "",
     });
+
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -32,9 +38,22 @@ function LoginPage() {
             const data = await response.json();
 
             if (response.ok) {
-                toast.success("Login successful!");
-                window.location.href = "/dashboard";
-                // navigate("/dashboard", { state: { message: "Login successful!" } });
+                const { token } = data;
+
+                const decodedToken = JSON.parse(atob(token.split(".")[1]));
+                const userRole = decodedToken.role;
+
+                localStorage.setItem("jwtToken", token);
+                localStorage.setItem("userRole", userRole);
+
+
+                if (userRole === "admin") {
+                    toast.success("Login successful!");
+                    window.location.href = "/admin_dash";
+                } else if (userRole === "farmer") {
+                    toast.success("Login successful!");
+                    window.location.href = "/dashboard";
+                }
 
             } else {
                 toast.error(data.message || "Invalid login credentials.");
@@ -44,11 +63,15 @@ function LoginPage() {
         }
     };
 
+    const togglePasswordVisibility = () => {
+        setShowPassword(!showPassword);
+    };
     return (
         <>
             <div className="log-container">
                 <ToastContainer />
                 <div className="login-image">
+                    <img src={loginImage} alt="login image" />
 
                 </div>
 
@@ -63,7 +86,10 @@ function LoginPage() {
                                 <input type="text" name="email" id="emails" placeholder="Enter your Email" value={formData.email} onChange={handleInputChange} />
                             </div>
                             <div className="password">
-                                <input type="password" name="password" id="pass" placeholder="Password" value={formData.password} onChange={handleInputChange} />
+                                <input type={showPassword ? "text" : "password"} name="password" id="pass" placeholder="Password" value={formData.password} onChange={handleInputChange} />
+                                <span onClick={togglePasswordVisibility} className="icon">
+                                    {showPassword ? <FaEyeSlash /> : <FaRegEye />}
+                                </span>
                             </div>
                             <p className="forgot"><a href="/forgot-pass">Forgot password ?</a></p>
                             <button className="login" type="submit">Sign in</button>

@@ -1,0 +1,35 @@
+.admin_dash {
+    width: inherit;
+    height: 721px;
+    display: flex;
+    flex-direction: row;
+    position: relative;
+
+}
+
+.Dash_component {
+    /* background-color: rebeccapurple; */
+    width: 81%;
+    padding: 5px;
+}
+
+.fist-row {
+    /* background-color: gray; */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-top: 30px;
+    padding: 5px;
+}
+
+.tutorial,
+.user,
+.post {
+    /* background-color: red; */
+    width: 270px;
+    height: 150px;
+    box-shadow: 2px 2px 5px rgb(180, 177, 177);
+    border-radius: 2px;
+    border: 2px solid rgb(180, 177, 177);
+
+}

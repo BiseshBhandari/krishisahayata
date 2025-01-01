@@ -14,6 +14,8 @@ exports.uploadVideo = async (req, res) => {
 
     const videoFile = req.files.video;
 
+    console.log(videoFile);
+
     if (videoFile.size > 100 * 1024 * 1024) {
         return res.status(400).json({ message: 'File size exceeds the 100MB limit' });
     }

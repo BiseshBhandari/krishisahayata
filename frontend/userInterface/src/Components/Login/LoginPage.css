@@ -23,6 +23,17 @@
     margin-bottom: 20px;
 }
 
+/* .password {
+    position: absolute;
+} */
+
+.icon {
+    position: relative;
+    right: 29px;
+    top: 5px;
+    color: rgb(114, 112, 112);
+}
+
 .login_form #emails,
 #pass {
     height: 37px;
@@ -31,7 +42,16 @@
     border: none;
     box-shadow: 2px 5px 8px rgba(0, 0, 0, 0.18);
     margin-bottom: 5px;
+
 }
+
+#pass {
+    margin-left: 15px;
+}
+
+
+
+
 
 
 #emails,
