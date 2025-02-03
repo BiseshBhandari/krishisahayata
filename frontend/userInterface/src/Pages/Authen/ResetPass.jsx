@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useParams } from 'react-router-dom';
 import { ToastContainer, toast } from "react-toastify";
-import './ResetPass.css';
+import '../../Styles/ResetPass.css';
 
 function ResetPass() {
 

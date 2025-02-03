@@ -57,7 +57,7 @@ exports.login = async (req, res) => {
         }
 
         const token = jwt.sign(
-            { userName: checkEmail.name, role: checkEmail.role }, 'secretKey', { expiresIn: '1h' }
+            { userName: checkEmail.name, role: checkEmail.role, Id: checkEmail.userId }, 'secretKey', { expiresIn: '1h' }
         );
 
         return res.status(200).json({ message: 'Login Sucessfull', token })
@@ -130,6 +130,4 @@ exports.resetPassword = async (req, res) => {
     } catch (error) {
         return res.status(400).json({ message: 'Token did not match', error: error.message })
     }
-
-
 };

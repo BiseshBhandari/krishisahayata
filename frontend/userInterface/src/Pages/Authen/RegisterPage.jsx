@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import registerimage from '../../assets/Images/login-register-image.png';
 
-import './RegisterPage.css';
+import '../../Styles/RegisterPage.css';
 
 function RegisterPage() {
     const [formData, setFormData] = useState({
@@ -71,14 +71,6 @@ function RegisterPage() {
                         <input type="email" name="email" id="email" placeholder="Email" value={formData.email} onChange={handleInputChange} />
                         <input type="password" name="password" id="password" placeholder="Password" value={formData.password} onChange={handleInputChange} />
                         <input type="password" name="confirm_pass" id="confirm_pass" placeholder="Confirm Password" value={formData.confirm_pass} onChange={handleInputChange} /> <br />
-
-                        {/* <div className="text">
-                            <div className="box">
-                                <input type="checkbox" name="remember" id="remeber" />
-                                <label htmlFor="remember">Remember me</label>
-                            </div>
-                            <p>Forgot password?</p>
-                        </div> */}
                         <button className="register" type="submit">Sign Up</button>
                         <div className="footer">
                             <p>Already have an account <a href="/login">SIGN UP</a></p>

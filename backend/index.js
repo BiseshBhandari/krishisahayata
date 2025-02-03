@@ -12,19 +12,11 @@ dotenv.config({ path: './.env' });
 const app = express();
 
 app.use(cors());
-
-// app.use(fileupload({
-//     limits: { fileSize: 100 * 1024 * 1024 }, // 100MB
-// }));
-
 app.use(fileUpload());
-
-
 app.use(express.json());
 
 
 app.use('/auth', require('./routes/authRoutes'));
-
 app.use('/admin', require('./routes/adminRoutes'));
 
 sequelize.authenticate().then(() => {

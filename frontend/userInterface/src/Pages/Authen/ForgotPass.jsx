@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
-import './ForgotPass.css';
+import '../../Styles/ForgotPass.css';
 
 function ForgotPass() {
 

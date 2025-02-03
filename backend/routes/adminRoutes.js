@@ -4,5 +4,7 @@ const adminController = require('../controller/admin_controller/videoFeature');
 const router = express.Router();
 
 router.post('/upload_video', adminController.uploadVideo);
+router.get('/videos/:admin_id', adminController.getAllVideos);
+router.delete('/deleteVideo/:tutorial_id', adminController.deleteVideo);
 
 module.exports = router;

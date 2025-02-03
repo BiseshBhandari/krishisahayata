@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 
+
 function Dashboard() {
     const location = useLocation();
     const message = location.state?.message;
@@ -10,7 +11,7 @@ function Dashboard() {
         if (message) {
             toast.success(message);
         }
-    }, [message]); 
+    }, [message]);
 
     return (
         <div>

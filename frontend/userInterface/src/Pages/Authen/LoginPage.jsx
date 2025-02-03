@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
-// import jwtDecode from 'jwt-decode';
-
 import loginImage from '../../assets/Images/login-register-image.png';
 import { FaRegEye, } from "react-icons/fa";
-import './LoginPage.css';
+import '../../Styles/LoginPage.css';
 
 function LoginPage() {
 
@@ -49,8 +47,11 @@ function LoginPage() {
 
                 if (userRole === "admin") {
                     toast.success("Login successful!");
+
                     window.location.href = "/admin_dash";
+
                 } else if (userRole === "farmer") {
+
                     toast.success("Login successful!");
                     window.location.href = "/dashboard";
                 }

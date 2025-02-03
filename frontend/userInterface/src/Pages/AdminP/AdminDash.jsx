@@ -1,6 +1,6 @@
 import React from "react";
-import './AdminDash.css';
-import Sidebar from "../Sidebar/Sidebar";
+import '../../Styles/AdminDash.css';
+import Sidebar from "../../Components/Sidebar";
 
 function AdminDash() {
     return (
@@ -10,15 +10,10 @@ function AdminDash() {
             <div className="Dash_component">
                 <div className="fist-row">
                     <div className="tutorial">
-                        
-
                     </div>
                     <div className="user">
-
                     </div>
-
                     <div className="post">
-
                     </div>
                 </div>
 
