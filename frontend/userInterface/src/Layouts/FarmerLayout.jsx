@@ -1,10 +1,11 @@
 import React from "react";
+import { Outlet } from "react-router-dom";
 
-function FarmerLayout({ children }) {
+function FarmerLayout() {
     return (
         <div>
             <h1>Farmer Layout</h1>
-            {children}
+            <Outlet />
         </div>
     );
 }

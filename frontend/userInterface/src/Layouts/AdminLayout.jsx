@@ -1,12 +1,16 @@
-import React from "react";
+import { Outlet } from "react-router-dom";
+import Sidebar from "../Components/Sidebar";
+import "../Styles/AdminLayout.css";
 
-function AdminLayout({ children }) {
+const AdminLayout = () => {
     return (
-        <div>
-            <h1>Admin Layout</h1>
-            {children}
+        <div className="admin-layout">
+            <Sidebar className="admin-sidebar" />
+            <div className="admin-content">
+                <Outlet />
+            </div>
         </div>
     );
-}
+};
 
 export default AdminLayout;

@@ -1,59 +1,100 @@
-aside {
-    position: sticky;
-    top: 0;
-    left: 0;
-    width: 300px;
-    height: 99vh;
-
-}
-
-.side-pannel {
-    display: flex;
-    flex-direction: column;
-    background-color: rgba(8, 186, 231, 0.67);
-    width: 300px;
-    height: inherit;
-}
-
-.side-head {
-    width: inherit;
-    height: 100px;
-    position: absolute;
+/* Sidebar Base Styles */
+.sidebar {
+    background-color: skyblue;
     color: white;
-
-}
-
-.side-head h1 {
-    margin-top: 35px;
-    text-align: center;
-    text-shadow: 2px 1px 1px rgb(82, 81, 81);
-}
-
-.nav-tags {
+    height: 100vh;
+    transition: width 0.3s ease-in-out;
+    padding: 1rem;
     display: flex;
-    width: 250px;
     flex-direction: column;
-    top: 108px;
-    position: absolute;
-    height: 50vh;
-    padding: 25px;
-
+    align-items: center;
 }
 
-.nav-tags a {
-    padding: 15px;
-    margin-top: 30px;
+/* Open Sidebar */
+.sidebar.open {
+    width: 300px;
+    align-items: flex-start;
+}
+
+/* Closed Sidebar */
+.sidebar.closed {
+    width: 70px;
+    padding: 1rem 0.5rem;
+}
+
+/* Sidebar Header */
+.sidebar-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 20px;
+    margin-bottom: 25px;
+}
+
+.sidebar.closed .sidebar-header {
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+/* Sidebar Title */
+.sidebar-title {
+    font-size: 1.8 rem;
+    font-weight: bold;
+}
+
+/* Menu Button */
+.menu-btn {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 8px;
+    transition: transform 0.3s;
+    margin-top: 6px;
+}
+
+/* Sidebar Navigation */
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+}
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 8px;
     text-decoration: none;
-    color: #fefbfb;
+    color: white;
+    transition: background 0.3s;
+    width: 100%;
 }
 
-.nav-tags a:hover {
-    background-color: #e0e0e0;
-    color: rgb(109, 108, 108);
-    border-radius: 5px;
-    box-shadow: 2px 2px 1px rgb(116, 112, 112)
-}
-
-nav-tags a.active {
+/* Hover Effect */
+.sidebar-link:hover {
     background-color: white;
+    color: gray;
+    font-weight: bold;
+}
+
+/* Active Link */
+.sidebar-link.active {
+    background-color: white;
+    /* Tailwind green-500 */
+    color: gray;
+    font-weight: bold;
+}
+
+/* Closed Sidebar - Hide Text */
+.sidebar.closed .sidebar-link span {
+    display: none;
+}
+
+/* Center Icons in Closed Sidebar */
+.sidebar.closed .sidebar-link {
+    justify-content: center;
 }

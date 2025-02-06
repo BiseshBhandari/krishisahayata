@@ -1,24 +1,58 @@
-import React, { useState } from "react";
-import '../Styles/Sidebar.css';
+import { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
+import { FaTachometerAlt, FaVideo, FaFileAlt, FaBox, FaBars } from "react-icons/fa";
+import "../Styles/Sidebar.css";
 
-function Sidebar() {
+const Sidebar = () => {
+    const [isOpen, setIsOpen] = useState(true);
+    const location = useLocation(); // Get current route
 
     return (
-        <aside>
-            <div className="side-pannel">
-                <div className="side-head">
-                    <h1>krishi-Sahayata </h1>
-                </div>
-                <div className="nav-tags">
-                    <a href="/admin_dash" className="nav-Item active" >Dashboard</a>
-                    <a href="/admin_video" className="nav-Item" >Vidoes</a>
-                    <a href="#" className="nav-Item" >Posts</a>
-                    <a href="#" className="nav-Item" >Items</a>
-                </div>
+        <aside className={`sidebar ${isOpen ? "open" : "closed"}`}>
+            {/* Sidebar Header */}
+            <div className="sidebar-header">
+                {isOpen && <h1 className="sidebar-title">krishi-Sahayata</h1>}
+                <button onClick={() => setIsOpen(!isOpen)} className="menu-btn">
+                    <FaBars size={20} />
+                </button>
             </div>
-        </aside>
 
-    )
+            {/* Navigation Links */}
+            <nav className="sidebar-nav">
+                <Link
+                    to="/admin/dashboard"
+                    className={`sidebar-link ${location.pathname === "/admin/dashboard" ? "active" : ""}`}
+                >
+                    <FaTachometerAlt size={20} />
+                    {isOpen && <span>Dashboard</span>}
+                </Link>
+
+                <Link
+                    to="/admin/video"
+                    className={`sidebar-link ${location.pathname === "/admin/video" ? "active" : ""}`}
+                >
+                    <FaVideo size={20} />
+                    {isOpen && <span>Videos</span>}
+                </Link>
+
+                <Link
+                    to="#"
+                    className={`sidebar-link ${location.pathname === "/admin/posts" ? "active" : ""}`}
+                >
+                    <FaFileAlt size={20} />
+                    {isOpen && <span>Posts</span>}
+                </Link>
+
+                <Link
+                    to="#"
+                    className={`sidebar-link ${location.pathname === "/admin/items" ? "active" : ""}`}
+                >
+                    <FaBox size={20} />
+                    {isOpen && <span>Items</span>}
+                </Link>
+            </nav>
+        </aside>
+    );
 };
 
 export default Sidebar;

@@ -1,0 +1,22 @@
+.admin-layout {
+    display: flex;
+    height: 100vh;
+    background-color: #f8fafc;
+}
+
+.admin-sidebar {
+    flex-shrink: 0;
+}
+
+.admin-content {
+    flex-grow: 1;
+    padding: 1rem;
+    overflow-y: auto;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .admin-layout {
+        flex-direction: column;
+    }
+}

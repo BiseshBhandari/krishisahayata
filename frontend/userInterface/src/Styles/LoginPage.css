@@ -23,10 +23,6 @@
     margin-bottom: 20px;
 }
 
-/* .password {
-    position: absolute;
-} */
-
 .icon {
     position: relative;
     right: 29px;
@@ -48,11 +44,6 @@
 #pass {
     margin-left: 15px;
 }
-
-
-
-
-
 
 #emails,
 #pass {

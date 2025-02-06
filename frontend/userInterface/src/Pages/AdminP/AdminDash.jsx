@@ -4,19 +4,14 @@ import Sidebar from "../../Components/Sidebar";
 
 function AdminDash() {
     return (
-
-        <div className="admin_dash">
-            <Sidebar />
-            <div className="Dash_component">
-                <div className="fist-row">
-                    <div className="tutorial">
-                    </div>
-                    <div className="user">
-                    </div>
-                    <div className="post">
-                    </div>
+        <div className="Dash_component">
+            <div className="fist-row">
+                <div className="tutorial">
                 </div>
-
+                <div className="user">
+                </div>
+                <div className="post">
+                </div>
             </div>
         </div>
     )

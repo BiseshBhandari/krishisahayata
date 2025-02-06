@@ -48,7 +48,7 @@ function LoginPage() {
                 if (userRole === "admin") {
                     toast.success("Login successful!");
 
-                    window.location.href = "/admin_dash";
+                    window.location.href = "/admin/dashboard";
 
                 } else if (userRole === "farmer") {
 
@@ -67,6 +67,7 @@ function LoginPage() {
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
+
     return (
         <>
             <div className="log-container">
