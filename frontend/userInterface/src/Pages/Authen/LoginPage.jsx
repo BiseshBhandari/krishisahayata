@@ -74,7 +74,6 @@ function LoginPage() {
                 <ToastContainer />
                 <div className="login-image">
                     <img src={loginImage} alt="login image" />
-
                 </div>
 
                 <div className="login_form">
@@ -87,7 +86,7 @@ function LoginPage() {
                             <div className="userName">
                                 <input type="text" name="email" id="emails" placeholder="Enter your Email" value={formData.email} onChange={handleInputChange} />
                             </div>
-                            <div className="password">
+                            <div className="Password">
                                 <input type={showPassword ? "text" : "password"} name="password" id="pass" placeholder="Password" value={formData.password} onChange={handleInputChange} />
                                 <span onClick={togglePasswordVisibility} className="icon">
                                     {showPassword ? <FaEyeSlash /> : <FaRegEye />}

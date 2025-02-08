@@ -1,5 +1,109 @@
 .first_section {
     width: 100%;
+    height: 60vh;
+    display: flex;
+    justify-content: center;
+    margin: 40px 0px 0px 0px;
+}
+
+.heroText {
+    width: 44%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+
+}
+
+.heroImage {
+    width: 40%;
+}
+
+.heroImage img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    margin: 2px auto;
+    border-radius: 1px;
+}
+
+.headings-text {
+    margin-top: 50px;
+}
+
+.headings {
+    color: rgb(71, 71, 71);
+    font-size: 60px;
+    font-weight: bold;
+    margin-top: 20px;
+    text-shadow: 5px 3px 1px rgb(202, 197, 197);
+}
+
+.sub-heading-text {
+    width: 87.2%;
+}
+
+.sub-headings {
+    color: rgb(71, 71, 71);
+    font-size: 30px;
+    line-height: 56px;
+    text-shadow: 5px 3px 1px rgb(239, 237, 237);
+}
+
+
+.second_section {
+    width: 100%;
     height: 50vh;
-    background-color: red;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 40px 0px 0px 0px;
+    padding: 10px;
+}
+
+.second_section-head {
+    width: 90%;
+    padding: 10px;
+    height: auto;
+    text-align: center;
+    line-height: 40px;
+    color: rgb(71, 71, 71);
+
+}
+
+.second-head {
+    font-size: 36px;
+}
+
+.second_section-head .p {
+    font-size: 25px;
+}
+
+.second-section-cards {
+    width: 90%;
+    height: 30vh;
+    padding: 10px;
+    display: flex;
+    gap: 45px;
+    justify-content: center;
+}
+
+.second-card {
+    width: 22%;
+    height: 23vh;
+    padding: 15px 25px;
+    border-radius: 5px;
+    box-shadow: 3px 5px 8px 0px rgb(210, 208, 208);
+}
+
+.second_title {
+    color: rgb(71, 71, 71);
+    font-size: 25px;
+    font-weight: bolder;
+    margin: 13px 0px 10px 0px;
+}
+
+.second_text {
+    color: rgb(71, 71, 71);
+    font-size: 18px;
 }

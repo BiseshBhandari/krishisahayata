@@ -8,6 +8,14 @@
     box-shadow: 8px 8px 8px rgba(0, 0, 0, 0.18);
 }
 
+.login_form {
+    background-color: rebeccapurple;
+    height: auto;
+    width: 59%;
+    text-align: center;
+    padding: 15px 30px;
+}
+
 .login-image {
     width: 55%;
     height: inherit;
@@ -15,8 +23,18 @@
 
 }
 
+.login-image img {
+    height: 400px;
+    width: 360px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
 .login-head h2 {
     margin-bottom: 4%;
+    font-size: 30px;
 }
 
 .login-head p {
@@ -41,9 +59,6 @@
 
 }
 
-#pass {
-    margin-left: 15px;
-}
 
 #emails,
 #pass {
@@ -54,8 +69,6 @@
 .forgot a {
     color: white;
     text-underline-offset: 5px;
-
-
 }
 
 .login {

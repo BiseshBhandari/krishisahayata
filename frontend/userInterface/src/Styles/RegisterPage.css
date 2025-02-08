@@ -3,58 +3,60 @@
 }
 
 .image {
-    /* background-color: red; */
     height: inherit;
     width: 41%;
 }
 
-img {
+.image img {
     height: 400px;
     width: 360px;
     margin: 0 auto;
 }
 
-.container {
+.register_container {
     background-color: rgba(115, 184, 91, 1);
     max-width: 50%;
     height: 62vh;
-    margin: 140px auto;
+    margin: 130px auto;
     display: flex;
     border-radius: 5px;
+    padding: 20px;
     box-shadow: 8px 8px 8px rgba(0, 0, 0, 0.18);
+    line-height: 40px;
 
 }
 
-.login_form {
-    height: inherit;
+.Register-from {
+    height: auto;
     width: 59%;
     text-align: center;
+    padding: 15px 30px;
 }
 
-.login_form h2 {
+.Register-from h2 {
     color: white;
     font-size: 45px;
 }
 
-.login_form .sub {
+.Register-from .sub {
     color: white;
     margin-top: -30px;
     font-size: 20px;
 }
 
-.login_form #UserName,
+.Register-from #UserName,
 #email,
 #password,
 #confirm_pass {
-    height: 34px;
-    width: 270px;
+    height: 43px;
+    width: 300px;
     border: none;
     box-shadow: 2px 5px 8px rgba(0, 0, 0, 0.18);
-    margin-bottom: 10px;
+    margin-bottom: 15px;
     border-radius: 4px;
 }
 
-.login_form .password {
+.Register-from .password {
     height: 6vh;
     width: 400px;
     margin: 0 auto;
@@ -75,7 +77,6 @@ img {
     align-items: center;
     width: 365px;
     margin: 0 auto;
-
 }
 
 .box {
@@ -98,8 +99,15 @@ img {
     color: white;
     font-family: inria sans;
     font-size: 18px;
+    font-weight: bolder;
     box-shadow: 8px 8px 8px rgba(0, 0, 0, 0.18);
+    transition: all 0.3s ease-in-out;
+}
 
+.register:hover {
+    background-color: white;
+    color: rgba(115, 184, 91, 1);
+    cursor: pointer;
 }
 
 .footer p a {

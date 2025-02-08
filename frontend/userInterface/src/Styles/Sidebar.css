@@ -10,19 +10,16 @@
     align-items: center;
 }
 
-/* Open Sidebar */
 .sidebar.open {
     width: 300px;
     align-items: flex-start;
 }
 
-/* Closed Sidebar */
 .sidebar.closed {
     width: 70px;
     padding: 1rem 0.5rem;
 }
 
-/* Sidebar Header */
 .sidebar-header {
     width: 100%;
     display: flex;
@@ -37,7 +34,6 @@
     margin-bottom: 30px;
 }
 
-/* Sidebar Title */
 .sidebar-title {
     font-size: 1.8 rem;
     font-weight: bold;
@@ -54,7 +50,6 @@
     margin-top: 6px;
 }
 
-/* Sidebar Navigation */
 .sidebar-nav {
     display: flex;
     flex-direction: column;
@@ -81,20 +76,16 @@
     font-weight: bold;
 }
 
-/* Active Link */
 .sidebar-link.active {
     background-color: white;
-    /* Tailwind green-500 */
     color: gray;
     font-weight: bold;
 }
 
-/* Closed Sidebar - Hide Text */
 .sidebar.closed .sidebar-link span {
     display: none;
 }
 
-/* Center Icons in Closed Sidebar */
 .sidebar.closed .sidebar-link {
     justify-content: center;
 }

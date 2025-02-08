@@ -55,15 +55,15 @@ function RegisterPage() {
     };
 
     return (
-        <div className="container">
+        <div className="register_container">
             <ToastContainer />
             <div className="image">
                 <img src={registerimage} alt="" />
             </div>
-            <div className="login_form">
+            <div className="Register-from">
                 <div className="head">
                     <h2>Getting Started</h2>
-                    <p className="sub">Create an account to explore</p>
+                    <p className="register-sub">Create an account to explore</p>
                 </div>
                 <div className="from">
                     <form onSubmit={handleSubmit}>
