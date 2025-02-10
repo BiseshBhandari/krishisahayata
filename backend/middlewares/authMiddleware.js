@@ -13,4 +13,12 @@ exports.authMiddleware = (req, res, next) => {
     } catch (error) {
         return res.status(401).json({ message: 'Invalid Token' });
     }
-} 
+}
+
+exports.authorizeRole(role) = (req, res, next) => {
+
+    if (req.user.role !== role) {
+        return res.status(403).json({ message: 'Unauthorized' });
+    }
+    next();
+}

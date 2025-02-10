@@ -7,6 +7,7 @@ import ForgotPass from "./Pages/Authen/ForgotPass";
 import ResetPass from "./Pages/Authen/ResetPass";
 import Dashboard from "./Pages/Farmer/Dashboard";
 import AdminDash from "./Pages/AdminP/AdminDash";
+import AdminVideo from "./Pages/AdminP/AdminVideo";
 import ProtectedRoute from "./ProtectedRoute";
 import Unauthorized from "./Unautorized";
 import AdminLayout from "./Layouts/AdminLayout";
@@ -25,23 +26,32 @@ function App() {
         <Route path="/unauthorized" element={<Unauthorized />} />
 
         {/* Admin Routes */}
-        <Route path="/admin/*" element={
-          <ProtectedRoute allowedRoles={["admin"]}>
-            <AdminLayout />
-          </ProtectedRoute>
-        }>
-          <Route path="dashboard" element={<AdminDash />} />
-        </Route>
+        <Route path="/admin/*" element={<AdminLayout />}>
+
+          <Route path="dashboard" element={
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <AdminDash />
+            </ProtectedRoute>}
+          />
+
+          <Route path="video" element={
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <AdminVideo />
+            </ProtectedRoute>}
+          />
+
+
+        </Route >
 
         {/* Farmer Routes */}
-        <Route path="/farmer/*" element={
-          <ProtectedRoute allowedRoles={["farmer"]}>
+        < Route path="/farmer/*" element={
+          < ProtectedRoute allowedRoles={["farmer"]} >
             <FarmerLayout />
-          </ProtectedRoute>}>
+          </ProtectedRoute >}>
 
           <Route path="dashboard" element={<Dashboard />} />
-        </Route>
-      </Routes>
+        </Route >
+      </Routes >
     </>
   );
 };

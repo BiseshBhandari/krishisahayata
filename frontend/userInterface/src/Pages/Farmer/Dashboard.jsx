@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import "../../Styles/Dashboard.css";
 
 
 function Dashboard() {
@@ -14,9 +15,9 @@ function Dashboard() {
     }, [message]);
 
     return (
-        <div>
+        <div className="dashboard_section">
             <ToastContainer />
-            <h1>Dashboard</h1>
+            <h1 className="Dash_heading">Dashboard</h1>
         </div>
     );
 }

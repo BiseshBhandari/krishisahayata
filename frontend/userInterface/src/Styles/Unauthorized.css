@@ -1,0 +1,20 @@
+.unavailable_container {
+    width: 60%;
+    height: 90vh;
+    display: flex;
+    margin: 0 auto;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: red;
+    text-align: center;
+    line-height: 90px;
+}
+
+.un_head {
+    font-size: 60px;
+}
+
+.un_sub {
+    font-size: 30px;
+}

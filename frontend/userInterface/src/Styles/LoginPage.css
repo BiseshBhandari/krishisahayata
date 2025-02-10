@@ -41,12 +41,6 @@
     margin-bottom: 20px;
 }
 
-.icon {
-    position: relative;
-    right: 29px;
-    top: 5px;
-    color: rgb(114, 112, 112);
-}
 
 .login_form #emails,
 #pass {
@@ -56,9 +50,7 @@
     border: none;
     box-shadow: 2px 5px 8px rgba(0, 0, 0, 0.18);
     margin-bottom: 5px;
-
 }
-
 
 #emails,
 #pass {
@@ -82,9 +74,7 @@
     font-family: inria sans;
     font-size: 18px;
     box-shadow: 8px 8px 8px rgba(0, 0, 0, 0.18);
-
 }
-
 
 .foot p a {
     color: red;

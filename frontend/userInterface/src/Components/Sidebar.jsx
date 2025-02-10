@@ -5,11 +5,10 @@ import "../Styles/Sidebar.css";
 
 const Sidebar = () => {
     const [isOpen, setIsOpen] = useState(true);
-    const location = useLocation(); // Get current route
+    const location = useLocation();
 
     return (
         <aside className={`sidebar ${isOpen ? "open" : "closed"}`}>
-            {/* Sidebar Header */}
             <div className="sidebar-header">
                 {isOpen && <h1 className="sidebar-title">krishi-Sahayata</h1>}
                 <button onClick={() => setIsOpen(!isOpen)} className="menu-btn">
