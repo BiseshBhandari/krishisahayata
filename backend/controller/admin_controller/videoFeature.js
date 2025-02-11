@@ -2,7 +2,8 @@ const cloudinary = require('../../config/cloudinary_config');
 const Tutorial = require('../../model/videoModel');
 
 exports.uploadVideo = (req, res) => {
-    const { title, description, category, admin_id } = req.body;
+    const { title, description, category } = req.body;
+    const { admin_id } = req.params
 
     if (!title || !description || !admin_id) {
         return res.status(400).json({ message: 'Title, description, and admin_id are required' });

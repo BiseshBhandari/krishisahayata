@@ -1,12 +1,23 @@
 const sequelize = require("../config/db_config");
 const { DataTypes } = require("sequelize");
+const Post = require("./Post");
 const User = require("./User");
 
-const Post = sequelize.define("Post", {
-    post_id: {
+const Comment = sequelize.define("Comment", {
+    comment_id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
+    },
+    post_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+            model: Post,
+            key: "post_id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "CASCADE",
     },
     user_id: {
         type: DataTypes.INTEGER,
@@ -18,17 +29,8 @@ const Post = sequelize.define("Post", {
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
     },
-    title: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
     content: {
         type: DataTypes.TEXT,
-        allowNull: false,
-    },
-    approval_status: {
-        type: DataTypes.ENUM("pending", "approved", "disapproved"),
-        defaultValue: "pending",
         allowNull: false,
     },
     created_at: {
@@ -37,9 +39,9 @@ const Post = sequelize.define("Post", {
     },
 },
     {
-        tableName: "posts",
+        tableName: "comments",
         timestamps: true,
     }
 );
 
-module.exports = Post;
+module.exports = Comment;

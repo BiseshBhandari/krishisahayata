@@ -57,10 +57,17 @@ exports.login = async (req, res) => {
         }
 
         const token = jwt.sign(
-            { userName: checkEmail.name, role: checkEmail.role, Id: checkEmail.userId }, 'secretKey', { expiresIn: '1h' }
+            { userName: checkEmail.name, role: checkEmail.role, Id: checkEmail.user_id }, 'secretKey', { expiresIn: '2h' }
         );
 
-        return res.status(200).json({ message: 'Login Sucessfull', token })
+        const userData = {
+            user_ID: checkEmail.user_id,
+            userName: checkEmail.name,
+            email: checkEmail.email,
+            role: checkEmail.role
+        }
+
+        return res.status(200).json({ message: 'Login Sucessfull', token, user: userData })
 
     } catch (error) {
         return res.status(500).json({ message: 'Error while logging in', error: error.message })

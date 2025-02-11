@@ -56,8 +56,15 @@
     gap: 8px;
 }
 
-.fiels input,
-select {
+.fiels .titleFiled {
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    width: 100%;
+
+}
+
+.fiels select {
     padding: 10px;
     border-radius: 4px;
     border: 1px solid #ccc;

@@ -41,9 +41,16 @@
     margin-bottom: 20px;
 }
 
+#emails {
+    height: 37px;
+    width: 330px;
+    margin-top: 8px;
+    border: none;
+    box-shadow: 2px 5px 8px rgba(0, 0, 0, 0.18);
+    margin-bottom: 5px;
+}
 
-.login_form #emails,
-#pass {
+.login_form #pass {
     height: 37px;
     width: 275px;
     margin-top: 8px;
@@ -56,6 +63,12 @@
 #pass {
     outline: none;
     text-indent: 10px;
+}
+
+.show_pass {
+    background-color: white;
+    padding: 11px;
+    border: none;
 }
 
 .forgot a {
