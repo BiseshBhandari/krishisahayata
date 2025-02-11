@@ -1,19 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import sendDynamicRequest from "../../instance/apiUrl";
-// import useVideoStore from "../../Store/useVideoStore";
+import { useVideoStore } from "../../Store/useVideoStore";
 import "../../Styles/AdminVideo.css";
 
 function AdminVideo() {
     const [showModal, setShowModal] = useState(false);
     const [adminId, setAdminId] = useState(null);
 
-    // const { videos, fetchVideos, loading, error } = useVideoStore((state) => ({
-    //     videos: state.videos,
-    //     fetchVideos: state.fetchVideos,
-    //     loading: state.loading,
-    //     error: state.error
-    // }));
+    const fetchVideos = useVideoStore((state) => state.fetchVideos);
+    const { videos, loading, error } = useVideoStore();
 
     const [formData, setFormData] = useState({
         title: "",
@@ -32,13 +28,12 @@ function AdminVideo() {
         }
     }, []);
 
-    // Fetch videos after adminId is set
-    // useEffect(() => {
-    //     if (adminId) {
-    //         console.log("Fetching videos for adminId:", adminId);
-    //         fetchVideos(adminId);
-    //     }
-    // }, [adminId]);
+    useEffect(() => {
+        if (adminId) {
+            console.log("Fetching videos for adminId:", adminId);
+            fetchVideos(adminId);
+        }
+    }, [adminId]);
 
     const handleChange = (e) => {
         const { name, value, type } = e.target;
@@ -75,7 +70,7 @@ function AdminVideo() {
             if (response && response.tutorial) {
                 setFormData({ title: "", category: "", description: "", file: null });
                 toast.success("Video uploaded successfully");
-                // fetchVideos(adminId); // Refresh video list after upload
+                fetchVideos(adminId);
             } else {
                 toast.error(response.message || "Video uploading failed");
             }
@@ -134,27 +129,21 @@ function AdminVideo() {
                 </div>
             )}
 
-            {/* <div className="display_video">
-                {loading ? (
-                    <p>Loading videos...</p>
-                ) : error ? (
-                    <p className="error">{error}</p>
-                ) : videos && videos.length > 0 ? (
-                    videos.map((video) => (
-                        <div key={video.tutorial_id} className="video_card">
-                            <h3>{video.title}</h3>
-                            <p>{video.category}</p>
-                            <p>{video.description}</p>
-                            <video width="300" controls>
-                                <source src={video.video_url} type="video/mp4" />
-                                Your browser does not support the video tag.
-                            </video>
-                        </div>
-                    ))
-                ) : (
-                    <p>No videos available</p>
-                )}
-            </div> */}
+            <div className="video_list">
+                {loading && <p>Loading videos...</p>}
+                {error && <p className="error">{error}</p>}
+                {videos.length === 0 && !loading && <p>No videos available.</p>}
+                {videos.map((video, index) => (
+                    <div key={index} className="video_item">
+                        <h3>{video.title}</h3>
+                        <p>{video.description}</p>
+                        <video width="320" height="240" controls>
+                            <source src={video.videoUrl} type="video/mp4" />
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                ))}
+            </div>
         </div>
     );
 }
