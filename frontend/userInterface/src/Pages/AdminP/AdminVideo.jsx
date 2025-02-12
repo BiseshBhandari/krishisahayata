@@ -1,12 +1,17 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import sendDynamicRequest from "../../instance/apiUrl";
 import { useVideoStore } from "../../Store/useVideoStore";
+import Loader from "../../Components/Loader";
+import { FaEdit, FaTrash } from "react-icons/fa";
 import "../../Styles/AdminVideo.css";
 
 function AdminVideo() {
     const [showModal, setShowModal] = useState(false);
     const [adminId, setAdminId] = useState(null);
+    const [uploading, setUploading] = useState(false)
+    const [deleting, setDeleting] = useState(false); // Track delete loader
+
 
     const fetchVideos = useVideoStore((state) => state.fetchVideos);
     const { videos, loading, error } = useVideoStore();
@@ -18,7 +23,6 @@ function AdminVideo() {
         file: null
     });
 
-    // Load adminId from localStorage
     useEffect(() => {
         const storedAdminId = localStorage.getItem("userID");
         if (storedAdminId) {
@@ -63,6 +67,8 @@ function AdminVideo() {
         videoData.append("category", formData.category);
         videoData.append("video", formData.file);
 
+        setUploading(true);
+
         try {
             const response = await sendDynamicRequest("post", `admin/upload_video/${adminId}`, videoData);
             console.log("Upload Response:", response);
@@ -70,6 +76,7 @@ function AdminVideo() {
             if (response && response.tutorial) {
                 setFormData({ title: "", category: "", description: "", file: null });
                 toast.success("Video uploaded successfully");
+                setUploading(false);
                 fetchVideos(adminId);
             } else {
                 toast.error(response.message || "Video uploading failed");
@@ -77,18 +84,49 @@ function AdminVideo() {
         } catch (error) {
             console.error("Failed to upload video:", error);
             toast.error("Error uploading video. Please try again.");
+        } finally {
+        }
+    };
+
+    const handleDelete = async (tutorial_id) => {
+        if (!adminId) {
+            toast.error("Admin ID is missing. Please log in again.");
+            return;
+        }
+        setDeleting(true);
+
+        try {
+            const response = await sendDynamicRequest("delete", `admin/deleteVideo/${tutorial_id}`);
+
+            if (response.message === "Video deleted successfully") {
+                toast.success("Video deleted successfully");
+                fetchVideos(adminId);
+                setDeleting(false);
+
+            } else {
+                toast.error(response.message || "Failed to delete video");
+            }
+        } catch (error) {
+            console.error("Error deleting video:", error);
+            toast.error("Error deleting video. Please try again.");
+        } finally {
+
         }
     };
 
     return (
         <div className="admin-video">
             <div className="video_header">
-                <h1 className="Video_Head">Admin Video :</h1>
+                <h1 className="Video_Head">Uploaded Videos</h1>
                 <button className="add_video_button" onClick={() => setShowModal(true)}>
                     Add Video
                 </button>
             </div>
             <ToastContainer />
+
+            {loading && <Loader />} {/* Show loader while fetching videos */}
+            {uploading && <Loader />} {/* Show loader while uploading */}
+            {deleting && <Loader />} {/* Show loader while deleting */}
 
             {showModal && (
                 <div className="modal-overlay">
@@ -135,12 +173,22 @@ function AdminVideo() {
                 {videos.length === 0 && !loading && <p>No videos available.</p>}
                 {videos.map((video, index) => (
                     <div key={index} className="video_item">
-                        <h3>{video.title}</h3>
-                        <p>{video.description}</p>
-                        <video width="320" height="240" controls>
-                            <source src={video.videoUrl} type="video/mp4" />
-                            Your browser does not support the video tag.
-                        </video>
+                        <div className="actual_video">
+                            <video width="320" height="240" controls crossOrigin="anonymous">
+                                <source src={video.video_url} type="video/mp4" />
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+                        <div className="video_info">
+                            <h3>{video.title}</h3>
+                            <p>{video.description}</p>
+                            <p>{video.category}</p>
+                            <div className="video_actions">
+                                <button className="delete_btn" onClick={() => handleDelete(video.tutorial_id)}>
+                                    <FaTrash /> Delete
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 ))}
             </div>

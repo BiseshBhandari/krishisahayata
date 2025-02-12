@@ -10,13 +10,39 @@
 }
 
 .Video_Head {
-    font-size: 40px;
+    font-size: 34px;
+    text-shadow: 5px 3px 1px rgb(202, 197, 197);
+    /* transition: 0.2s all ease-in-out; */
+}
+
+/* .Video_Head:hover {
+    color: rgb(9, 108, 147);
+    text-shadow: 5px 5px 1px rgb(202, 197, 197);
+
+} */
+
+.add_video_button {
+    padding: 10px 20px;
+    border: 3px solid rgb(30, 180, 239);
+    color: gray;
+    font-size: 16px;
+    font-weight: bolder;
+    border-radius: 3px;
+    background-color: white;
+    transition: 0.3s all ease-in-out;
+}
+
+.add_video_button:hover {
+    background-color: rgb(30, 180, 239);
+    color: white;
+    box-shadow: 4px 4px 4px rgb(182, 181, 181);
 }
 
 .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
+    z-index: 1000;
     padding: 100px 110px 0px 310px;
     width: 100%;
     height: 100%;
@@ -31,7 +57,7 @@
     padding: 20px;
     border-radius: 3px;
     width: 40%;
-    height: 55%;
+    height: 58%;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
     position: relative;
 }
@@ -44,34 +70,170 @@
     cursor: pointer;
 }
 
+.close-modal:hover {
+    color: red;
+}
+
 .video_form {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 10px;
 }
 
-.fiels {
+.fields {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 5px;
 }
 
-.fiels .titleFiled {
-    padding: 10px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    width: 100%;
-
-}
-
-.fiels select {
+.fields select,
+input {
     padding: 10px;
     border-radius: 4px;
     border: 1px solid #ccc;
     width: 100%;
 }
 
-.fiels label {
+.fields label {
     font-size: 20px;
     font-weight: 900;
+}
+
+.fields input:focus,
+.fields select:focus {
+    border: 2px solid rgb(40, 158, 201);
+    outline: none;
+    box-shadow: 0 0 0px rgb(40, 158, 201);
+}
+
+.fields input[type="file"] {
+    border: 2px dashed #ccc;
+    /* Dashed border */
+    padding: 10px;
+    cursor: pointer;
+    background-color: #f9f9f9;
+}
+
+.fields input[type="file"]:hover {
+    border-color: rgb(40, 158, 201);
+    background-color: #eef5ff;
+}
+
+.fields input[type="file"]:focus {
+    border-color: rgb(40, 158, 201);
+    outline: none;
+    box-shadow: 0 0 0px rgb(40, 158, 201);
+}
+
+.Video_submitButton {
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+}
+
+.add_video {
+    padding: 10px 20px;
+    border: 3px solid rgb(30, 180, 239);
+    color: gray;
+    font-size: 15px;
+    font-weight: bolder;
+    border-radius: 5px;
+    background-color: white;
+    transition: 0.3s all ease-in-out;
+}
+
+.add_video:hover {
+    background-color: rgb(30, 180, 239);
+    color: white;
+}
+
+.video_list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(315px, 1fr));
+    gap: 10px;
+    padding: 10px;
+}
+
+.video_item {
+    background: white;
+    border-radius: 2px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
+    margin-bottom: 5px;
+}
+
+
+.video_item:hover {
+    transform: scale(1.01);
+}
+
+/* Video Title */
+.video_item h3 {
+    font-size: 20px;
+    font-weight: bold;
+    color: rgb(50, 50, 50);
+    margin-bottom: 5px;
+}
+
+.video_item p {
+    font-size: 16px;
+    color: rgb(90, 90, 90);
+    margin-bottom: 12px;
+}
+
+/* Video Player */
+.video_item video {
+    width: 100%;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.video_item .video_info {
+    padding: 10px;
+}
+
+.video_actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+/* Edit Button */
+.edit_btn {
+    background-color: rgb(40, 158, 201);
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: 0.3s;
+}
+
+.edit_btn:hover {
+    background-color: rgb(30, 130, 180);
+}
+
+/* Delete Button */
+.delete_btn {
+    background-color: rgb(220, 50, 50);
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: 0.3s;
+}
+
+.delete_btn:hover {
+    background-color: rgb(200, 40, 40);
 }
