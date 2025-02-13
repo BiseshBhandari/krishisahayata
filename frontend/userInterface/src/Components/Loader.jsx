@@ -1,13 +1,19 @@
 import React from "react";
-import "../Styles/Loader.css"; // Ensure you have styles for the loader
+import "../Styles/Loader.css";
 
-function Loader() {
+function Loader({ display_text }) {
     return (
-        <div className="loader-container">
-            <div className="spinner"></div>
-            <p>Loading...</p>
+        <div className="loader-overlay">
+            <div className="loader-container">
+                <div className="loader-dots">
+                    <div className="loader-dot"></div>
+                    <div className="loader-dot"></div>
+                    <div className="loader-dot"></div>
+                </div>
+                <p className="loader-text">{display_text}</p>
+            </div>
         </div>
     );
-};
+}
 
 export default Loader;

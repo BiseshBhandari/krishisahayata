@@ -49,7 +49,27 @@ exports.uploadVideo = (req, res) => {
     ).end(videoFile.data);
 };
 
-exports.getAllVideos = (req, res) => {
+exports.getallVideos = (req, res) => {
+    Tutorial.findAll({
+        attributes: ['tutorial_id', 'title', 'description', 'category', 'video_url'],
+        order: [['created_at', 'DESC']],
+    })
+        .then(videos => {
+            if (videos.length === 0) {
+                return res.status(404).json({ message: 'No videos uploaded' });
+            }
+            return res.status(200).json({
+                message: 'Videos fetched successfully', videos: videos
+            });
+        })
+        .catch(err => {
+            console.error('Error fetching videos:', err);
+            return res.status(500).json({ message: 'Error fetching videos', error: err.message });
+        });
+}
+
+
+exports.getAdminVideos = (req, res) => {
     const { admin_id } = req.params;
 
     if (!admin_id) {
@@ -75,6 +95,7 @@ exports.getAllVideos = (req, res) => {
         });
 };
 
+
 exports.deleteVideo = async (req, res) => {
     const { tutorial_id } = req.params;
 
@@ -92,7 +113,6 @@ exports.deleteVideo = async (req, res) => {
 
         const videoUrl = tutorial.video_url;
 
-        // Extracting the public_id from the Cloudinary URL
         const publicIdMatch = videoUrl.match(/upload\/(?:v\d+\/)?(.+)\.\w+$/);
         const publicId = publicIdMatch ? publicIdMatch[1] : null;
 

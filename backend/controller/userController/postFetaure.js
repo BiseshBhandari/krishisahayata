@@ -1,0 +1,129 @@
+const cloudinary = require('../../config/cloudinary_config');
+const Post = require('../../model/postModel');
+const User = require('../../model/userModel')
+
+exports.addPost = async (req, res) => {
+    try {
+        const { content } = req.body;
+        const { user_id } = req.params;
+
+        if (!content) {
+            return res.status(400).json({ message: "Content of the Post required" });
+        }
+
+        const userExists = await User.findByPk(user_id);
+        if (!userExists) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        if (!req.files || !req.files.image) {
+            return res.status(400).json({ message: "Image file is required" });
+        }
+
+        const imageFile = req.files.image;
+        console.log(imageFile);
+
+        if (imageFile.size > 10 * 1024 * 1024) {
+            return res.status(400).json({ message: "File size exceeds the 10MB limit" });
+        }
+
+        let imageUrl = null;
+
+        cloudinary.uploader.upload_stream(
+            { resource_type: "image", folder: "krishi_sahayata_post_images" },
+            async (error, result) => {
+                if (error) {
+                    console.error("Cloudinary upload error:", error);
+                    return res.status(500).json({ message: "Error uploading image", error: error.message });
+                }
+
+                imageUrl = result.secure_url;
+
+                const newPost = await Post.create({
+                    user_id,
+                    content,
+                    image_url: imageUrl,
+                });
+
+                return res.status(201).json({
+                    message: "Post added successfully",
+                    post: newPost,
+                });
+            }
+        ).end(imageFile.data);
+
+    } catch (error) {
+        console.error("Error adding post:", error);
+        return res.status(500).json({ message: "Internal server error", error: error.message });
+    }
+};
+
+exports.getAllPosts = async (req, res) => {
+    try {
+        const posts = await Post.findAll();
+
+        return res.status(200).json({ post: posts });
+
+    } catch (error) {
+        console.error("Error fetching posts:", error);
+        return res.status(500).json({ message: "Internal server error", error: error.message });
+    }
+}
+
+exports.getUserPost = async (req, res) => {
+    try {
+        const { user_id } = req.params;
+
+        if (!user_id) {
+            return res.status(400).json({ message: "User not logged in" });
+        }
+
+        const userExists = await User.findByPk(user_id);
+        if (!userExists) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        const posts = await Post.findAll({
+            where: { user_id },
+        });
+
+        return res.status(200).json({ post: posts });
+
+    } catch (error) {
+        console.error("Error fetching posts:", error);
+        return res.status(500).json({ message: "Internal server error", error: error.message });
+    }
+}
+
+exports.deletePost = async (req, res) => {
+    try {
+        const { post_id } = req.params;
+
+        if (!post_id) {
+            return res.status(400).json({ message: "Post ID is required" });
+        }
+
+        const post = await Post.findByPk(post_id);
+        if (!post) {
+            return res.status(404).json({ message: "Post not found" });
+        }
+
+        if (post.image_url) {
+
+            const publicIdMatch = post.image_url.match(/upload\/(?:v\d+\/)?(.+)\.\w+$/);
+            const publicId = publicIdMatch ? publicIdMatch[1] : null;
+            console.log(publicId);
+
+            if (publicId) {
+                await cloudinary.uploader.destroy(publicId, { resource_type: "image" });
+            }
+        }
+        await post.destroy();
+
+        return res.status(200).json({ message: "Post and associated image deleted successfully" });
+
+    } catch (error) {
+        console.error("Error deleting post:", error);
+        return res.status(500).json({ message: "Internal server error", error: error.message });
+    }
+};

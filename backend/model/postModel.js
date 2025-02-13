@@ -1,6 +1,6 @@
 const sequelize = require("../config/db_config");
 const { DataTypes } = require("sequelize");
-const User = require("./User");
+const User = require('./userModel')
 
 const Post = sequelize.define("Post", {
     post_id: {
@@ -18,12 +18,12 @@ const Post = sequelize.define("Post", {
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
     },
-    title: {
-        type: DataTypes.STRING,
-        allowNull: false,
-    },
     content: {
         type: DataTypes.TEXT,
+        allowNull: false,
+    },
+    image_url: {
+        type: DataTypes.STRING,
         allowNull: false,
     },
     approval_status: {
@@ -37,7 +37,7 @@ const Post = sequelize.define("Post", {
     },
 },
     {
-        tableName: "posts",
+        tableName: "Post",
         timestamps: true,
     }
 );

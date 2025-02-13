@@ -18,6 +18,7 @@ app.use(express.json());
 
 app.use('/auth', require('./routes/authRoutes'));
 app.use('/admin', require('./routes/adminRoutes'));
+app.use('/farmer', require('./routes/farmerRoutes'));
 
 sequelize.authenticate().then(() => {
     console.log('Connection established with database');

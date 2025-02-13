@@ -10,7 +10,7 @@ function AdminVideo() {
     const [showModal, setShowModal] = useState(false);
     const [adminId, setAdminId] = useState(null);
     const [uploading, setUploading] = useState(false)
-    const [deleting, setDeleting] = useState(false); // Track delete loader
+    const [deleting, setDeleting] = useState(false);
 
 
     const fetchVideos = useVideoStore((state) => state.fetchVideos);
@@ -101,8 +101,6 @@ function AdminVideo() {
             if (response.message === "Video deleted successfully") {
                 toast.success("Video deleted successfully");
                 fetchVideos(adminId);
-                setDeleting(false);
-
             } else {
                 toast.error(response.message || "Failed to delete video");
             }
@@ -110,7 +108,7 @@ function AdminVideo() {
             console.error("Error deleting video:", error);
             toast.error("Error deleting video. Please try again.");
         } finally {
-
+            setDeleting(false);
         }
     };
 
@@ -124,9 +122,9 @@ function AdminVideo() {
             </div>
             <ToastContainer />
 
-            {loading && <Loader />} {/* Show loader while fetching videos */}
-            {uploading && <Loader />} {/* Show loader while uploading */}
-            {deleting && <Loader />} {/* Show loader while deleting */}
+            {loading && <Loader display_text="Loading..." />}
+            {uploading && <Loader display_text="Uploading..." />}
+            {deleting && <Loader display_text="Deleting..." />}
 
             {showModal && (
                 <div className="modal-overlay">
@@ -180,13 +178,16 @@ function AdminVideo() {
                             </video>
                         </div>
                         <div className="video_info">
-                            <h3>{video.title}</h3>
+                            <div className="video_info_head">
+                                <h3>{video.title}</h3>
+                                <button className="delete_btn" onClick={() => handleDelete(video.tutorial_id)}>
+                                    <FaTrash />
+                                </button>
+                            </div>
                             <p>{video.description}</p>
                             <p>{video.category}</p>
                             <div className="video_actions">
-                                <button className="delete_btn" onClick={() => handleDelete(video.tutorial_id)}>
-                                    <FaTrash /> Delete
-                                </button>
+
                             </div>
                         </div>
                     </div>
