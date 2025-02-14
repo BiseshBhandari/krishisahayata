@@ -19,7 +19,6 @@ exports.uploadVideo = (req, res) => {
         return res.status(400).json({ message: 'File size exceeds the 100MB limit' });
     }
 
-    // Upload video to Cloudinary using the Buffer directly
     cloudinary.uploader.upload_stream(
         { resource_type: 'video', folder: 'krishi_sahayata_videos' },
         (error, result) => {
@@ -30,7 +29,6 @@ exports.uploadVideo = (req, res) => {
 
             const video_url = result.secure_url;
 
-            // Create new tutorial entry in the database
             Tutorial.create({
                 title,
                 description,
@@ -78,7 +76,7 @@ exports.getAdminVideos = (req, res) => {
 
     Tutorial.findAll({
         where: { user_ID: admin_id },
-        attributes: ['tutorial_id', 'title', 'description', 'video_url'],
+        attributes: ['tutorial_id', 'title', 'category', 'description', 'video_url'],
         order: [['created_at', 'DESC']],
     })
         .then(videos => {

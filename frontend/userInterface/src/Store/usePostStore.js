@@ -1,51 +1,51 @@
 import { create } from "zustand";
 import sendDynamicRequest from "../instance/apiUrl";
 
-export const useVideoStore = create((set, get) => ({
-    videos: [],
-    allVideos: [],
+export const usePostStore = create((set, get) => ({
+    posts: [],
+    allPosts: [],
     loading: false,
     error: null,
 
-    fetchVideos: async (adminId) => {
-        if (!adminId) return;
+    fetchAllPosts: async () => {
 
         if (get().loading) return;
 
         set({ loading: true, error: null });
 
         try {
-            const response = await sendDynamicRequest("get", `admin/videos/${adminId}`);
+            const response = await sendDynamicRequest("get", `farmer/posts`);
             set({
-                videos: response.videos || [],
+                allPosts: response.posts || [],
                 loading: false,
-                error: response.videos ? null : "No videos found",
+                error: response.posts ? null : "No posts found",
             });
         } catch (err) {
             set({
-                videos: [],
+                allPosts: [],
                 loading: false,
                 error: err.message,
             });
         }
     },
 
-    fetchAllVideos: async () => {
+    fetchUserPosts: async (user_id) => {
+        if (!user_id) return;
 
         if (get().loading) return;
 
         set({ loading: true, error: null });
 
         try {
-            const response = await sendDynamicRequest("get", `farmer/Videos`);
+            const response = await sendDynamicRequest("get", `farmer/userPost/${user_id}`);
             set({
-                allVideos: response.videos || [],
+                posts: response.posts || [],
                 loading: false,
-                error: response.videos ? null : "No videos found",
+                error: response.message ? null : "No posts found",
             });
         } catch (err) {
             set({
-                allVideos: [],
+                posts: [],
                 loading: false,
                 error: err.message,
             });

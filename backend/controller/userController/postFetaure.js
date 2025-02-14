@@ -16,10 +16,6 @@ exports.addPost = async (req, res) => {
             return res.status(404).json({ message: "User not found" });
         }
 
-        if (!req.files || !req.files.image) {
-            return res.status(400).json({ message: "Image file is required" });
-        }
-
         const imageFile = req.files.image;
         console.log(imageFile);
 
@@ -112,7 +108,6 @@ exports.deletePost = async (req, res) => {
 
             const publicIdMatch = post.image_url.match(/upload\/(?:v\d+\/)?(.+)\.\w+$/);
             const publicId = publicIdMatch ? publicIdMatch[1] : null;
-            console.log(publicId);
 
             if (publicId) {
                 await cloudinary.uploader.destroy(publicId, { resource_type: "image" });

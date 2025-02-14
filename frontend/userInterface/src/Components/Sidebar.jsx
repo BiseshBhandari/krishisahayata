@@ -16,7 +16,6 @@ const Sidebar = () => {
                 </button>
             </div>
 
-            {/* Navigation Links */}
             <nav className="sidebar-nav">
                 <Link
                     to="/admin/dashboard"

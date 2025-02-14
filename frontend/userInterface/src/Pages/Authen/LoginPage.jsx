@@ -42,7 +42,7 @@ function LoginPage() {
                 if (userRole === "admin") {
                     window.location.href = "/admin/dashboard";
                 } else if (userRole === "farmer") {
-                    window.location.href = "/dashboard";
+                    window.location.href = "/";
                 }
             } else {
                 toast.error("Invalid login credentials.");

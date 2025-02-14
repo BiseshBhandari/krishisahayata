@@ -5,7 +5,12 @@ import RegisterPage from "./Pages/Authen/RegisterPage";
 import LoginPage from "./Pages/Authen/LoginPage";
 import ForgotPass from "./Pages/Authen/ForgotPass";
 import ResetPass from "./Pages/Authen/ResetPass";
+
 import Dashboard from "./Pages/Farmer/Dashboard";
+import PostPage from "./Pages/Farmer/PostPage";
+import PostProfile_page from "./Pages/Farmer/PostProfile_page";
+import VideosPage from "./Pages/Farmer/VideosPage";
+
 import AdminDash from "./Pages/AdminP/AdminDash";
 import AdminVideo from "./Pages/AdminP/AdminVideo";
 import ProtectedRoute from "./ProtectedRoute";
@@ -44,12 +49,27 @@ function App() {
         </Route >
 
         {/* Farmer Routes */}
-        < Route path="/farmer/*" element={
-          < ProtectedRoute allowedRoles={["farmer"]} >
-            <FarmerLayout />
-          </ProtectedRoute >}>
+        < Route path="/farmer/*" element={<FarmerLayout />} >
 
-          <Route path="dashboard" element={<Dashboard />} />
+          <Route path="dashboard" element={
+            <ProtectedRoute allowedRoles={["farmer"]}>
+              <Dashboard />
+            </ProtectedRoute>} />
+
+          <Route path="post-profile" element={
+            <ProtectedRoute allowedRoles={["farmer"]}>
+              <PostProfile_page />
+            </ProtectedRoute>} />
+
+          <Route path="post" element={
+            <ProtectedRoute allowedRoles={["farmer"]}>
+              <PostPage />
+            </ProtectedRoute>} />
+
+          <Route path="videos" element={
+            <ProtectedRoute allowedRoles={["farmer"]}>
+              <VideosPage />
+            </ProtectedRoute>} />
         </Route >
       </Routes >
     </>
