@@ -14,7 +14,7 @@ const sendDynamicRequest = async (method, url, data) => {
             data: method === 'get' ? null : data,
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('jwtToken')}`,
-                'Content-Type': isFile ? 'multipart/form-data' : 'application/json'
+                'Content-Type': isFile ? 'multipart/form-data' : 'application/json' 
             }
         });
 

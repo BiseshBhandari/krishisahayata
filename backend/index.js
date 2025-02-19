@@ -6,6 +6,7 @@ const fileUpload = require('express-fileupload');
 const sequelize = require('./config/db_config');
 
 const User = require('./model/userModel')
+require('./model/association');
 
 dotenv.config({ path: './.env' });
 

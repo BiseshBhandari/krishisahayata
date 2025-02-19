@@ -13,6 +13,9 @@ import VideosPage from "./Pages/Farmer/VideosPage";
 
 import AdminDash from "./Pages/AdminP/AdminDash";
 import AdminVideo from "./Pages/AdminP/AdminVideo";
+import AdminVerifyPost from "./Pages/AdminP/AdminVerifyPost";
+
+
 import ProtectedRoute from "./ProtectedRoute";
 import Unauthorized from "./Unautorized";
 import AdminLayout from "./Layouts/AdminLayout";
@@ -43,6 +46,13 @@ function App() {
             <ProtectedRoute allowedRoles={["admin"]}>
               <AdminVideo />
             </ProtectedRoute>}
+          />
+
+          <Route path="verify-post" element={
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <AdminVerifyPost />
+            </ProtectedRoute>
+          }
           />
 
 

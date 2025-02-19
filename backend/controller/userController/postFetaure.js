@@ -1,6 +1,5 @@
 const cloudinary = require('../../config/cloudinary_config');
-const Post = require('../../model/postModel');
-const User = require('../../model/userModel')
+const { Post, User } = require('../../model/association');
 
 exports.addPost = async (req, res) => {
     try {
@@ -56,7 +55,13 @@ exports.addPost = async (req, res) => {
 
 exports.getAllPosts = async (req, res) => {
     try {
-        const posts = await Post.findAll();
+        const posts = await Post.findAll({
+            where: { 'approval_status': 'approved' },
+            include: {
+                model: User,
+                attributes: ["user_id", "name"]
+            }
+        });
 
         return res.status(200).json({ post: posts });
 
@@ -80,7 +85,11 @@ exports.getUserPost = async (req, res) => {
         }
 
         const posts = await Post.findAll({
-            where: { user_id },
+            where: { user_id, 'approval_status': 'approved' },
+            include: {
+                model: User,
+                attributes: ["user_id", "name"],
+            }
         });
 
         return res.status(200).json({ post: posts });

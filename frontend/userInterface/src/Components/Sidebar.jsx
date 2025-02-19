@@ -34,8 +34,8 @@ const Sidebar = () => {
                 </Link>
 
                 <Link
-                    to="#"
-                    className={`sidebar-link ${location.pathname === "/admin/posts" ? "active" : ""}`}
+                    to="/admin/verify-post"
+                    className={`sidebar-link ${location.pathname === "/admin/verify-post" ? "active" : ""}`}
                 >
                     <FaFileAlt size={20} />
                     {isOpen && <span>Posts</span>}

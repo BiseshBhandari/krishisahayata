@@ -4,6 +4,7 @@ import sendDynamicRequest from "../instance/apiUrl";
 export const usePostStore = create((set, get) => ({
     userPosts: [],
     allPosts: [],
+    pendingPosts: [],
     loading: false,
     error: null,
 
@@ -16,9 +17,9 @@ export const usePostStore = create((set, get) => ({
         try {
             const response = await sendDynamicRequest("get", `farmer/posts`);
             set({
-                allPosts: response.posts || [],
+                allPosts: response.post || [],
                 loading: false,
-                error: response.posts ? null : "No posts found",
+                error: response.post ? null : "No posts found",
             });
         } catch (err) {
             set({
@@ -51,7 +52,28 @@ export const usePostStore = create((set, get) => ({
             });
         }
     },
-    // Add a new post
+
+    fetchPendingPosts: async () => {
+        if (get().loading) return;
+
+        set({ loading: true, error: null });
+
+        try {
+            const response = await sendDynamicRequest("get", `admin/verifyPost`);
+            set({
+                pendingPosts: response.post || [],
+                loading: false,
+                error: response.post ? null : "No posts found",
+            });
+        } catch (err) {
+            set({
+                pendingPosts: [],
+                loading: false,
+                error: err.message,
+            });
+        }
+    },
+
     addPost: async (newPost, user_id) => {
         set({ loading: true, error: null });
 
@@ -70,6 +92,28 @@ export const usePostStore = create((set, get) => ({
             }
         } catch (err) {
             set({ loading: false, error: err?.message || "Something went wrong" });
+        }
+    },
+
+    approvePost: async (post_id, status) => {
+        if (!post_id || !status) return;
+
+        set({ loading: true, error: null });
+
+        try {
+            const response = await sendDynamicRequest("put", `admin/approvePost/${post_id}`, { status });
+
+            if (response?.success) {
+                set((state) => ({
+                    pendingPosts: state.pendingPosts.filter(post => post.id !== post_id),
+                    loading: false,
+                    error: null,
+                }));
+            } else {
+                throw new Error("Failed to approve post");
+            }
+        } catch (err) {
+            set({ loading: false, error: err.message });
         }
     },
 }));

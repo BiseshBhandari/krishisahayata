@@ -20,7 +20,6 @@
 .post_container_2 {
     width: 46%;
     max-height: 85vh;
-    box-shadow: 3px 5px 8px 0px rgb(210, 208, 208);
     overflow-y: auto;
     scrollbar-width: none;
 }
@@ -143,7 +142,7 @@
     object-fit: cover;
 }
 
-button {
+.Post_submit_button {
     background: #28a745;
     box-shadow: 3px 3px 5px rgba(198, 197, 197, 0.988);
     color: #fff;
@@ -156,6 +155,80 @@ button {
     transition: 0.3s ease;
 }
 
-button:hover {
+.Post_submit_button:hover {
     background: #218838;
 }
+
+
+.allPosts {
+    display: flex;
+    flex-direction: column;
+    padding: 10px 15px;
+    gap: 30px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.post_list {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 3px 5px 8px 0px rgb(210, 208, 208);
+
+}
+
+.post_Header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 9px;
+    text-transform: capitalize;
+}
+
+.Post_user_proile_image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #ccc;
+}
+
+.post_user_name {
+    font-weight: bold;
+    color: #333;
+}
+
+.Post_contnent_p {
+    font-size: 14px;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+.posted_image {
+    width: 100%;
+    max-height: 300px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.post-image {
+    width: 100%;
+    max-height: 300px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.post_footer_actions {
+    display: flex;
+    gap: 10px;
+}
+
+.post_footer_actions button {
+    padding: 8px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: iniria sans;
+    background-color: white;
+}
+

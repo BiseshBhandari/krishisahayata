@@ -1,6 +1,5 @@
 const sequelize = require("../config/db_config");
 const { DataTypes } = require("sequelize");
-const User = require('./userModel')
 
 const Post = sequelize.define("Post", {
     post_id: {
@@ -11,12 +10,6 @@ const Post = sequelize.define("Post", {
     user_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        references: {
-            model: User,
-            key: "user_id",
-        },
-        onUpdate: "CASCADE",
-        onDelete: "CASCADE",
     },
     content: {
         type: DataTypes.TEXT,
@@ -41,5 +34,7 @@ const Post = sequelize.define("Post", {
         timestamps: true,
     }
 );
+
+
 
 module.exports = Post;

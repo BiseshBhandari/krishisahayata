@@ -1,22 +1,23 @@
 import React, { useState, useEffect } from "react";
 import { FaCamera } from "react-icons/fa";
 import { usePostStore } from "../../Store/usePostStore";
+import { FaThumbsUp, FaCommentAlt, FaShare } from "react-icons/fa";
+import { ToastContainer, toast } from "react-toastify";
 import "../../Styles/PostPage.css";
-
 
 function PostPage() {
     const [formData, setFormData] = useState({ content: "", file: null });
     const [selectedImage, setSelectedImage] = useState(null);
-    const { addPost, loading, error } = usePostStore();
+    const { addPost, fetchAllPosts, allPosts, loading, error } = usePostStore();
     const [userId, setUserId] = useState(null);
-
 
     useEffect(() => {
         const storedUserId = localStorage.getItem("userID");
         if (storedUserId) {
             setUserId(storedUserId);
         }
-    }, []);
+        fetchAllPosts();
+    }, [fetchAllPosts]);
 
     const handleChange = (e) => {
         const { name, value, type } = e.target;
@@ -42,6 +43,7 @@ function PostPage() {
             toast.success("Post added successfully");
             setFormData({ content: "", file: null });
             setSelectedImage(null);
+            fetchAllPosts();
         } catch (err) {
             toast.error("Failed to add post");
         }
@@ -49,8 +51,8 @@ function PostPage() {
 
     return (
         <div className="post_page">
+            <ToastContainer />
             <div className="post_container_1">
-
                 <div className="postform">
                     <div className="postFormHeader">
                         <h1 className="post_form_header_h1">Create Post</h1>
@@ -74,7 +76,7 @@ function PostPage() {
                                         )}
                                         <input type="file" id="file" accept="image/*" onChange={handleChange} />
                                     </label>
-                                    <button type="submit" disabled={loading}>
+                                    <button type="submit" className="Post_submit_button" disabled={loading}>
                                         {loading ? "Posting..." : "Post"}
                                     </button>
                                 </div>
@@ -82,16 +84,45 @@ function PostPage() {
                         </div>
                     </div>
                 </div>
-
             </div>
 
             <div className="post_container_2">
-                <div className="allPosts"></div>
+                <div className="allPosts">
+                    {allPosts.length > 0 ? (
+                        allPosts.map((post) => (
+                            <div key={post.post_id} className="post_list">
+                                <div className="post_Header">
+                                    <div className="Post_user_proile_image">
+                                    </div>
+                                    <div className="post_user_name">
+                                        {post.User?.name || "Unknown User"}
+                                    </div>
+                                </div>
+                                <p className="Post_contnent_p">{post.content}</p>
+                                <div className="posted_image">
+                                    {post.image_url && <img src={post.image_url} alt="Post" className="post-image" />}
+                                </div>
+                                <div className="post_footer_actions">
+                                    <button className="like_button">
+                                        <FaThumbsUp /> Like
+                                    </button>
+                                    <button className="comment_button">
+                                        <FaCommentAlt /> Comment
+                                    </button>
+                                    <button className="share_button">
+                                        <FaShare /> Share
+                                    </button>
+                                </div>
+                            </div>
+                        ))
+                    ) : (
+                        <p>No posts available</p>
+                    )}
+                </div>
             </div>
-
             <div className="post_container_3"></div>
         </div>
     );
 }
 
-export default PostPage; 
+export default PostPage;
