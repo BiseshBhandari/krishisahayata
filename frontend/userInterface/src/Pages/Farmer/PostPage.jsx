@@ -3,6 +3,7 @@ import { FaCamera } from "react-icons/fa";
 import { usePostStore } from "../../Store/usePostStore";
 import { FaThumbsUp, FaCommentAlt, FaShare } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
+import Loader from "../../Components/Loader";
 import "../../Styles/PostPage.css";
 
 function PostPage() {
@@ -52,6 +53,7 @@ function PostPage() {
     return (
         <div className="post_page">
             <ToastContainer />
+            {loading && <Loader display_text="Posting..." />}
             <div className="post_container_1">
                 <div className="postform">
                     <div className="postFormHeader">
@@ -76,8 +78,8 @@ function PostPage() {
                                         )}
                                         <input type="file" id="file" accept="image/*" onChange={handleChange} />
                                     </label>
-                                    <button type="submit" className="Post_submit_button" disabled={loading}>
-                                        {loading ? "Posting..." : "Post"}
+                                    <button type="submit" className="Post_submit_button">
+                                        Post
                                     </button>
                                 </div>
                             </form>

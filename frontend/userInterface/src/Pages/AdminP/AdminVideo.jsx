@@ -122,7 +122,7 @@ function AdminVideo() {
             </div>
             <ToastContainer />
 
-            {loading && <Loader display_text="Lo`ading..." />}
+            {loading && <Loader display_text="Loading..." />}
             {uploading && <Loader display_text="Uploading..." />}
             {deleting && <Loader display_text="Deleting..." />}
 

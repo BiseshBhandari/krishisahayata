@@ -25,7 +25,7 @@ exports.getPendingPosts = async (req, res) => {
 exports.approvePost = async (req, res) => {
     try {
         const { post_id } = req.params;
-        const { status } = req.body;
+        const { status, comment } = req.body;
 
         if (!post_id) {
             return res.status(400).json({ message: "Post ID is required" });

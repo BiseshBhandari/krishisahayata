@@ -24,6 +24,10 @@ const Post = sequelize.define("Post", {
         defaultValue: "pending",
         allowNull: false,
     },
+    // rejection_reason: {
+    //     type: DataTypes.TEXT,
+    //     defaultValue: "Reason not provided",
+    // },
     created_at: {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW,

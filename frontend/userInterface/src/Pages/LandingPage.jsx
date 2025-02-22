@@ -5,6 +5,8 @@ import { AiFillShop } from "react-icons/ai";
 import { PiPlantBold } from "react-icons/pi";
 import { FaPeopleGroup } from "react-icons/fa6";
 
+import Footer from '../Components/Footer';
+
 import "../Styles/LandingPage.css";
 import HeroImg from "../assets/Images/homeee.webp"
 
@@ -96,6 +98,7 @@ function LandingPage() {
                     <p></p>
                 </div>
             </div>
+            <Footer />
         </div>
     );
 }

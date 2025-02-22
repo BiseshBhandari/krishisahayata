@@ -83,10 +83,12 @@ export const usePostStore = create((set, get) => ({
             if (response?.post) {
                 set((state) => ({
                     allPosts: [response.post, ...state.allPosts],
-                    userPosts: newPost.user_id === response.post.user_id ? [response.post, ...state.userPosts] : state.userPosts,
+                    userPosts: response.post.user_id === user_id ? [response.post, ...state.userPosts] : state.userPosts,
+                    pendingPosts: response.post.approval_status === "pending" ? [response.post, ...state.pendingPosts] : state.pendingPosts,
                     loading: false,
                     error: null,
                 }));
+
             } else {
                 throw new Error("Failed to add post");
             }
@@ -112,6 +114,7 @@ export const usePostStore = create((set, get) => ({
             } else {
                 throw new Error("Failed to approve post");
             }
+
         } catch (err) {
             set({ loading: false, error: err.message });
         }

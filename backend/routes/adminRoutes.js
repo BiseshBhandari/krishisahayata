@@ -7,7 +7,6 @@ const router = express.Router();
 // video routes
 router.post('/upload_video/:admin_id', adminController.uploadVideo);
 router.get('/videos/:admin_id', adminController.getAdminVideos);
-router.get('/video/:tutorial_id', adminController.getallVideos);
 router.delete('/deleteVideo/:tutorial_id', adminController.deleteVideo);
 
 // post verification routes
