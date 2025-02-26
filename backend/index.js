@@ -15,7 +15,9 @@ const app = express();
 app.use(cors());
 app.use(fileUpload());
 app.use(express.json());
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
+console.log(__dirname);
 
 app.use('/auth', require('./routes/authRoutes'));
 app.use('/admin', require('./routes/adminRoutes'));

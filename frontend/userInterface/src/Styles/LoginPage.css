@@ -9,7 +9,9 @@
 }
 
 .login_form {
-    background-color: rebeccapurple;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     height: auto;
     width: 59%;
     text-align: center;
@@ -29,11 +31,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
-
 }
 
 .login-head h2 {
-    margin-bottom: 4%;
+    margin-top: 20px;
+    margin-bottom: 3%;
     font-size: 30px;
 }
 
@@ -42,21 +44,21 @@
 }
 
 #emails {
-    height: 37px;
+    height: 47px;
     width: 330px;
     margin-top: 8px;
     border: none;
     box-shadow: 2px 5px 8px rgba(0, 0, 0, 0.18);
-    margin-bottom: 5px;
+    margin-bottom: 15px;
 }
 
 .login_form #pass {
-    height: 37px;
+    height: 47px;
     width: 275px;
     margin-top: 8px;
     border: none;
     box-shadow: 2px 5px 8px rgba(0, 0, 0, 0.18);
-    margin-bottom: 5px;
+    margin-bottom: 20px;
 }
 
 #emails,
@@ -67,7 +69,9 @@
 
 .show_pass {
     background-color: white;
-    padding: 11px;
+    padding: 16px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
     border: none;
 }
 
@@ -80,6 +84,7 @@
     width: 125px;
     height: 45px;
     margin-top: 20px;
+    margin-bottom: 20px;
     background-color: transparent;
     border: 3px solid white;
     border-radius: 5px;
@@ -91,5 +96,6 @@
 
 .foot p a {
     color: red;
+
     font-weight: 800;
 }

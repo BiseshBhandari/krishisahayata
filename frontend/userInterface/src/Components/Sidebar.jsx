@@ -7,6 +7,15 @@ const Sidebar = () => {
     const [isOpen, setIsOpen] = useState(true);
     const location = useLocation();
 
+    const handleLogoutAdmin = () => {
+        localStorage.removeItem("jwtToken");
+        localStorage.removeItem("user");
+        localStorage.removeItem("userID");
+        localStorage.removeItem("userRole");
+
+        navigate("/login");
+    };
+
     return (
         <aside className={`sidebar ${isOpen ? "open" : "closed"}`}>
             <div className="sidebar-header">
@@ -49,6 +58,9 @@ const Sidebar = () => {
                     {isOpen && <span>Items</span>}
                 </Link>
             </nav>
+            <div className="button_logout">
+                <button className="logoutAdmin" onClick={handleLogoutAdmin}>Logout</button>
+            </div>
         </aside>
     );
 };

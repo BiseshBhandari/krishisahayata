@@ -1,7 +1,5 @@
 .video-page {
     color: #333;
-    background-color: #f6f5f5;
-    padding: 20px;
     height: 88.5vh;
     display: block;
     position: relative;
@@ -12,6 +10,7 @@
     justify-content: left;
     gap: 10px;
     padding: 10px;
+
 }
 
 .category {
@@ -19,7 +18,7 @@
     border-radius: 6px;
     border: none;
     background-color: #f2f4f6;
-    box-shadow: 3px 3px 5px rgb(155, 155, 155);
+    box-shadow: 3px 3px 5px rgb(201, 200, 200);
     font-weight: 600;
     color: #535353;
 }
@@ -53,6 +52,8 @@
 .main-content {
     display: flex;
     justify-content: center;
+    box-shadow: 0px 0px 6px gray;
+    height: in;
 }
 
 .video-section {
@@ -95,7 +96,7 @@
 .video-image video {
     width: inherit;
     height: inherit;
-    
+
 }
 
 .overlay {
@@ -114,6 +115,10 @@
 
 .video-item:hover .overlay {
     opacity: 1;
+}
+
+.video-thumbnail::-webkit-media-controls {
+    display: none !important;
 }
 
 .play-button {

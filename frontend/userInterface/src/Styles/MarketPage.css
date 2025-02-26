@@ -1,0 +1,28 @@
+.MarketContainer {
+    width: 100%;
+    height: 88.5vh;
+    padding: 5px 20px;
+    color: gray;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.MarketFilters {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px;
+    border-radius: 5px;
+    width: 20%;
+    box-shadow: 0px 0px 6px rgb(222, 221, 221);
+
+}
+
+.ProuctDisplay {
+    padding: 10px;
+    width: calc(100% - 20%);
+    border-radius: 5px;
+
+}

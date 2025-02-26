@@ -84,10 +84,10 @@
     display: flex;
     align-items: center;
 }
-
+/* 
 .box input[type="checkbox"] {
     margin-right: 7px;
-}
+} */
 
 .register {
     width: 125px;
@@ -110,7 +110,7 @@
     cursor: pointer;
 }
 
-.footer p a {
+.foote p a {
     color: red;
     font-weight: 800;
 }

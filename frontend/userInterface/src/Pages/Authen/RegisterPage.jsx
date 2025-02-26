@@ -72,7 +72,7 @@ function RegisterPage() {
                         <input type="password" name="password" id="password" placeholder="Password" value={formData.password} onChange={handleInputChange} />
                         <input type="password" name="confirm_pass" id="confirm_pass" placeholder="Confirm Password" value={formData.confirm_pass} onChange={handleInputChange} /> <br />
                         <button className="register" type="submit">Sign Up</button>
-                        <div className="footer">
+                        <div className="foote">
                             <p>Already have an account <a href="/login">SIGN UP</a></p>
                         </div>
                     </form>

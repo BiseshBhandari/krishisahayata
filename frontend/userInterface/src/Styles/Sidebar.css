@@ -1,4 +1,5 @@
 /* Sidebar Base Styles */
+
 .sidebar {
     background-color: skyblue;
     color: white;
@@ -8,6 +9,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+
 }
 
 .sidebar.open {
@@ -39,7 +41,6 @@
     font-weight: bold;
 }
 
-/* Menu Button */
 .menu-btn {
     background: none;
     border: none;
@@ -88,4 +89,26 @@
 
 .sidebar.closed .sidebar-link {
     justify-content: center;
+}
+
+.sidebar.closed .logoutAdmin {}
+
+.button_logout {
+    margin-top: 400px;
+    padding: 3px;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+
+}
+
+.logoutAdmin {
+    background-color: rgb(217, 56, 56);
+    padding: 12px 35px 12px 35px;
+    width: inherit;
+    border: none;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 8px;
 }

@@ -10,6 +10,7 @@ import Dashboard from "./Pages/Farmer/Dashboard";
 import PostPage from "./Pages/Farmer/PostPage";
 import PostProfile_page from "./Pages/Farmer/PostProfile_page";
 import VideosPage from "./Pages/Farmer/VideosPage";
+import MarketPage from "./Pages/Farmer/MarketPage"
 
 import AdminDash from "./Pages/AdminP/AdminDash";
 import AdminVideo from "./Pages/AdminP/AdminVideo";
@@ -35,7 +36,6 @@ function App() {
 
         {/* Admin Routes */}
         <Route path="/admin/*" element={<AdminLayout />}>
-
           <Route path="dashboard" element={
             <ProtectedRoute allowedRoles={["admin"]}>
               <AdminDash />
@@ -80,6 +80,11 @@ function App() {
             <ProtectedRoute allowedRoles={["farmer"]}>
               <VideosPage />
             </ProtectedRoute>} />
+          <Route path="market" element={
+            <ProtectedRoute allowedRoles={["farmer"]}>
+              <MarketPage />
+            </ProtectedRoute>
+          } />
         </Route >
       </Routes >
     </>

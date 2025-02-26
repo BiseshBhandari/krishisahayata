@@ -1,5 +1,4 @@
 .navbar {
-    /* position: fixed; */
     position: sticky;
     top: 0;
     left: 0;
@@ -56,7 +55,7 @@
 }
 
 .btn-get-started {
-    padding: 15px 20px 15px 20px;
+    padding: 10px 25px 13px 25px;
     border: 1px solid gray;
     border-radius: 5px;
     background-color: rgb(38, 137, 38);

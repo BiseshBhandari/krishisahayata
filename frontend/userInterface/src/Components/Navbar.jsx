@@ -14,8 +14,11 @@ function Navbar() {
 
     const handleLogout = () => {
         localStorage.removeItem("jwtToken");
+        localStorage.removeItem("user");
+        localStorage.removeItem("userID");
+        localStorage.removeItem("userRole");
 
-        navigate("/login");
+        navigate("/");
     };
 
     return (
@@ -27,7 +30,7 @@ function Navbar() {
                 <Link to="/" className={`navbar-link ${location.pathname === "/" ? "active" : ""}`}>Home</Link>
                 <Link to="/farmer/videos" className={`navbar-link ${location.pathname === "/farmer/videos" ? "active" : ""}`}>Videos</Link>
                 <Link to="/farmer/post" className={`navbar-link ${location.pathname === "/farmer/post" ? "active" : ""}`}>Posts</Link>
-                <Link to="#" className={`navbar-link ${location.pathname === "/farmer/market" ? "active" : ""}`}>Market</Link>
+                <Link to="/farmer/market" className={`navbar-link ${location.pathname === "/farmer/market" ? "active" : ""}`}>Market</Link>
                 <Link to="#" className={`navbar-link ${location.pathname === "/farmer/crop" ? "active" : ""}`}>Crop-Guide</Link>
 
             </div>
@@ -43,7 +46,7 @@ function Navbar() {
                         <FaUserCircle className="profile-icon" />
                         {showDropdown && (
                             <div className="dropdown-menu">
-                                <button onClick={() => navigate("/profile")}>Profile</button>
+                                <button onClick={() => navigate("#")}>Profile</button>
                                 <button onClick={handleLogout}>Logout</button>
                             </div>
                         )}

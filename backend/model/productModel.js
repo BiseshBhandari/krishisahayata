@@ -19,6 +19,10 @@ const Product = sequelize.define('Product', {
         type: DataTypes.TEXT,
         allowNull: true,
     },
+    discountPrice: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+    },
     imageUrl: {
         type: DataTypes.STRING,
         allowNull: true,
@@ -27,15 +31,23 @@ const Product = sequelize.define('Product', {
         type: DataTypes.STRING,
         allowNull: false,
     },
+    stockQuantity: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+    },
+    stockStatus: {
+        type: DataTypes.ENUM("in-Stock", "out-of-stock"),
+        defaultValue: "in-Stock",
+        allowNull: false,
+    },
+    approvalStatus: {
+        type: DataTypes.ENUM("pending", "approved", "rejected"),
+        defaultValue: "pending",
+        allowNull: false
+    },
     user_ID: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        references: {
-            model: User,
-            key: 'user_id',
-        },
-        onUpdate: 'CASCADE',
-        onDelete: 'CASCADE',
     },
     created_at: {
         type: DataTypes.DATE,

@@ -26,3 +26,4 @@ const sendDynamicRequest = async (method, url, data) => {
 };
 
 export default sendDynamicRequest;
+    
