@@ -5,12 +5,19 @@ import { useProductStore } from "../../Store/useProductStoe";
 import Loader from "../../Components/Loader";
 import "../../Styles/MarketPage.css"
 
-
 function MarketPage() {
     const [showModal, setShowModal] = useState(false);
     const [user_id, setUser_id] = useState(null);
+    const [selectedProduct, setSelectedProduct] = useState(null);
 
-    const { addProduct, loading, error } = useProductStore();
+    const { addProduct, fetchAllProducts, products, loading, error } = useProductStore();
+    const [selectedCategory, setSelectedCategory] = useState("All");
+
+    const [selectedStock, setSelectedStock_status] = useState("All");
+
+    const [searchQuery, setSearchQuery] = useState("");
+
+    const baseURL = 'http://localhost:3000';
 
     const [formData, setFormData] = useState({
         name: "",
@@ -27,7 +34,22 @@ function MarketPage() {
         if (stored_id) {
             setUser_id(stored_id);
         }
-    }, []);
+        fetchAllProducts();
+    }, [fetchAllProducts]);
+
+
+    const filteredProducts = products.filter((product) => {
+
+        const matchesCategory =
+            selectedCategory === "All" || product.category === selectedCategory;
+
+        const matchesSearch =
+            product.name.toLowerCase().includes(searchQuery.toLowerCase())
+
+        const matchStock =
+            selectedStock === "All" || product.stockStatus === selectedStock;
+        return matchesCategory && matchesSearch && matchStock;
+    });
 
     const handleChange = (e) => {
         const { name, value, type } = e.target;
@@ -66,6 +88,7 @@ function MarketPage() {
                 stockQuantity: "",
                 file: null
             });
+            fetchAllProducts();
             setShowModal(false);
         } catch (err) {
             console.error("Error adding product:", err);
@@ -78,12 +101,63 @@ function MarketPage() {
             <ToastContainer />
             {loading && <Loader display_text="Adding..." />}
             <div className="MarketFilters">
-                <p>filteres</p>
+                <div className="product_Categories">
+                    <div className="prodict_categories_title">
+                        <p>Categories:</p>
+                    </div>
+                    <div className="categories_filter">
+                        <button
+                            className={`category ${selectedCategory === "All" ? "active" : ""}`}
+                            onClick={() => setSelectedCategory("All")}
+                        >
+                            All
+                        </button>
+                        {Array.from(new Set(products.map((product) => product.category))).map(
+                            (category) => (
+                                <button
+                                    key={category}
+                                    className={`category ${selectedCategory === category ? "active" : ""
+                                        }`}
+                                    onClick={() => setSelectedCategory(category)}
+                                >
+                                    {category}
+                                </button>
+                            )
+                        )}
+                    </div>
+                </div>
+
+                <div className="Product_stock">
+                    <div className="product_stock_title">
+                        <p>Stock filter:</p>
+                    </div>
+                    <div className="stock_filter">
+
+                        <button
+                            className={`category ${selectedCategory === "All" ? "active" : ""}`}
+                            onClick={() => setSelectedStock_status("All")}
+                        >
+                            All
+                        </button>
+                        {Array.from(new Set(products.map((product) => product.stockStatus))).map(
+                            (stockStatus) => (
+                                <button
+                                    key={stockStatus}
+                                    className={`category ${selectedStock === stockStatus ? "active" : ""
+                                        }`}
+                                    onClick={() => setSelectedStock_status(stockStatus)}
+                                >
+                                    {stockStatus}
+                                </button>
+                            )
+                        )}
+                    </div>
+                </div>
             </div>
             <div className="ProuctDisplay">
                 <div className="ProductDisplay_head">
                     <div className="search_bar_container">
-                        <input type="search" className="product_search_bar" placeholder="Search here....." name="" id="" />
+                        <input type="search" className="product_search_bar" placeholder="Search here....." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
                     </div>
                     <div className="add_product_btn_container">
                         <button className="add_product_btn" onClick={() => setShowModal(true)}> Add Product</button>
@@ -91,27 +165,35 @@ function MarketPage() {
                 </div>
 
                 <div className="ProductDisplay_body">
-                    <div className="product_card">
-                        <div className="product_image">
-                            <img src="" alt="" />
-                        </div>
-                        <div className="product_details">
-                            <div className="product_name">
-                                <p>Product Name</p>
-                                <div className="actions">
-                                    <button className="edit_btn">
-                                        <FaEdit /> Edit
-                                    </button>
-                                    <button className="prod_delete_btn">
-                                        <FaTrash /> Delete
-                                    </button>
+                    <div className="product-card-list">
+                        {filteredProducts?.length ? (
+                            filteredProducts.map((product) => (
+                                <div key={product.product_id} className="product-card" onClick={() => setSelectedProduct(product)}>
+                                    <div className="product_image_con">
+                                        <img src={`${baseURL}${product.imageUrl}`} alt={product.name} className="product-image" />
+                                    </div>
+                                    <div className="product-info">
+                                        <div className="name_price">
+                                            <h3 className="product-name">{product.name}</h3>
+                                            <div className="product-price-section">
+                                                <span className="product-price">
+                                                    RS. {product.discountPrice || product.price}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        {/* <p className="product-category">{product.category}</p> */}
+
+                                        <p className={`stock-status ${product.stockStatus === "out-of-stock" ? "out" : "in"}`}>
+                                            {product.stockStatus}
+                                        </p>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className="product_category">
-                                <p>Product Category</p>
-                            </div>
-                        </div>
+                            ))
+                        ) : (
+                            <p className="no-products">No products available</p>
+                        )}
                     </div>
+
                 </div>
             </div>
 
@@ -174,6 +256,31 @@ function MarketPage() {
                     </div>
                 </div>
             )}
+
+            {selectedProduct && (
+                <div className="product-modal-overlay">
+                    <div className="product-modal-content">
+                        <span className="product-close-modal" onClick={() => setSelectedProduct(null)}>&times;</span>
+                        <div className="product-details">
+                            <div className="product-image-container">
+                                <img src={`${baseURL}${selectedProduct.imageUrl}`} alt={selectedProduct.name} className="product-modal-image" />
+                            </div>
+                            <div className="product-details-info">
+                                <h3 className="product-modal-name">{selectedProduct.name}</h3>
+                                <p className="product-modal-price">RS. {selectedProduct.discountPrice || selectedProduct.price}</p>
+                                <p className="product-modal-description">{selectedProduct.description}</p>
+                                <p className={`product-modal-stock-status ${selectedProduct.stockStatus === "out-of-stock" ? "out" : "in"}`}>
+                                    {selectedProduct.stockStatus}
+                                </p>
+                                <button className="add-to-cart-button" onClick={() => addToCart(selectedProduct)}>
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
         </div>
     );
 };

@@ -31,4 +31,27 @@ export const useProductStore = create((set, get) => ({
         }
     },
 
+    fetchAllProducts: async () => {
+        if (get().loading) {
+            return;
+        }
+        set({ loading: true, error: null });
+
+        try {
+            const response = await sendDynamicRequest("get", `farmer/products`);
+            set({
+                products: response.products || [],
+                loading: false,
+                error: response.products ? response.message : "No posts found",
+            });
+        } catch (err) {
+            set({
+                products: [],
+                loading: false,
+                error: err.message,
+            });
+        }
+
+    },
+
 }));
