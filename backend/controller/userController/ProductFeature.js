@@ -3,7 +3,8 @@ const path = require('path');
 const fs = require('fs');
 
 exports.addProduct = async (req, res) => {
-    const { name, price, description, discountPrice, category, stockQuantity, user_ID } = req.body;
+    const { name, price, description, discountPrice, category, stockQuantity } = req.body;
+    const { user_ID } = req.params;
 
     if (!req.files || !req.files.image) {
         return res.status(400).send({ message: 'No image file uploaded.' });

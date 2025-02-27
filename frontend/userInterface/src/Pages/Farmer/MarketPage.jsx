@@ -1,11 +1,33 @@
-import React, { useState } from "react";
-import { FaEdit, FaTrash } from "react-icons/fa"; // Import icons
-
+import React, { useEffect, useState } from "react";
+import { FaEdit, FaTrash } from "react-icons/fa";
+import { ToastContainer, toast } from "react-toastify";
+import { useProductStore } from "../../Store/useProductStoe";
+import Loader from "../../Components/Loader";
 import "../../Styles/MarketPage.css"
 
 
 function MarketPage() {
     const [showModal, setShowModal] = useState(false);
+    const [user_id, setUser_id] = useState(null);
+
+    const { addProduct, loading, error } = useProductStore();
+
+    const [formData, setFormData] = useState({
+        name: "",
+        price: "",
+        description: "",
+        discountPrice: "",
+        category: "",
+        stockQuantity: "",
+        file: null
+    });
+
+    useEffect(() => {
+        const stored_id = localStorage.getItem("userID");
+        if (stored_id) {
+            setUser_id(stored_id);
+        }
+    }, []);
 
     const handleChange = (e) => {
         const { name, value, type } = e.target;
@@ -16,8 +38,45 @@ function MarketPage() {
         }
     };
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        if (!user_id) {
+            return toast.error("Please log in again.");
+        }
+
+        const productData = new FormData();
+        productData.append("name", formData.name);
+        productData.append("price", formData.price);
+        productData.append("description", formData.description);
+        productData.append("discountPrice", formData.discountPrice);
+        productData.append("category", formData.category);
+        productData.append("stockQuantity", formData.stockQuantity);
+        productData.append("image", formData.file);
+
+        try {
+            await addProduct(productData, user_id);
+            toast.success("Product added Successfully");
+            setFormData({
+                name: "",
+                price: "",
+                description: "",
+                discountPrice: "",
+                category: "",
+                stockQuantity: "",
+                file: null
+            });
+            setShowModal(false);
+        } catch (err) {
+            console.error("Error adding product:", err);
+            toast.error(error || "Failed to add Product");
+        }
+    };
+
     return (
         <div className="MarketContainer">
+            <ToastContainer />
+            {loading && <Loader display_text="Adding..." />}
             <div className="MarketFilters">
                 <p>filteres</p>
             </div>
@@ -60,8 +119,7 @@ function MarketPage() {
                 <div className="product-modal-overlay">
                     <div className="product-modal-content">
                         <span className="product-close-modal" onClick={() => setShowModal(false)}>&times;</span>
-                        <form className="product-form">
-
+                        <form onSubmit={handleSubmit} className="product-form">
                             <div className="product_fileds_row">
                                 <div className="product-fields">
                                     <label className="product-label">Product Name</label>
@@ -95,7 +153,7 @@ function MarketPage() {
                             <div className="product_fileds_row">
                                 <div className="product-fields">
                                     <label className="product-label">Upload Image</label>
-                                    <input type="file" name="imageUrl" accept="image/*" className="product-input" onChange={handleChange} required />
+                                    <input type="file" name="file" accept="image/*" className="product-input" onChange={handleChange} required />
                                 </div>
 
                                 <div className="product-fields">

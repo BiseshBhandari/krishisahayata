@@ -12,7 +12,7 @@ router.get('/posts', userController.getAllPosts);
 router.get('/userPost/:user_id', userController.getUserPost);
 router.delete('/deletePost/:post_id', userController.deletePost);
 
-router.post('/addProduct', addProduct);
+router.post('/addProduct/:user_ID', addProduct);
 router.get('/products', getAllProducts);
 router.get('/userProduct/:user_id', getUserProducts);
 router.delete("/deleteProduct/:product_id", deleteProduct);
