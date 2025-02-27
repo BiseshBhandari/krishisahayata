@@ -32,8 +32,6 @@
     border: 3px solid rgb(30, 180, 239);
 }
 
-.add_video:active {}
-
 .modal-overlay {
     position: fixed;
     top: 0;

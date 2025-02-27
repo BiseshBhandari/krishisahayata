@@ -109,8 +109,10 @@ exports.updateProduct = async (req, res) => {
             if (!fs.existsSync(productFolder)) {
                 fs.mkdirSync(productFolder, { recursive: true });
             }
+
             const imageName = Date.now() + path.extname(imageFile.name);
             const newImagePath = path.join(productFolder, imageName);
+
             imageFile.mv(newImagePath);
             imageUrl = `/uploads/productsPhotos/${imageName}`;
         }
