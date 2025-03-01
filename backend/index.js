@@ -25,7 +25,7 @@ app.use('/farmer', require('./routes/farmerRoutes'));
 
 sequelize.authenticate().then(() => {
     console.log('Connection established with database');
-    sequelize.sync();
+    // sequelize.sync();
 
 }).catch((error) => {
     console.error(`Problem while making Connection with database: ${error}`);

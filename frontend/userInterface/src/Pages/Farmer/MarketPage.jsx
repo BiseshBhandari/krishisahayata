@@ -7,10 +7,18 @@ import "../../Styles/MarketPage.css"
 
 function MarketPage() {
     const [showModal, setShowModal] = useState(false);
+
     const [user_id, setUser_id] = useState(null);
+
     const [selectedProduct, setSelectedProduct] = useState(null);
 
+    const [quantity, setQuantity] = useState(1);
+
+
+    const [] = useState(null);
+
     const { addProduct, fetchAllProducts, products, loading, error } = useProductStore();
+
     const [selectedCategory, setSelectedCategory] = useState("All");
 
     const [selectedStock, setSelectedStock_status] = useState("All");
@@ -28,6 +36,11 @@ function MarketPage() {
         stockQuantity: "",
         file: null
     });
+
+    const handleSelectProduct = (product) => {
+        setSelectedProduct(product);
+        setQuantity(1);
+    };
 
     useEffect(() => {
         const stored_id = localStorage.getItem("userID");
@@ -168,7 +181,7 @@ function MarketPage() {
                     <div className="product-card-list">
                         {filteredProducts?.length ? (
                             filteredProducts.map((product) => (
-                                <div key={product.product_id} className="product-card" onClick={() => setSelectedProduct(product)}>
+                                <div key={product.product_id} className="product-card" onClick={() => handleSelectProduct(product)}>
                                     <div className="product_image_con">
                                         <img src={`${baseURL}${product.imageUrl}`} alt={product.name} className="product-image" />
                                     </div>
@@ -181,8 +194,6 @@ function MarketPage() {
                                                 </span>
                                             </div>
                                         </div>
-                                        {/* <p className="product-category">{product.category}</p> */}
-
                                         <p className={`stock-status ${product.stockStatus === "out-of-stock" ? "out" : "in"}`}>
                                             {product.stockStatus}
                                         </p>
@@ -257,7 +268,7 @@ function MarketPage() {
                 </div>
             )}
 
-            {selectedProduct && (
+            {/* {selectedProduct && (
                 <div className="product-modal-overlay">
                     <div className="product-modal-content">
                         <span className="product-close-modal" onClick={() => setSelectedProduct(null)}>&times;</span>
@@ -279,8 +290,39 @@ function MarketPage() {
                         </div>
                     </div>
                 </div>
-            )}
+            )} */}
 
+            {selectedProduct && (
+                <div className="product-modal-overlay">
+                    <div className="product-modal-content">
+                        <span className="product-close-modal" onClick={() => setSelectedProduct(null)}>&times;</span>
+                        <div className="product-details">
+                            <div className="product-image-container">
+                                <img src={`${baseURL}${selectedProduct.imageUrl}`} alt={selectedProduct.name} className="product-modal-image" />
+                            </div>
+                            <div className="product-details-info">
+                                <h3 className="product-modal-name">{selectedProduct.name}</h3>
+                                <p className="product-modal-price">RS. {selectedProduct.discountPrice || selectedProduct.price}</p>
+                                <p className="product-modal-description">{selectedProduct.description}</p>
+                                <p className={`product-modal-stock-status ${selectedProduct.stockStatus === "out-of-stock" ? "out" : "in"}`}>
+                                    {selectedProduct.stockStatus}
+                                </p>
+
+                                {/* Quantity Selector */}
+                                <div className="quantity-selector">
+                                    <button onClick={() => setQuantity((prev) => Math.max(1, prev - 1))}>-</button>
+                                    <input type="number" value={quantity} readOnly />
+                                    <button onClick={() => setQuantity((prev) => prev + 1)}>+</button>
+                                </div>
+
+                                <button className="add-to-cart-button" onClick={() => console.log("Add to Cart", selectedProduct, quantity)}>
+                                    Add to Cart
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </div>
     );
 };
