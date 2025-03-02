@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
+import { useCartStore } from "../Store/useCartStore";
 import "../Styles/Navbar.css";
-import { FaUserCircle } from "react-icons/fa";
+import { FaUserCircle, FaShoppingCart } from "react-icons/fa";
 
 import Applogo from "../assets/Images/app-log.png";
 
@@ -9,6 +10,8 @@ function Navbar() {
     const navigate = useNavigate();
     const location = useLocation();
     const isLoggedIn = localStorage.getItem("jwtToken");
+
+    const { cartCount } = useCartStore();
 
     const [showDropdown, setShowDropdown] = useState(false);
 
@@ -35,6 +38,7 @@ function Navbar() {
 
             </div>
             <div className="navbar-button">
+                <FaShoppingCart className="cart-icon" onClick={() => navigate("/farmer/cart")} />
                 {!isLoggedIn ? (
                     <button className="btn-get-started" onClick={() => navigate("/register")}>Get Started</button>
                 ) : (

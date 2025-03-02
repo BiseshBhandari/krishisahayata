@@ -20,7 +20,7 @@ router.delete("/deleteProduct/:product_id", deleteProduct);
 router.put('/updateProduct/:product_id', updateProduct);
 
 router.post('/addCart', cartController.addCart);
-router.get('/cart/:userId ', cartController.getCart);
+router.get('/cart/:userId', cartController.getCart);
 router.put('/updateQuantity', cartController.addQuantity);
 router.delete('/removeItem', cartController.removeItem);
 router.delete('/clearCart/:userId', cartController.clearCart);

@@ -38,7 +38,11 @@ exports.getCart = async (req, res) => {
         const { userId } = req.params;
 
         const cartItems = await Cart.findAll({
-            where: { userId }
+            where: { userId },
+            include: {
+                model: Product,
+                attributes: ["product_id", "name", "imageUrl"]
+            }
         });
 
         const totalCartValue = cartItems.reduce((sum, item) => sum + item.total, 0);

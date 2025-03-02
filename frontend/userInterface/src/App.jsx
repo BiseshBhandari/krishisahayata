@@ -10,7 +10,8 @@ import Dashboard from "./Pages/Farmer/Dashboard";
 import PostPage from "./Pages/Farmer/PostPage";
 import PostProfile_page from "./Pages/Farmer/PostProfile_page";
 import VideosPage from "./Pages/Farmer/VideosPage";
-import MarketPage from "./Pages/Farmer/MarketPage"
+import MarketPage from "./Pages/Farmer/MarketPage";
+import CartPage from "./Pages/Farmer/CartPage";
 
 import AdminDash from "./Pages/AdminP/AdminDash";
 import AdminVideo from "./Pages/AdminP/AdminVideo";
@@ -55,7 +56,6 @@ function App() {
           }
           />
 
-
         </Route >
 
         {/* Farmer Routes */}
@@ -85,6 +85,13 @@ function App() {
               <MarketPage />
             </ProtectedRoute>
           } />
+
+          <Route path="cart" element={
+            <ProtectedRoute allowedRoles={["farmer"]}>
+              <CartPage />
+            </ProtectedRoute>
+          } />
+
         </Route >
       </Routes >
     </>

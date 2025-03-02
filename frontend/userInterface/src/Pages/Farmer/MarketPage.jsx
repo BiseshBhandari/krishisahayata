@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { ToastContainer, toast } from "react-toastify";
 import { useProductStore } from "../../Store/useProductStoe";
+import { useCartStore } from "../../Store/useCartStore";
 import Loader from "../../Components/Loader";
 import "../../Styles/MarketPage.css"
 
@@ -18,6 +19,8 @@ function MarketPage() {
     const [] = useState(null);
 
     const { addProduct, fetchAllProducts, products, loading, error } = useProductStore();
+
+    const { addCartItem, cartloading } = useCartStore();
 
     const [selectedCategory, setSelectedCategory] = useState("All");
 
@@ -36,6 +39,8 @@ function MarketPage() {
         stockQuantity: "",
         file: null
     });
+
+
 
     const handleSelectProduct = (product) => {
         setSelectedProduct(product);
@@ -106,6 +111,28 @@ function MarketPage() {
         } catch (err) {
             console.error("Error adding product:", err);
             toast.error(error || "Failed to add Product");
+        }
+    };
+
+    const handleAddCartItem = async () => {
+
+        if (!selectedProduct) {
+            return toast.error("Selected product not found.");
+        }
+
+        const cartItem = {
+            userId: user_id,
+            productId: selectedProduct.product_id,
+            quantity: quantity,
+        };
+
+        try {
+            await addCartItem(cartItem);
+            toast.success("Product added to cart!");
+            setSelectedProduct(null);
+        } catch (error) {
+            console.error("Error adding to cart:", error);
+            toast.error("Failed to add to cart.");
         }
     };
 
@@ -268,30 +295,6 @@ function MarketPage() {
                 </div>
             )}
 
-            {/* {selectedProduct && (
-                <div className="product-modal-overlay">
-                    <div className="product-modal-content">
-                        <span className="product-close-modal" onClick={() => setSelectedProduct(null)}>&times;</span>
-                        <div className="product-details">
-                            <div className="product-image-container">
-                                <img src={`${baseURL}${selectedProduct.imageUrl}`} alt={selectedProduct.name} className="product-modal-image" />
-                            </div>
-                            <div className="product-details-info">
-                                <h3 className="product-modal-name">{selectedProduct.name}</h3>
-                                <p className="product-modal-price">RS. {selectedProduct.discountPrice || selectedProduct.price}</p>
-                                <p className="product-modal-description">{selectedProduct.description}</p>
-                                <p className={`product-modal-stock-status ${selectedProduct.stockStatus === "out-of-stock" ? "out" : "in"}`}>
-                                    {selectedProduct.stockStatus}
-                                </p>
-                                <button className="add-to-cart-button" onClick={() => addToCart(selectedProduct)}>
-                                    Add to Cart
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            )} */}
-
             {selectedProduct && (
                 <div className="product-modal-overlay">
                     <div className="product-modal-content">
@@ -308,15 +311,13 @@ function MarketPage() {
                                     {selectedProduct.stockStatus}
                                 </p>
 
-                                {/* Quantity Selector */}
                                 <div className="quantity-selector">
                                     <button onClick={() => setQuantity((prev) => Math.max(1, prev - 1))}>-</button>
-                                    <input type="number" value={quantity} readOnly />
+                                    <input type="number" name="productQuantity" value={quantity} readOnly />
                                     <button onClick={() => setQuantity((prev) => prev + 1)}>+</button>
                                 </div>
-
-                                <button className="add-to-cart-button" onClick={() => console.log("Add to Cart", selectedProduct, quantity)}>
-                                    Add to Cart
+                                <button className="add-to-cart-button" onClick={handleAddCartItem} disabled={cartloading}>
+                                    {cartloading ? "Adding..." : "Add to Cart"}
                                 </button>
                             </div>
                         </div>
