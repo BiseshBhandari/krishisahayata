@@ -12,10 +12,14 @@ import PostProfile_page from "./Pages/Farmer/PostProfile_page";
 import VideosPage from "./Pages/Farmer/VideosPage";
 import MarketPage from "./Pages/Farmer/MarketPage";
 import CartPage from "./Pages/Farmer/CartPage";
+import CheckoutPage from "./Pages/Farmer/CheckOutPage";
+import PaymentSuccess from "./Pages/PaymentSuccess";
+import PaymentFailure from "./Pages/PaymentFailure";
 
 import AdminDash from "./Pages/AdminP/AdminDash";
 import AdminVideo from "./Pages/AdminP/AdminVideo";
 import AdminVerifyPost from "./Pages/AdminP/AdminVerifyPost";
+
 
 
 import ProtectedRoute from "./ProtectedRoute";
@@ -80,6 +84,7 @@ function App() {
             <ProtectedRoute allowedRoles={["farmer"]}>
               <VideosPage />
             </ProtectedRoute>} />
+
           <Route path="market" element={
             <ProtectedRoute allowedRoles={["farmer"]}>
               <MarketPage />
@@ -91,6 +96,22 @@ function App() {
               <CartPage />
             </ProtectedRoute>
           } />
+
+          <Route path="checkout" element={
+            <ProtectedRoute allowedRoles={["farmer"]}>
+              <CheckoutPage />
+            </ProtectedRoute>
+          } />
+
+          <Route path="payment-success/:order_id" element={
+            <ProtectedRoute allowedRoles={["farmer"]}>
+              <PaymentSuccess />
+            </ProtectedRoute>} />
+
+          <Route path="payment-failure" element={
+            <ProtectedRoute allowedRoles={["farmer"]}>
+              <PaymentFailure />
+            </ProtectedRoute>} />
 
         </Route >
       </Routes >

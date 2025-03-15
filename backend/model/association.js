@@ -3,6 +3,8 @@ const Post = require("./postModel");
 const Video = require("./videoModel");
 const Product = require("./productModel");
 const Cart = require("./cartModel");
+const Order = require("./orderModel");
+const OrderItem = require("./orderItemModel");
 
 // Defining the association between User and Video
 User.hasMany(Video, { foreignKey: "user_ID", onDelete: "CASCADE", onUpdate: "CASCADE" });
@@ -23,5 +25,13 @@ Cart.belongsTo(User, { foreignKey: "userId", onDelete: "CASCADE", onUpdate: "CAS
 Product.hasMany(Cart, { foreignKey: "productId", onDelete: "CASCADE", onUpdate: "CASCADE" });
 Cart.belongsTo(Product, { foreignKey: "productId", onDelete: "CASCADE", onUpdate: "CASCADE" });
 
+
+Order.belongsTo(User, { foreignKey: "userId", onDelete: "CASCADE", onUpdate: "CASCADE" });
+Order.hasMany(OrderItem, { foreignKey: "orderId", onDelete: "CASCADE", onUpdate: "CASCADE" });
+
+
+OrderItem.belongsTo(Order, { foreignKey: "orderId", onDelete: "CASCADE", onUpdate: "CASCADE" });
+OrderItem.belongsTo(Product, { foreignKey: "productId", onDelete: "CASCADE", onUpdate: "CASCADE" });
+
 // Defining the association between Post and Comment
-module.exports = { User, Post, Product, Cart, Video };
+module.exports = { User, Post, Product, Cart, Video, Order, OrderItem };

@@ -92,7 +92,7 @@ exports.forgotPassword = async (req, res) => {
             reset_Token: verification_token,
             reset_token_exp: Date.now() + 8 * 60 * 1000
         })
-
+        
         await transporter.sendMail({
             from: process.env.MY_MAIL,
             to: email,

@@ -15,7 +15,6 @@ function MarketPage() {
 
     const [quantity, setQuantity] = useState(1);
 
-
     const [] = useState(null);
 
     const { addProduct, fetchAllProducts, products, loading, error } = useProductStore();
@@ -29,6 +28,8 @@ function MarketPage() {
     const [searchQuery, setSearchQuery] = useState("");
 
     const baseURL = 'http://localhost:3000';
+    // const baseURL = import.meta.env.VITE_BACKEND_BASE_URL;
+
 
     const [formData, setFormData] = useState({
         name: "",

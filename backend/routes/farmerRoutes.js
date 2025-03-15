@@ -3,10 +3,10 @@ const userController = require('../controller/userController/postFetaure')
 const { getallVideos } = require('../controller/userController/userSideVideo')
 const { addProduct, getAllProducts, getUserProducts, deleteProduct, updateProduct } = require('../controller/userController/ProductFeature')
 const cartController = require('../controller/userController/cartFeature');
+const orderController = require('../controller/userController/orderFeature');
 const router = express.Router();
 
 router.get('/videos', getallVideos);
-
 
 router.post('/addPost/:user_id', userController.addPost);
 router.get('/posts', userController.getAllPosts);
@@ -21,9 +21,15 @@ router.put('/updateProduct/:product_id', updateProduct);
 
 router.post('/addCart', cartController.addCart);
 router.get('/cart/:userId', cartController.getCart);
-router.put('/updateQuantity', cartController.addQuantity);
+router.post('/addQuantity', cartController.addQuantity);
+router.post('/decreaseQuantity', cartController.decreaseQuantity);
 router.delete('/removeItem', cartController.removeItem);
 router.delete('/clearCart/:userId', cartController.clearCart);
+
+router.post('/createOrder', orderController.createOrder);
+router.get('/getOrders/:userId', orderController.getOrders);
+
+
 
 
 
