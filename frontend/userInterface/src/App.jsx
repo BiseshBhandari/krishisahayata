@@ -16,6 +16,8 @@ import CheckoutPage from "./Pages/Farmer/CheckOutPage";
 import PaymentSuccess from "./Pages/PaymentSuccess";
 import PaymentFailure from "./Pages/PaymentFailure";
 import OrderPage from "./Pages/Farmer/OrderPage";
+import CustomerOrderPage from "./Pages/Farmer/CustomerOrderPage";
+import SellerOrderDetailPage from "./Pages/Farmer/SellerOrderDetailPage";
 
 
 import AdminDash from "./Pages/AdminP/AdminDash";
@@ -119,6 +121,17 @@ function App() {
             <ProtectedRoute allowedRoles={["farmer"]}>
               <OrderPage />
             </ProtectedRoute>} />
+
+            <Route path="orders-by-me" element={
+            <ProtectedRoute allowedRoles={["farmer"]}>
+              <CustomerOrderPage />
+            </ProtectedRoute>} />
+
+            <Route path="orders-for-me" element={
+            <ProtectedRoute allowedRoles={["farmer"]}>
+              <SellerOrderDetailPage />
+            </ProtectedRoute>} />
+
 
         </Route >
       </Routes >

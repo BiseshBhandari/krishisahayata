@@ -21,12 +21,13 @@ const Order = sequelize.define("Order", {
         defaultValue: "Pending",
     },
     orderStatus: {
-        type: DataTypes.ENUM("Pending", "Confirmed", "Shipped", "Delivered", "Cancelled"),
+        type: DataTypes.ENUM("Pending", "Confirmed"),
         defaultValue: "Pending",
     },
-    transactionId: {
-        type: DataTypes.STRING,
-        allowNull: true,
+
+    deliveryStatus: {
+        type: DataTypes.ENUM("Pending", "Packed", "Delivered"),
+        defaultValue: "Pending",
     },
 },
     {

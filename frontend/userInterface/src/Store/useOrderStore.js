@@ -6,6 +6,8 @@ export const useOrderStore = create((set, get) => ({
     orderError: null,
     orderSuccess: false,
     orders: [],
+    customerOrders: [],
+    sellerOrders: [],
     esewaPayload: null,
     esewaUrl: null,
 
@@ -44,6 +46,34 @@ export const useOrderStore = create((set, get) => ({
             });
         } catch (error) {
             set({ orderError: "Error fetching orders" });
+        }
+    },
+
+    fetchCustomerOrders: async (userId) => {
+        try {
+            const response = await sendDynamicRequest("get", `farmer/getCustomerOrderDetails/${userId}`);
+    
+            if (response.success) {
+                set({ customerOrders: response.orders });
+            } else {
+                set({ orderError: response.error || "Error fetching customer orders" });
+            }
+        } catch (error) {
+            set({ orderError: "Error fetching customer orders" });
+        }
+    },
+
+    fetchSellerOrders: async (sellerId) => {
+        try {
+            const response = await sendDynamicRequest("get", `farmer/getSellerOrderDetails/${sellerId}`);
+
+            if (response.success) {
+                set({ sellerOrders: response.orders });
+            } else {
+                set({ orderError: response.error || "Error fetching seller orders" });
+            }
+        } catch (error) {
+            set({ orderError: "Error fetching seller orders" });
         }
     },
 }));

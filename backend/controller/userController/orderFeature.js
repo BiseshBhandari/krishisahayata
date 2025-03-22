@@ -8,7 +8,6 @@ exports.createOrder = async (req, res) => {
     const { userId, totalPrice } = req.body;
 
     try {
-        // Create an order with "Pending" status
         const order = await Order.create({
             userId,
             paymentStatus: "Pending",
@@ -16,14 +15,12 @@ exports.createOrder = async (req, res) => {
             totalAmount: totalPrice,
         });
 
-        // Fetch all cart items for the user
         const cartItems = await Cart.findAll({ where: { userId } });
 
         if (!cartItems.length) {
             return res.status(404).json({ error: "Cart is empty" });
         }
 
-        // Create order items from cart items
         const orderItems = await Promise.all(
             cartItems.map(async (item) => {
                 const product = await Product.findByPk(item.productId);
@@ -49,15 +46,19 @@ exports.createOrder = async (req, res) => {
 exports.getOrders = async (req, res) => {
     const { userId } = req.params;
 
-    console.log('Fetching orders for userId:', userId);  // Log the userId
+    console.log('Fetching orders for userId:', userId);  
 
     try {
         const orders = await Order.findAll({
-            where: { userId },
+            where: {
+                userId,
+                paymentStatus: "Pending",
+                orderStatus: "Pending"
+            }
         });
 
         if (orders.length === 0) {
-            console.log('No orders found for userId:', userId);  // Log if no orders are found
+            console.log('No orders found for userId:', userId);
             return res.status(404).json({ error: "No orders found" });
         }
 
@@ -88,7 +89,7 @@ exports.getOrders = async (req, res) => {
         res.status(200).json({ success: true, orders, esewaPayload, esewaUrl, uid });
 
     } catch (error) {
-        console.error('Error fetching orders:', error);  // Log the error for debugging
+        console.error('Error fetching orders:', error);
         res.status(500).json({ error: "Error fetching orders" });
     }
 };
@@ -173,7 +174,7 @@ exports.getCustomerOrderHistory = async (req, res) => {
             return res.status(404).json({ error: "No orders found" });
         }
 
-        res.status(200).json({ success: true, orders });
+        res.status(200).json({ success: true, orders: orders });
     } catch (error) {
         console.error("Error fetching order history:", error);
         res.status(500).json({ error: "Error fetching order history" });
@@ -185,45 +186,57 @@ exports.getSellerOrderDetails = async (req, res) => {
     const { sellerId } = req.params;
 
     try {
-        // const products = await Product.findAll({
-        //     where: { user_ID: sellerId },
-        //     include: [
-        //         {
-        //             model: OrderItem,
-        //             include: [
-        //                 {
-        //                     model: Order,
-        //                     include: [{ model: User, attributes: ['name', 'email'] }]
-        //                 }
-        //             ]
-        //         }
-        //     ]
-        // });
-
-        const orders = await OrderItem.findAll({
+        const orders = await Order.findAll({
             include: [
                 {
-                    model: Product,
-                    where: { user_ID: sellerId }, // Find products created by this seller
-                    attributes: ['name', 'price', 'imageUrl']
+                    model: OrderItem,
+                    include: [
+                        {
+                            model: Product,
+                            where: { user_ID: sellerId }, 
+                            attributes: ['name', 'price', 'imageUrl']
+                        }
+                    ]
                 },
                 {
-                    model: Order,
-                    include: [
-                        { model: User, attributes: ['name', 'email'] } // Buyer details
-                    ]
+                    model: User, 
+                    attributes: ['name', 'email'] // Buyer details
                 }
-            ]
+            ],
+            order: [['createdAt', 'asc']]
         });
-
+        
         if (!orders.length) {
             return res.status(404).json({ error: "No orders found for your products" });
         }
 
-        res.status(200).json({ success: true, orders });
+        res.status(200).json({ success: true, orders: orders });
     } catch (error) {
         console.error("Error fetching seller order details:", error);
         res.status(500).json({ error: "Error fetching seller order details" });
     }
 };
 
+exports.updateDeliveryStatus = async (req, res) => {
+    const { orderId } = req.params;
+    const { deliveryStatus } = req.body;
+
+    if (!deliveryStatus) {
+        return res.status(400).json({ error: "Delivery status is required" });
+    }
+
+    try {
+        const order = await Order.findOne({ where: { id: orderId } });
+
+        if (!order) {
+            return res.status(404).json({ error: "Order not found" });
+        }
+
+        await order.update({ deliveryStatus });
+
+        res.status(200).json({ success: true, message: "Delivery status updated successfully", order });
+    } catch (error) {
+        console.error("Error updating delivery status:", error);
+        res.status(500).json({ error: "Internal server error" });
+    }
+};

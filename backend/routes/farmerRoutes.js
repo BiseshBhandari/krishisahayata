@@ -31,6 +31,7 @@ router.get('/getOrders/:userId', orderController.getOrders);
 router.post('/verifyPayment/:order_id', orderController.verifyEsewaPayment); 
 router.get('/getCustomerOrderDetails/:userId', orderController.getCustomerOrderHistory);
 router.get('/getSellerOrderDetails/:sellerId', orderController.getSellerOrderDetails);
+router.put('/updateDeliveryStatus/:orderId', orderController.updateDeliveryStatus);
 
 
 
