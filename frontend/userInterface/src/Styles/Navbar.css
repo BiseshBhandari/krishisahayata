@@ -1,3 +1,4 @@
+/* Navbar Container */
 .navbar {
     position: sticky;
     top: 0;
@@ -6,48 +7,116 @@
     background-color: white;
     display: flex;
     justify-content: space-between;
-    padding: 8px 16px;
-    border-bottom: 1px solid gray;
+    align-items: center;
+    padding: 12px 24px;
+    border-bottom: 1px solid #ddd;
     z-index: 1000;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.05);
 }
 
+/* Logo */
 .navbar-logo {
-    width: 200px;
-    height: 9.3vh;
-    object-fit: cover;
+    width: 180px;
+    height: auto;
+    display: flex;
+    align-items: center;
 }
 
 .navbar-logo img {
     width: 100%;
-    height: 100%;
+    height: auto;
     display: block;
-    margin: 0px auto;
 }
 
+/* Navbar Links */
 .navbar-links {
     display: flex;
-    gap: 40px;
-    padding: 10px 20px;
+    gap: 35px;
     align-items: center;
 }
 
 .navbar-link {
-    font-size: 20px;
-    padding: 10px 20px;
-    border-radius: 10px;
-    color: gray;
+    font-size: 18px;
+    padding: 8px 14px;
+    border-radius: 6px;
+    color: #333;
+    cursor: pointer;
+    text-decoration: none;
+    transition: color 0.3s ease, background 0.3s ease;
 }
 
-.navbar-link:hover {
-    color: rgb(35, 103, 35);
-    text-shadow: 3px 3px 3px rgb(193, 191, 191);
+.navbar-link:hover, .navbar-link.active {
+    color: #23711f;
+    background: rgba(35, 113, 31, 0.1);
 }
 
-.navbar-link.active {
-    color: rgb(35, 103, 35);
-    text-shadow: 3px 3px 3px rgb(193, 191, 191);
+/* Dropdown Styling */
+.navbar-dropdown {
+    position: relative;
 }
 
+.dropdown-toggle {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 8px 14px;
+    color: #333;
+    transition: color 0.3s ease;
+}
+
+.dropdown-toggle:hover {
+    color: #23711f;
+}
+
+/* Dropdown Menu */
+.market-dropdown {
+    position: absolute;
+    top: 42px;
+    left: 0;
+    background: white;
+    border-radius: 6px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.12);
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 200px;
+    padding: 10px 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Show Dropdown */
+.navbar-dropdown:hover .market-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Dropdown Links */
+.market-dropdown a {
+    padding: 12px 20px;
+    text-decoration: none;
+    color: #333;
+    display: block;
+    font-size: 16px;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.market-dropdown a:hover {
+    background: #f3f3f3;
+    color: #23711f;
+}
+
+/* Cart Container */
+.cart-container {
+    position: relative;
+    cursor: pointer;
+}
+
+/* Cart Icon */
 .cart-icon {
     font-size: 28px;
     color: green;
@@ -61,36 +130,354 @@
     transform: scale(1.1);
 }
 
-
-.navbar-button {
-    padding: 10px 20px;
+/* Cart Counter */
+.cart-counter {
+    position: absolute;
+    top: -5px;
+    right: -8px;
+    background: red;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
     display: flex;
-    gap: 40px;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Navbar Buttons */
+.navbar-button {
+    display: flex;
+    gap: 30px;
+    align-items: center;
+}
+
+/* Get Started Button */
+.btn-get-started {
+    padding: 10px 22px;
+    border: none;
+    border-radius: 5px;
+    background-color: #268925;
+    font-size: 18px;
+    cursor: pointer;
+    color: white;
+    box-shadow: 2px 2px 5px rgba(188, 191, 188, 0.5);
+    transition: background 0.3s ease;
+}
+
+.btn-get-started:hover {
+    background-color: #1e7820;
+}
+
+/* Profile Menu */
+.profile-menu {
+    position: relative;
+    cursor: pointer;
+}
+
+/* Profile Icon */
+.profile-icon {
+    color: green;
+    font-size: 30px;
+    filter: drop-shadow(2px 2px 5px gray);
+    transition: transform 0.2s ease-in-out;
+}
+
+.profile-icon:hover {
+    transform: scale(1.1);
+}
+
+/* Profile Dropdown */
+.dropdown-menu {
+    position: absolute;
+    top: 40px;
+    right: 0;
+    background: white;
+    border-radius: 6px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.12);
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 160px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.profile-menu:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Profile Dropdown Buttons */
+.dropdown-menu button {
+    background: none;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    text-align: left;
+    font-size: 16px;
+    width: 100%;
+    transition: background 0.3s ease;
+}
+
+.dropdown-menu button:hover {
+    background: #f0f0f0;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .navbar {
+        padding: 12px;
+    }
+
+    .navbar-links {
+        gap: 25px;
+    }
+
+    .navbar-button {
+        gap: 20px;
+    }
+
+    .cart-icon {
+        font-size: 26px;
+    }
+
+    .profile-icon {
+        font-size: 28px;
+    }
+
+    .btn-get-started {
+        font-size: 16px;
+        padding: 8px 18px;
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        padding: 8px;
+    }
+
+    .navbar-links {
+        flex-direction: column;
+        gap: 15px;
+        padding: 10px 0;
+    }
+
+    .navbar-button {
+        gap: 15px;
+    }
+
+    .dropdown-toggle {
+        font-size: 16px;
+    }
+
+    .navbar-dropdown {
+        width: 100%;
+        text-align: center;
+    }
+
+    .market-dropdown {
+        position: relative;
+        width: 100%;
+        box-shadow: none;
+    }
+
+    .market-dropdown a {
+        text-align: center;
+    }
+
+    .cart-icon {
+        font-size: 24px;
+        margin-right: 10px;
+    }
+
+    .profile-icon {
+        font-size: 26px;
+    }
+}
+/* Navbar Container */
+.navbar {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 24px;
+    border-bottom: 1px solid #ddd;
+    z-index: 1000;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.05);
+}
+
+/* Logo */
+.navbar-logo {
+    width: 180px;
+    height: auto;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-logo img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Navbar Links */
+.navbar-links {
+    display: flex;
+    gap: 35px;
+    align-items: center;
+}
+
+.navbar-link {
+    font-size: 18px;
+    padding: 8px 14px;
+    border-radius: 6px;
+    color: #333;
+    cursor: pointer;
+    text-decoration: none;
+    transition: color 0.3s ease, background 0.3s ease;
+}
+
+.navbar-link:hover, .navbar-link.active {
+    color: #23711f;
+    background: rgba(35, 113, 31, 0.1);
+}
+
+/* Dropdown Styling */
+.navbar-dropdown {
+    position: relative;
+}
+
+.dropdown-toggle {
+    background: none;
+    border: none;
+    font-size: 18px;
+    cursor: pointer;
+    padding: 8px 14px;
+    color: #333;
+    transition: color 0.3s ease;
+}
+
+.dropdown-toggle:hover {
+    color: #23711f;
+}
+
+/* Dropdown Menu */
+.market-dropdown {
+    position: absolute;
+    top: 42px;
+    left: 0;
+    background: white;
+    border-radius: 6px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.12);
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    min-width: 200px;
+    padding: 10px 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Show Dropdown */
+.navbar-dropdown:hover .market-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Dropdown Links */
+.market-dropdown a {
+    padding: 12px 20px;
+    text-decoration: none;
+    color: #333;
+    display: block;
+    font-size: 16px;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+.market-dropdown a:hover {
+    background: #f3f3f3;
+    color: #23711f;
+}
+
+/* Cart Container */
+.cart-container {
+    position: relative;
+    cursor: pointer;
+}
+
+/* Cart Icon */
+.cart-icon {
+    font-size: 28px;
+    color: green;
+    margin-right: 20px;
+    cursor: pointer;
+    filter: drop-shadow(2px 2px 5px gray);
+    transition: transform 0.2s ease-in-out;
+}
+
+.cart-icon:hover {
+    transform: scale(1.1);
+}
+
+/* Cart Counter */
+.cart-counter {
+    position: absolute;
+    top: -5px;
+    right: -8px;
+    background: red;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+/* Navbar Buttons */
+.navbar-button {
+    display: flex;
+    gap: 30px;
     align-items: center;
 }
 
 .btn-get-started {
-    padding: 10px 25px 13px 25px;
-    border: 1px solid gray;
+    padding: 10px 22px;
+    border: none;
     border-radius: 5px;
-    background-color: rgb(38, 137, 38);
-    color: black;
-    font-size: 20px;
+    background-color: #268925;
+    font-size: 18px;
     cursor: pointer;
     color: white;
-    box-shadow: 5px 4px 4px rgb(188, 191, 188);
+    box-shadow: 2px 2px 5px rgba(188, 191, 188, 0.5);
+    transition: background 0.3s ease;
 }
 
-/* .profile-icon {
-    color: green;
-    font-size: 27px;
-    filter: drop-shadow(3px 3px 1px rgb(187, 184, 184));
-    /* Adds a shadow effect */
+.btn-get-started:hover {
+    background-color: #1e7820;
+}
 
-
-*/ .profile-menu {
+.profile-menu {
     position: relative;
-    display: inline-block;
     cursor: pointer;
 }
 
@@ -107,28 +494,41 @@
 
 .dropdown-menu {
     position: absolute;
-    top: 40px;
+    top: 30px;
     right: 0;
     background: white;
-    border-radius: 5px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.12);
     padding: 10px;
     display: flex;
     flex-direction: column;
     gap: 5px;
-    min-width: 120px;
+    min-width: 160px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
+.profile-menu:hover .dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+/* Profile Dropdown Buttons */
 .dropdown-menu button {
     background: none;
     border: none;
-    padding: 8px;
+    padding: 10px;
     cursor: pointer;
     text-align: left;
-    font-size: 14px;
+    font-size: 16px;
     width: 100%;
+    transition: background 0.3s ease;
 }
 
 .dropdown-menu button:hover {
     background: #f0f0f0;
 }
+

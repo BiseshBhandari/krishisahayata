@@ -1,5 +1,6 @@
 const { v4: uuidv4 } = require('uuid');
 const CryptoJS = require("crypto-js");
+const axios = require('axios');
 const { User, Product, Cart, Order, OrderItem } = require("../../model/association");
 require('dotenv').config();
 
@@ -51,7 +52,6 @@ exports.getOrders = async (req, res) => {
     console.log('Fetching orders for userId:', userId);  // Log the userId
 
     try {
-        // Fetch orders from the database, only the order details
         const orders = await Order.findAll({
             where: { userId },
         });
@@ -61,10 +61,9 @@ exports.getOrders = async (req, res) => {
             return res.status(404).json({ error: "No orders found" });
         }
 
-        // If orders are found, generate payment details
         const uid = uuidv4();
         const esewaUrl = "https://rc-epay.esewa.com.np/api/epay/main/v2/form";
-        const successUrl = `${process.env.FRONTEND_URL}/farmer/payment-success?order_id=${orders[0].id}`;
+        const successUrl = `${process.env.FRONTEND_URL}/farmer/payment-success/${orders[0].id}`;
         const productCode = "EPAYTEST";
         const secret = "8gBm/:&EnhH.1/q";
 
@@ -91,6 +90,140 @@ exports.getOrders = async (req, res) => {
     } catch (error) {
         console.error('Error fetching orders:', error);  // Log the error for debugging
         res.status(500).json({ error: "Error fetching orders" });
+    }
+};
+
+
+exports.verifyEsewaPayment = async (req, res) => {
+    const { transaction_uuid, total_amount, product_code, transaction_code, status, signature } = req.body;
+    const { order_id } = req.params;
+
+    if (!transaction_uuid || !transaction_code || !total_amount || !status || !signature) {
+        return res.status(400).json({ error: "Missing required fields" });
+    }
+
+    try {
+        const order = await Order.findOne({ where: { id: order_id } });
+        if (!order) {
+            return res.status(404).json({ error: "Order not found" });
+        }
+
+        const esewaResponse = await axios.get(
+            `https://rc.esewa.com.np/api/epay/transaction/status/?product_code=${product_code}&total_amount=${total_amount}&transaction_uuid=${transaction_uuid}`
+        );
+
+        const esewaData = esewaResponse.data;
+        console.log("eSewa Response:", esewaData);
+
+        if (esewaData.status == "COMPLETE") {
+            await order.update({
+                paymentStatus: "Paid",
+                orderStatus: "Confirmed",
+            });
+            return res.status(200).json({ success: true, message: "Payment verified and order updated" });
+            // return res.status(400).json({ error: "Payment not completed" });
+        }
+
+        // const secret = "8gBm/:&EnhH.1/q";
+        // const message = `transaction_code=${transaction_code},status=${status},total_amount=${total_amount},transaction_uuid=${transaction_uuid},product_code=${product_code}`;
+        // const generatedHash = CryptoJS.HmacSHA256(message, secret);
+        // const generatedSignature = CryptoJS.enc.Base64.stringify(generatedHash);
+
+        // if (signature !== generatedSignature) {
+        //     console.log("Invalid payment signature");
+        //     return res.status(400).json({ error: "Invalid payment signature" });
+        // }
+
+        // await order.update({
+        //     paymentStatus: "Paid",
+        //     orderStatus: "Confirmed",
+        // });
+
+        console.log("Payment verified and order updated");
+        // return res.status(200).json({ success: true, message: "Payment verified and order updated" });
+
+    } catch (error) {
+        console.error("Error verifying payment:", error);
+        return res.status(500).json({ error: "Internal server error" });
+    }
+};
+
+
+exports.getCustomerOrderHistory = async (req, res) => {
+    const { userId } = req.params;
+
+    try {
+        const orders = await Order.findAll({
+            where: { userId },
+            include: [
+                {
+                    model: OrderItem,
+                    include: [
+                        {
+                            model: Product,
+                            attributes: ['name', 'price', 'imageUrl'],
+                        }
+                    ]
+                }
+            ],
+            order: [['createdAt', 'DESC']]
+        });
+
+        if (!orders.length) {
+            return res.status(404).json({ error: "No orders found" });
+        }
+
+        res.status(200).json({ success: true, orders });
+    } catch (error) {
+        console.error("Error fetching order history:", error);
+        res.status(500).json({ error: "Error fetching order history" });
+    }
+};
+
+// Fetch orders related to products created by a user (seller view)
+exports.getSellerOrderDetails = async (req, res) => {
+    const { sellerId } = req.params;
+
+    try {
+        // const products = await Product.findAll({
+        //     where: { user_ID: sellerId },
+        //     include: [
+        //         {
+        //             model: OrderItem,
+        //             include: [
+        //                 {
+        //                     model: Order,
+        //                     include: [{ model: User, attributes: ['name', 'email'] }]
+        //                 }
+        //             ]
+        //         }
+        //     ]
+        // });
+
+        const orders = await OrderItem.findAll({
+            include: [
+                {
+                    model: Product,
+                    where: { user_ID: sellerId }, // Find products created by this seller
+                    attributes: ['name', 'price', 'imageUrl']
+                },
+                {
+                    model: Order,
+                    include: [
+                        { model: User, attributes: ['name', 'email'] } // Buyer details
+                    ]
+                }
+            ]
+        });
+
+        if (!orders.length) {
+            return res.status(404).json({ error: "No orders found for your products" });
+        }
+
+        res.status(200).json({ success: true, orders });
+    } catch (error) {
+        console.error("Error fetching seller order details:", error);
+        res.status(500).json({ error: "Error fetching seller order details" });
     }
 };
 

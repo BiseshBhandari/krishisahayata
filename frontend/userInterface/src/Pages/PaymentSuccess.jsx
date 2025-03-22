@@ -1,72 +1,93 @@
-// import React, { useEffect, useState } from "react";
-// import { use } from "react";
-// import { useParams, useSearchParams } from "react-router";
-// import('../Styles/PaymentSuccess.css');
-
-// function PaymentSuccess() {
-//     const { order_id } = useParams();
-//     const [searchParams] = useSearchParams();
-//     const dataquery = searchParams.get("data");
-//     const [data, setData] = useState({});
-
-//     useEffect(() => {
-//         const resdata = atob(dataquery);
-//         const resObject = JSON.parse(resdata);
-//         setData(resObject);
-//         console.log(resObject);
-//     }, [searchParams]);
-
-//     return (
-//         <div className="payment-success_container">
-//             <h1>Payment Success</h1>
-//             <h2>Paid with esewa</h2>
-//         </div>
-//     );
-// };
-
-// export default PaymentSuccess;
-
 import React, { useEffect, useState } from "react";
-import { useParams, useSearchParams } from "react-router-dom"; // Use correct import
-import '../Styles/PaymentSuccess.css';
+import { useParams, useSearchParams } from "react-router-dom";
+import { IoCheckmarkCircle } from "react-icons/io5";
+import axios from "axios";
+import "../Styles/PaymentSuccess.css";
+
+// Define your base URL here
+const IMAGE_URL = 'http://localhost:3000';
 
 function PaymentSuccess() {
-    const { order_id } = useParams()
+    const { order_id: paramOrderId } = useParams();
     const [searchParams] = useSearchParams();
-    const dataquery = searchParams.get("data"); // Retrieve the query parameter
-    const [data, setData] = useState({});
+    const queryOrderId = searchParams.get("order_id");
+    const dataquery = searchParams.get("data");
+    const [data, setData] = useState(null);
+    const [error, setError] = useState("");
+    const [paymentStatus, setPaymentStatus] = useState(null);
+
+    const orderId = paramOrderId || queryOrderId;
 
     useEffect(() => {
-        // Check if dataquery is present
         if (!dataquery) {
-            console.error("No dataquery parameter found in URL");
+            setError("No payment data found.");
             return;
         }
 
         try {
-            const resdata = atob(dataquery); // Decode base64 string
-            const resObject = JSON.parse(resdata); // Parse the JSON object
-            setData(resObject); // Update the state with the parsed object
-            console.log(resObject); // Log the data for debugging
+            const decodedData = atob(dataquery);
+            const parsedData = JSON.parse(decodedData);
+            setData(parsedData);
+
+            // After decoding the payment data, verify the payment
+            verifyPayment(parsedData);
+
         } catch (error) {
-            console.error("Error parsing dataquery:", error); // Catch and log any parsing errors
+            console.error("Error decoding payment data:", error);
+            setError("Invalid payment data received.");
         }
-    }, [dataquery]); // Only run this effect when dataquery changes
+    }, [dataquery]);
+
+    const verifyPayment = async (paymentData) => {
+        try {
+            // Adjust the URL to your base URL and API endpoint
+            const response = await axios.post(
+                `${IMAGE_URL}/farmer/verifyPayment/${orderId}`, // Use the base URL
+                {
+                    transaction_uuid: paymentData.transaction_uuid,
+                    total_amount: paymentData.total_amount,
+                    product_code: paymentData.product_code,
+                    transaction_code: paymentData.transaction_code,
+                    status: paymentData.status,
+                    signature: paymentData.signature
+                }
+            );
+            if (response.data.success) {
+                setPaymentStatus("Payment verified and order updated.");
+            } else {
+                setPaymentStatus("Payment verification failed.");
+            }
+        } catch (err) {
+            console.error("Error verifying payment:", err);
+            setPaymentStatus("Error verifying payment.");
+        }
+    };
 
     return (
-        <div className="payment-success_container">
-            <h1>Payment Success</h1>
-            <h2>Paid with esewa</h2>
-            {data && data.transaction_uuid ? (
-                <div>
-                    <h3>Order ID: {order_id}</h3>
-                    <p>Transaction UUID: {data.transaction_uuid}</p>
-                    <p>Total Amount: {data.total_amount}</p>
-                    {/* You can display more details based on the data object */}
+        <div className="payment-container">
+            <div className="check-icon">
+                <IoCheckmarkCircle size={80} color="#27AE60" />
+            </div>
+            <h1 className="payment-header">Payment Successful</h1>
+            <p className="payment-subtext">Your payment has been processed securely.</p>
+
+            {error ? (
+                <p className="error-message">{error}</p>
+            ) : data ? (
+                <div className="payment-details">
+                    <p><strong>Order ID:</strong> {orderId || "N/A"}</p>
+                    <p><strong>Transaction ID:</strong> {data.transaction_uuid}</p>
+                    <p><strong>Amount Paid:</strong> Rs. {data.total_amount}</p>
                 </div>
             ) : (
-                <p>Loading payment details...</p>
+                <p className="loading-text">Loading payment details...</p>
             )}
+
+            {paymentStatus && (
+                <p className="payment-status-message">{paymentStatus}</p>
+            )}
+
+            <a href="/" className="home-button">Back to Home</a>
         </div>
     );
 }

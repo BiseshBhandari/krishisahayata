@@ -15,11 +15,12 @@ import CartPage from "./Pages/Farmer/CartPage";
 import CheckoutPage from "./Pages/Farmer/CheckOutPage";
 import PaymentSuccess from "./Pages/PaymentSuccess";
 import PaymentFailure from "./Pages/PaymentFailure";
+import OrderPage from "./Pages/Farmer/OrderPage";
+
 
 import AdminDash from "./Pages/AdminP/AdminDash";
 import AdminVideo from "./Pages/AdminP/AdminVideo";
 import AdminVerifyPost from "./Pages/AdminP/AdminVerifyPost";
-
 
 
 import ProtectedRoute from "./ProtectedRoute";
@@ -111,6 +112,12 @@ function App() {
           <Route path="payment-failure" element={
             <ProtectedRoute allowedRoles={["farmer"]}>
               <PaymentFailure />
+            </ProtectedRoute>} />
+
+
+            <Route path="orders" element={
+            <ProtectedRoute allowedRoles={["farmer"]}>
+              <OrderPage />
             </ProtectedRoute>} />
 
         </Route >

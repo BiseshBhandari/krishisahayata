@@ -1,5 +1,85 @@
-.payment-success_container {
-    width: 100%;
+/* General Page Layout */
+.payment-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     height: 100vh;
-    background-color: rebeccapurple;
+    background: #F7F9FC;
+    text-align: center;
+    padding: 20px;
+}
+
+/* Check Icon */
+.check-icon {
+    background: #EAF7EC;
+    border-radius: 50%;
+    padding: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+/* Header Text */
+.payment-header {
+    font-size: 28px;
+    font-weight: 700;
+    color: #2C3E50;
+    margin-bottom: 8px;
+}
+
+/* Subtext */
+.payment-subtext {
+    font-size: 16px;
+    color: #7F8C8D;
+    margin-bottom: 20px;
+}
+
+/* Payment Details Card */
+.payment-details {
+    background: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    width: 100%;
+    max-width: 400px;
+    text-align: left;
+    font-size: 16px;
+    color: #2C3E50;
+    margin-bottom: 20px;
+}
+
+.payment-details p {
+    margin: 8px 0;
+}
+
+/* Error Message */
+.error-message {
+    color: #E74C3C;
+    font-size: 16px;
+    margin-top: 10px;
+}
+
+/* Loading Text */
+.loading-text {
+    font-size: 16px;
+    color: #7F8C8D;
+}
+
+/* Home Button */
+.home-button {
+    display: inline-block;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    color: white;
+    background: #27AE60;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background 0.3s ease-in-out;
+}
+
+.home-button:hover {
+    background: #219150;
 }

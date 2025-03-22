@@ -68,12 +68,12 @@
     border-bottom: 1px solid #ddd;
 }
 
-.product-image {
+/* .product-image {
     width: 100px;
     height: 100px;
     object-fit: cover;
     border-radius: 5px;
-}
+} */
 
 .product-info {
     flex: 1;

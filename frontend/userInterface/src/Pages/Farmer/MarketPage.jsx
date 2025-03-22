@@ -23,7 +23,7 @@ function MarketPage() {
 
     const [selectedCategory, setSelectedCategory] = useState("All");
 
-    const [selectedStock, setSelectedStock_status] = useState("All");
+    const [selectedStock, setSelectedStock_status] = useState("all");
 
     const [searchQuery, setSearchQuery] = useState("");
 
@@ -66,7 +66,7 @@ function MarketPage() {
             product.name.toLowerCase().includes(searchQuery.toLowerCase())
 
         const matchStock =
-            selectedStock === "All" || product.stockStatus === selectedStock;
+            selectedStock === "all" || product.stockStatus === selectedStock;
         return matchesCategory && matchesSearch && matchStock;
     });
 
@@ -176,7 +176,7 @@ function MarketPage() {
 
                         <button
                             className={`category ${selectedCategory === "All" ? "active" : ""}`}
-                            onClick={() => setSelectedStock_status("All")}
+                            onClick={() => setSelectedStock_status("all")}
                         >
                             All
                         </button>
