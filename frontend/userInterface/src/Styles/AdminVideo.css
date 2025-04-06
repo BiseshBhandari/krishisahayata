@@ -1,65 +1,74 @@
 .admin-video {
-    padding: 5px;
+    padding: 10px;
     color: rgb(71, 71, 71);
+    background-color: #f5f7fa;
+    min-height: 100vh;
 }
 
 .video_header {
     display: flex;
     justify-content: space-between;
-    padding: 10px;
+    padding: 10px 20px;
+    align-items: center;
 }
 
 .Video_Head {
-    font-size: 34px;
-    text-shadow: 5px 3px 1px rgb(202, 197, 197);
+    font-size: 32px;
+    font-weight: bold;
+    color: #2d2d2d;
+    text-shadow: 2px 2px 0px #dcdcdc;
 }
 
 .add_video_button {
     padding: 10px 20px;
-    border: 3px solid rgb(30, 180, 239);
+    background-color: rgb(30, 180, 239);
     color: white;
     font-size: 16px;
-    font-weight: bolder;
-    border-radius: 4px;
-    background-color: rgb(30, 180, 239);
-    box-shadow: 4px 4px 4px rgb(182, 181, 181);
-    transition: 0.3s all ease-in-out;
+    font-weight: bold;
+    border: none;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: 0.3s;
+    cursor: pointer;
 }
 
 .add_video_button:hover {
     background-color: white;
-    color: rgb(10, 171, 235);
-    border: 3px solid rgb(30, 180, 239);
+    color: rgb(30, 180, 239);
+    border: 2px solid rgb(30, 180, 239);
 }
 
+/* Modal Styling */
 .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     z-index: 1000;
-    padding: 100px 110px 0px 310px;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.6);
     display: flex;
+    align-items: center;
     justify-content: center;
+    padding: 0 20px;
 }
 
 .modal-content {
     background: white;
     padding: 20px;
-    border-radius: 3px;
-    width: 40%;
-    height: 58%;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    width: 100%;
+    max-width: 500px;
+    box-shadow: 0px 12px 30px rgba(0, 0, 0, 0.3);
     position: relative;
 }
 
 .close-modal {
     position: absolute;
-    top: 0%;
+    top: 10px;
     right: 15px;
-    font-size: 30px;
+    font-size: 28px;
+    font-weight: bold;
     cursor: pointer;
 }
 
@@ -70,7 +79,7 @@
 .video_form {
     display: flex;
     flex-direction: column;
-    gap: 10px;
+    gap: 15px;
 }
 
 .fields {
@@ -79,59 +88,51 @@
     gap: 5px;
 }
 
-.fields select,
-input {
-    padding: 10px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
-    width: 100%;
+.fields label {
+    font-size: 16px;
+    font-weight: 600;
 }
 
-.fields label {
-    font-size: 20px;
-    font-weight: 900;
+.fields select,
+.fields input {
+    padding: 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    font-size: 15px;
+    width: 100%;
 }
 
 .fields input:focus,
 .fields select:focus {
-    border: 2px solid rgb(40, 158, 201);
+    border-color: rgb(30, 180, 239);
     outline: none;
-    box-shadow: 0 0 0px rgb(40, 158, 201);
+    box-shadow: 0 0 4px rgba(30, 180, 239, 0.5);
 }
 
 .fields input[type="file"] {
     border: 2px dashed #ccc;
-    padding: 10px;
-    cursor: pointer;
     background-color: #f9f9f9;
+    cursor: pointer;
 }
 
 .fields input[type="file"]:hover {
-    border-color: rgb(40, 158, 201);
-    background-color: #eef5ff;
-}
-
-.fields input[type="file"]:focus {
-    border-color: rgb(40, 158, 201);
-    outline: none;
-    box-shadow: 0 0 0px rgb(40, 158, 201);
+    border-color: rgb(30, 180, 239);
+    background-color: #eef9ff;
 }
 
 .Video_submitButton {
-    padding: 5px;
-    display: flex;
-    justify-content: center;
+    text-align: center;
 }
 
 .add_video {
     padding: 10px 20px;
-    border: 3px solid rgb(30, 180, 239);
-    color: gray;
-    font-size: 15px;
-    font-weight: bolder;
-    border-radius: 5px;
+    font-weight: bold;
     background-color: white;
-    transition: 0.3s all ease-in-out;
+    color: gray;
+    border: 2px solid rgb(30, 180, 239);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: 0.3s ease-in-out;
 }
 
 .add_video:hover {
@@ -141,65 +142,73 @@ input {
 
 .video_list {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(315px, 1fr));
-    gap: 10px;
-    padding: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    padding: 20px;
 }
 
 .video_item {
-    background: white;
-    border-radius: 2px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    background: #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.05);
     transition: transform 0.2s ease-in-out;
-    margin-bottom: 5px;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
 }
-
 
 .video_item:hover {
-    transform: scale(1.01);
+    transform: scale(1.015);
+    box-shadow: 0px 12px 30px rgba(0, 0, 0, 0.1);
 }
 
-.video_item h3 {
-    font-size: 20px;
-    font-weight: bold;
-    color: rgb(50, 50, 50);
-    margin-bottom: 5px;
+.video_item video {
+    width: 100%;
+    height: 250px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    object-fit: contain;
+}
+
+.video_info {
+    width: 100%;
+    padding: 5px;
+    text-align: left;
 }
 
 .video_info_head {
     display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.video_info h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #2c2c2c;
+    margin: 0;
 }
 
 .video_item p {
-    font-size: 16px;
-    color: rgb(90, 90, 90);
-    margin-bottom: 12px;
-}
-
-/* Video Player */
-.video_item video {
-    width: 100%;
-    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.2);
-}
-
-.video_item .video_info {
-    padding: 10px;
+    font-size: 14px;
+    color: #555;
+    margin: 4px 0;
 }
 
 .delete_btn {
     background-color: rgb(220, 50, 50);
     color: white;
-    padding: 8px 10px;
+    padding: 6px 10px;
     border: none;
     border-radius: 5px;
     font-size: 14px;
     cursor: pointer;
     display: flex;
     align-items: center;
-    gap: 5px;
-    transition: 0.3s;
+    transition: 0.3s ease-in-out;
 }
 
 .delete_btn:hover {
-    background-color: rgb(200, 40, 40);
+    background-color: rgb(190, 40, 40);
 }

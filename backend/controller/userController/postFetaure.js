@@ -1,5 +1,7 @@
 const cloudinary = require('../../config/cloudinary_config');
-const { Post, User } = require('../../model/association');
+const { Post, User, Like } = require('../../model/association');
+const sequelize = require("../../config/db_config");
+
 
 exports.addPost = async (req, res) => {
     try {
@@ -56,11 +58,25 @@ exports.addPost = async (req, res) => {
 exports.getAllPosts = async (req, res) => {
     try {
         const posts = await Post.findAll({
-            where: { 'approval_status': 'approved' },
+            where: { approval_status: 'approved' },
+            attributes: {
+                include: [
+                    // Count the number of comments
+                    [sequelize.literal(`(
+                        SELECT COUNT(*) FROM Comment AS c WHERE c.post_id = Post.post_id
+                    )`), 'commentCount'],
+
+                    // Count the number of likes (escaping `Like` as it is a reserved keyword)
+                    [sequelize.literal(`(
+                        SELECT COUNT(*) FROM \`Like\` AS l WHERE l.post_id = Post.post_id
+                    )`), 'likeCount']
+                ]
+            },
             include: {
                 model: User,
                 attributes: ["user_id", "name"]
-            }
+            },
+            order: [['created_at', 'DESC']]
         });
 
         return res.status(200).json({ post: posts });
@@ -69,7 +85,7 @@ exports.getAllPosts = async (req, res) => {
         console.error("Error fetching posts:", error);
         return res.status(500).json({ message: "Internal server error", error: error.message });
     }
-}
+};
 
 exports.getUserPost = async (req, res) => {
     try {
@@ -131,3 +147,55 @@ exports.deletePost = async (req, res) => {
         return res.status(500).json({ message: "Internal server error", error: error.message });
     }
 };
+
+exports.likeUnlikePost = async (req, res) => {
+    try {
+        const { user_id, post_id } = req.body;
+
+        const post = await Post.findByPk(post_id);
+        if (!post) {
+            return res.status(404).json({ message: "Post not found" });
+        }
+
+        const likeExists = await Like.findOne({ where: { post_id, user_id } });
+
+        if (likeExists) {
+            await likeExists.destroy();
+            return res.status(200).json({ post_id: post_id, liked: false, message: "Post unliked successfully" });
+        }
+
+        await Like.create({ post_id, user_id });
+        return res.status(200).json({ post_id: post_id, liked: true, message: "Post liked successfully" });
+
+    } catch (error) {
+        console.error("Error liking/unliking post:", error);
+        return res.status(500).json({ message: "Internal server error", error: error.message });
+    }
+}
+
+exports.getLikedPosts = async (req, res) => {
+    try {
+        const { user_id } = req.params;
+
+        const likedPosts = await Like.findAll({
+            where: { user_id },
+            include: {
+                model: Post,
+                attributes: ['post_id'],
+            },
+        });
+
+        if (!likedPosts || likedPosts.length === 0) {
+            return res.status(404).json({ message: "No liked posts found" });
+        }
+
+        const posts = likedPosts.map(like => like.Post);
+
+        return res.status(200).json({ likedPost: posts });
+    } catch (error) {
+        console.error("Error fetching liked posts:", error);
+        return res.status(500).json({ message: "Internal server error", error: error.message });
+    }
+};
+
+

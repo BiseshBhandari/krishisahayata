@@ -1,31 +1,35 @@
+/* Main container */
 .seller-orders-container {
-    display: flex; /* Flexbox layout to split content and sidebar */
+    display: flex;
+    flex-wrap: wrap;
     max-width: 1200px;
     margin: 40px auto;
     padding: 20px;
     background-color: #ffffff;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
+    gap: 20px;
 }
 
+/* Filter Sidebar */
 .filter-sidebar {
-    width: 250px;
+    width: 280px;
     padding: 20px;
-    background-color: #f4f4f4;
+    background-color: #f8f8f8;
     box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
-    margin-right: 20px;
+    flex-shrink: 0;
 }
 
 .filter-title {
-    font-size: 20px;
+    font-size: 22px;
     font-weight: bold;
     color: #333;
     margin-bottom: 15px;
 }
 
 .filter-section {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .filter-section label {
@@ -38,10 +42,17 @@
 .filter-section select,
 .filter-section input[type="date"] {
     width: 100%;
-    padding: 8px;
+    padding: 10px;
     font-size: 14px;
     border: 1px solid #ccc;
     border-radius: 5px;
+    background: white;
+    cursor: pointer;
+}
+
+.filter-section select:hover,
+.filter-section input:hover {
+    border-color: #007bff;
 }
 
 .seller-orders-content {
@@ -57,24 +68,12 @@
     margin-bottom: 20px;
 }
 
-.error-message {
-    color: red;
-    text-align: center;
-    font-size: 16px;
-}
-
-.no-orders {
-    text-align: center;
-    font-size: 18px;
-    color: #666;
-}
-
 .seller-orders-list {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    max-height: 500px; 
-    overflow-y: auto; 
+    max-height: 500px;
+    overflow-y: auto;
 }
 
 .seller-order-card {
@@ -87,6 +86,7 @@
 
 .seller-order-card:hover {
     background: #e6e6e6;
+    transform: translateY(-3px);
 }
 
 .order-id {
@@ -104,6 +104,7 @@
     margin-top: 5px;
 }
 
+/* Order Items */
 .order-items {
     margin-top: 15px;
 }
@@ -125,6 +126,11 @@
     height: 80px;
     border-radius: 5px;
     object-fit: contain;
+    transition: transform 0.3s ease;
+}
+
+.order-product-image:hover {
+    transform: scale(1.1);
 }
 
 .order-details {
@@ -142,24 +148,33 @@ p {
     color: #555;
 }
 
-.filter-container {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    font-size: 16px;
+.delivery-status-update {
+    margin-top: 10px;
+    gap: 30px;
+
+}
+
+.delivery-status-update label {
     font-weight: bold;
+    color: #333;
 }
 
-.filter-container label {
-    font-size: 16px;
-    color: #555;
-    margin-bottom: 5px;
-}
 
-.filter-container select {
+.delivery-status-update select {
     padding: 8px;
     font-size: 14px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    width: 180px; 
+    background: white;
+    cursor: pointer;
+}
+
+.delivery-status-update select:hover {
+    border-color: #007bff;
+}
+
+.no-orders {
+    text-align: center;
+    font-size: 18px;
+    color: #666;
 }

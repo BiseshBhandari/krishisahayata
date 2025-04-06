@@ -30,8 +30,9 @@ function CustomerOrderPage() {
                             <h2 className="order-id">Order ID: {order.id}</h2>
                             <p className="order-status">Status: {order.orderStatus}</p>
                             <p className="payment-status">Payment: {order.paymentStatus}</p>
+                            <p className="deliver-status">Order is: {order.deliveryStatus}</p>
                             <div className="order-items">
-                                {order.OrderItems.map((item) => ( 
+                                {order.OrderItems.map((item) => (
                                     <div key={item.id} className="order-item">
                                         <img src={`${baseURL}${item.Product.imageUrl}`} alt={item.Product.name} className="customer-order-product-image" />
                                         <div className="order-details">

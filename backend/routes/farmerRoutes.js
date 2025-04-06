@@ -4,6 +4,8 @@ const { getallVideos } = require('../controller/userController/userSideVideo')
 const { addProduct, getAllProducts, getUserProducts, deleteProduct, updateProduct } = require('../controller/userController/ProductFeature')
 const cartController = require('../controller/userController/cartFeature');
 const orderController = require('../controller/userController/orderFeature');
+const cropGuideController = require('../controller/userController/cropGuideFeature');
+const commmentController = require('../controller/userController/commentFeature')
 const router = express.Router();
 
 router.get('/videos', getallVideos);
@@ -12,6 +14,13 @@ router.post('/addPost/:user_id', userController.addPost);
 router.get('/posts', userController.getAllPosts);
 router.get('/userPost/:user_id', userController.getUserPost);
 router.delete('/deletePost/:post_id', userController.deletePost);
+router.put("/likePost", userController.likeUnlikePost);
+router.get('/getLikedposts/:user_id', userController.getLikedPosts);
+
+router.post('/addComment', commmentController.addComment);
+router.get('/getComments/:postId', commmentController.getComments);
+router.delete('/deleteComment/:commentId', commmentController.deleteComment);
+router.post('/addReply', commmentController.replyToComment);
 
 router.post('/addProduct/:user_ID', addProduct);
 router.get('/products', getAllProducts);
@@ -28,15 +37,11 @@ router.delete('/clearCart/:userId', cartController.clearCart);
 
 router.post('/createOrder', orderController.createOrder);
 router.get('/getOrders/:userId', orderController.getOrders);
-router.post('/verifyPayment/:order_id', orderController.verifyEsewaPayment); 
+router.post('/verifyPayment/:order_id', orderController.verifyEsewaPayment);
 router.get('/getCustomerOrderDetails/:userId', orderController.getCustomerOrderHistory);
 router.get('/getSellerOrderDetails/:sellerId', orderController.getSellerOrderDetails);
 router.put('/updateDeliveryStatus/:orderId', orderController.updateDeliveryStatus);
 
-
-
-
-
-
+router.post('/getCropGuide', cropGuideController.getCropGuide);
 
 module.exports = router;

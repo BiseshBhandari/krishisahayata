@@ -1,8 +1,8 @@
 const sequelize = require("../config/db_config");
 const { DataTypes } = require("sequelize");
 
-const Comment = sequelize.define("Comment", {
-    comment_id: {
+const Like = sequelize.define("Like", {
+    like_id: {
         type: DataTypes.INTEGER,
         autoIncrement: true,
         primaryKey: true,
@@ -15,19 +15,21 @@ const Comment = sequelize.define("Comment", {
         type: DataTypes.INTEGER,
         allowNull: false,
     },
-    comment: {
-        type: DataTypes.TEXT,
-        allowNull: false,
-    },
     created_at: {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW,
     },
 }, {
-    tableName: "Comment",
+    tableName: "Like",
     timestamps: true,
     createdAt: "created_at",
     updatedAt: false,
+    indexes: [
+        {
+            unique: true,
+            fields: ['post_id', 'user_id'],
+        },
+    ],
 });
 
-module.exports = Comment;
+module.exports = Like;

@@ -100,7 +100,7 @@ function Navbar() {
                 <Link to="/" className={`navbar-link ${location.pathname === "/" ? "active" : ""}`}>Home</Link>
                 <Link to="/farmer/videos" className={`navbar-link ${location.pathname === "/farmer/videos" ? "active" : ""}`}>Videos</Link>
                 <Link to="/farmer/post" className={`navbar-link ${location.pathname === "/farmer/post" ? "active" : ""}`}>Posts</Link>
-                
+
                 <div className="navbar-dropdown">
                     <button className="dropdown-toggle navbar-link" onClick={() => setShowMarketDropdown(!showMarketDropdown)}>
                         Market
@@ -114,8 +114,8 @@ function Navbar() {
                         </div>
                     )}
                 </div>
-                
-                <Link to="#" className={`navbar-link ${location.pathname === "/farmer/crop" ? "active" : ""}`}>Crop-Guide</Link>
+
+                <Link to="/farmer/crop-guide" className={`navbar-link ${location.pathname === "/farmer/crop-guide" ? "active" : ""}`}>Crop-Guide</Link>
             </div>
             <div className="navbar-button">
                 <FaShoppingCart className="cart-icon" onClick={() => navigate("/farmer/cart")} />

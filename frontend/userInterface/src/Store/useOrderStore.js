@@ -16,9 +16,8 @@ export const useOrderStore = create((set, get) => ({
 
         try {
             const response = await sendDynamicRequest("post", 'farmer/createOrder', { userId, totalPrice });
-            const data = await response.json();
 
-            if (data.success) {
+            if (response.success) {
                 set({ orderSuccess: true });
                 return { success: true, message: "Order created successfully" };
             } else {
@@ -51,10 +50,11 @@ export const useOrderStore = create((set, get) => ({
 
     fetchCustomerOrders: async (userId) => {
         try {
+
             const response = await sendDynamicRequest("get", `farmer/getCustomerOrderDetails/${userId}`);
-    
+
             if (response.success) {
-                set({ customerOrders: response.orders });
+                set({ customerOrders: response.orders, orderError: null });
             } else {
                 set({ orderError: response.error || "Error fetching customer orders" });
             }
@@ -68,12 +68,32 @@ export const useOrderStore = create((set, get) => ({
             const response = await sendDynamicRequest("get", `farmer/getSellerOrderDetails/${sellerId}`);
 
             if (response.success) {
-                set({ sellerOrders: response.orders });
+                set({ sellerOrders: response.orders, orderError: null });
             } else {
                 set({ orderError: response.error || "Error fetching seller orders" });
             }
         } catch (error) {
             set({ orderError: "Error fetching seller orders" });
+        }
+    },
+
+    updateDeliveryStatus: async (orderId, deliveryStatus) => {
+        try {
+            const response = await sendDynamicRequest("put", `farmer/updateDeliveryStatus/${orderId}`, { deliveryStatus });
+
+            if (response.success) {
+                set(state => ({
+                    customerOrders: state.customerOrders.map(order => order.id === orderId ? { ...order, deliveryStatus } : order),
+                    sellerOrders: state.sellerOrders.map(order => order.id === orderId ? { ...order, deliveryStatus } : order)
+                }));
+                return { success: true, message: "Delivery status updated successfully" };
+            } else {
+                set({ orderError: response.error || "Error updating delivery status" });
+                return { success: false, message: "Error updating delivery status" };
+            }
+        } catch (error) {
+            set({ orderError: "Internal server error while updating delivery status" });
+            return { success: false, message: "Internal server error" };
         }
     },
 }));

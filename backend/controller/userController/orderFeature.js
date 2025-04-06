@@ -46,7 +46,7 @@ exports.createOrder = async (req, res) => {
 exports.getOrders = async (req, res) => {
     const { userId } = req.params;
 
-    console.log('Fetching orders for userId:', userId);  
+    console.log('Fetching orders for userId:', userId);
 
     try {
         const orders = await Order.findAll({
@@ -121,6 +121,7 @@ exports.verifyEsewaPayment = async (req, res) => {
                 paymentStatus: "Paid",
                 orderStatus: "Confirmed",
             });
+            console.log("Payment verified and order updated");
             return res.status(200).json({ success: true, message: "Payment verified and order updated" });
             // return res.status(400).json({ error: "Payment not completed" });
         }
@@ -140,7 +141,10 @@ exports.verifyEsewaPayment = async (req, res) => {
         //     orderStatus: "Confirmed",
         // });
 
-        console.log("Payment verified and order updated");
+        await order.destroy();
+        console.log("Payment not completed. Order deleted.");
+        return res.status(400).json({ error: "Payment not completed. Order deleted." });
+
         // return res.status(200).json({ success: true, message: "Payment verified and order updated" });
 
     } catch (error) {
@@ -193,29 +197,35 @@ exports.getSellerOrderDetails = async (req, res) => {
                     include: [
                         {
                             model: Product,
-                            where: { user_ID: sellerId }, 
+                            where: { user_ID: sellerId }, // Ensures only seller's products are included
                             attributes: ['name', 'price', 'imageUrl']
                         }
                     ]
                 },
                 {
-                    model: User, 
-                    attributes: ['name', 'email'] // Buyer details
+                    model: User,
+                    attributes: ['name', 'email']
                 }
             ],
             order: [['createdAt', 'asc']]
         });
-        
-        if (!orders.length) {
+
+        // Filter out orders where no order items belong to the seller
+        const filteredOrders = orders.filter(order =>
+            order.OrderItems.some(orderItem => orderItem.Product)
+        );
+
+        if (!filteredOrders.length) {
             return res.status(404).json({ error: "No orders found for your products" });
         }
 
-        res.status(200).json({ success: true, orders: orders });
+        res.status(200).json({ success: true, orders: filteredOrders });
     } catch (error) {
         console.error("Error fetching seller order details:", error);
         res.status(500).json({ error: "Error fetching seller order details" });
     }
 };
+
 
 exports.updateDeliveryStatus = async (req, res) => {
     const { orderId } = req.params;

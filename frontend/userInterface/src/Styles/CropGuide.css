@@ -1,0 +1,98 @@
+/* CropGuide.css */
+
+.container {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 1.5rem;
+}
+
+.title {
+    text-align: center;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    color: #333;
+
+}
+
+.flex-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+@media (min-width: 768px) {
+    .flex-layout {
+        flex-direction: row;
+    }
+}
+
+.card {
+    background-color: white;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    flex: 1;
+}
+
+.card h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.input-group {
+    margin-bottom: 1rem;
+    color: #333;
+
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 0.25rem;
+    text-transform: capitalize;
+    color: #333;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.button {
+    background-color: #16a34a;
+    color: white;
+    padding: 0.5rem 1.5rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: #15803d;
+}
+
+.error {
+    color: red;
+    margin-top: 0.5rem;
+}
+
+.success {
+    font-weight: bold;
+    color: #166534;
+}
+
+.link-list {
+    list-style: disc;
+    margin-left: 1.5rem;
+    margin-top: 0.5rem;
+}
+
+.link-list a {
+    color: #2563eb;
+    text-decoration: none;
+}

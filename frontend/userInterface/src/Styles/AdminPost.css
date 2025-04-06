@@ -1,44 +1,53 @@
+/* Container for the entire verification page */
+.verify_Post_page {
+    padding: 20px;
+    background-color: #f9fafb;
+    min-height: 100vh;
+}
+
+/* Grid layout for all post cards */
 .VerifyPost_container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(275px, 1fr));
-    gap: 9px;
-    height: auto;
-    padding: 10px;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
 }
 
+/* Each post card */
 .Pending_post_list {
     background-color: white;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
     border-radius: 16px;
-    padding: 10px;
-    max-width: 400px;
-    height: 52vh;
-    width: 100%;
+    overflow: hidden;
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    margin-bottom: 5px
+    height: auto;
+    transition: transform 0.3s ease;
 }
 
+.Pending_post_list:hover {
+    transform: translateY(-4px);
+}
+
+/* Image section */
 .Pending_post_list_image {
     width: 100%;
-    height: 240px;
-    background-color: rebeccapurple;
-    object-fit: cover;
-    border-radius: 12px;
+    height: 220px;
+    background-color: #e5e7eb;
+    overflow: hidden;
 }
 
 .Pending_post_list_image img {
     width: 100%;
     height: 100%;
-    background-color: rebeccapurple;
+    object-fit: cover;
     display: block;
-    border-radius: 12px;
 }
 
+/* User info */
 .Pending_post_list_user {
     display: flex;
     align-items: center;
+    padding: 10px 16px;
     gap: 12px;
 }
 
@@ -46,42 +55,63 @@
     width: 48px;
     height: 48px;
     border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid #e5e7eb;
+    overflow: hidden;
+    flex-shrink: 0;
+    background-color: #ddd;
 }
 
 .Pending_post_list_user_image img {
     width: 100%;
     height: 100%;
-    border-radius: 50%;
-    display: block;
+    object-fit: cover;
 }
 
+/* User name */
 .Pending_post_list_user h2 {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 600;
-    color: #1f2937;
+    color: #111827;
+}
+
+/* Post content */
+.Pending_post_list_content {
+    padding: 0 16px;
 }
 
 .Pending_post_list_content p {
     font-size: 14px;
     color: #4b5563;
+    margin-top: 8px;
 }
 
+/* Action buttons */
 .Pending_post_list_actions {
     display: flex;
     justify-content: space-between;
+    padding: 16px;
+    border-top: 1px solid #e5e7eb;
     gap: 10px;
+}
+
+.approve_button,
+.reject_button {
+    flex: 1;
+    padding: 10px 0;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    transition: background-color 0.3s;
 }
 
 .approve_button {
     background-color: #10b981;
     color: white;
-    padding: 10px 16px;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s;
 }
 
 .approve_button:hover {
@@ -91,17 +121,13 @@
 .reject_button {
     background-color: #ef4444;
     color: white;
-    padding: 10px 16px;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s;
 }
 
 .reject_button:hover {
     background-color: #dc2626;
 }
 
+/* Optional: Modal styling for future improvements */
 .modal_overlay {
     position: fixed;
     top: 0;
@@ -112,43 +138,46 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 999;
 }
 
 .modal_content {
-    color: #4b5563;
     background: white;
     padding: 20px;
-    border-radius: 10px;
+    border-radius: 12px;
     text-align: center;
-    width: 300px;
+    width: 320px;
 }
 
 .modal_content input {
     width: 100%;
-    padding: 8px;
-    margin-top: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    padding: 10px;
+    margin-top: 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
 }
 
 .modal_buttons {
-    margin-top: 15px;
+    margin-top: 16px;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
 }
 
 .modal_buttons button {
-    padding: 8px 15px;
+    flex: 1;
+    margin: 0 4px;
+    padding: 10px;
     border: none;
+    border-radius: 6px;
+    font-weight: 600;
+    color: white;
     cursor: pointer;
 }
 
 .modal_buttons button:first-child {
-    background: green;
-    color: white;
+    background-color: #10b981;
 }
 
 .modal_buttons button:last-child {
-    background: red;
-    color: white;
+    background-color: #ef4444;
 }

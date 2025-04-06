@@ -172,7 +172,7 @@ function AdminVideo() {
                 {videos.map((video, index) => (
                     <div key={index} className="video_item">
                         <div className="actual_video">
-                            <video width="320" height="240" controls crossOrigin="anonymous">
+                            <video controls crossOrigin="anonymous">
                                 <source src={video.video_url} type="video/mp4" />
                                 Your browser does not support the video tag.
                             </video>
