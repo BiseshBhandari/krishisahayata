@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { FaCamera } from "react-icons/fa";
+import { BiImageAdd } from "react-icons/bi";
 import { FaRegComment } from "react-icons/fa6";
 import { BiLike, BiShareAlt } from "react-icons/bi";
+import { BsThreeDots } from "react-icons/bs";
 import { ToastContainer, toast } from "react-toastify";
 import Loader from "../../Components/Loader";
 import { usePostStore } from "../../Store/usePostStore";
 import { useCommentStore } from "../../Store/useCommentStore";
-import { useLikeStore } from "../../Store/useLikeStore"; // Import the like store
+import { useLikeStore } from "../../Store/useLikeStore";
 import "../../Styles/PostPage.css";
 
 function PostPage() {
@@ -17,19 +18,42 @@ function PostPage() {
     const [newComment, setNewComment] = useState("");
     const [activeCommentId, setActiveCommentId] = useState(null);
     const [replyContent, setReplyContent] = useState({});
+    const [showUserPosts, setShowUserPosts] = useState(false);
+    const [editPostId, setEditPostId] = useState(null);
+    const [editContent, setEditContent] = useState("");
+    const [editImage, setEditImage] = useState(null); // Track new image for editing
+    const [editImagePreview, setEditImagePreview] = useState(null); // Preview for new image
+    const [dropdownPostId, setDropdownPostId] = useState(null);
 
-    const { addPost, fetchAllPosts, allPosts, loading } = usePostStore();
+    const {
+        addPost,
+        fetchAllPosts,
+        fetchUserPosts,
+        editPost,
+        deletePost,
+        allPosts,
+        userPosts,
+        loading,
+        error,
+        updateLikeCount,
+        updateCommentCount,
+    } = usePostStore();
     const { fetchComments, addComment, deleteComment, comments, commentLoading, replyToComment } = useCommentStore();
-    const { likedPosts, fetchLikedPosts, likeLoading, likeError, likeUnlikePost } = useLikeStore();
+    const { likedPosts, fetchLikedPosts, likeUnlikePost } = useLikeStore();
+
+    const baseURL = 'http://localhost:3000';
+    const user = JSON.parse(localStorage.getItem("user"));
 
     useEffect(() => {
-        const storedUserId = localStorage.getItem("userID");
+        const storedUserId = user?.user_id;
+        console.log("Stored User ID:", storedUserId);
         if (storedUserId) {
             setUserId(storedUserId);
             fetchLikedPosts(storedUserId);
+            fetchAllPosts(storedUserId);
+            fetchUserPosts(storedUserId);
         }
-        fetchAllPosts();
-    }, [fetchAllPosts, fetchLikedPosts]);
+    }, [fetchAllPosts, fetchLikedPosts, fetchUserPosts]);
 
     const handleChange = (e) => {
         const { name, value, type, files } = e.target;
@@ -40,6 +64,15 @@ function PostPage() {
             setSelectedImage(URL.createObjectURL(file));
         } else {
             setFormData({ ...formData, [name]: value });
+        }
+    };
+
+    const handleEditImageChange = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setEditImage(file);
+            if (editImagePreview) URL.revokeObjectURL(editImagePreview);
+            setEditImagePreview(URL.createObjectURL(file));
         }
     };
 
@@ -57,9 +90,42 @@ function PostPage() {
             toast.success("Post added successfully");
             setFormData({ content: "", file: null });
             setSelectedImage(null);
-            fetchAllPosts();
+            await fetchAllPosts(userId);
+            await fetchUserPosts(userId);
         } catch (err) {
             toast.error("Failed to add post");
+        }
+    };
+
+    const handleEditPost = async (postId) => {
+        if (!editContent.trim()) return toast.error("Post content cannot be empty");
+        try {
+            const postData = new FormData();
+            postData.append("content", editContent);
+            if (editImage) postData.append("image", editImage);
+
+            await editPost(postId, postData);
+            toast.success("Post updated successfully");
+            setEditPostId(null);
+            setEditContent("");
+            setEditImage(null);
+            if (editImagePreview) URL.revokeObjectURL(editImagePreview);
+            setEditImagePreview(null);
+            await fetchAllPosts(userId);
+            await fetchUserPosts(userId);
+        } catch (err) {
+            toast.error("Failed to update post");
+        }
+    };
+
+    const handleDeletePost = async (postId) => {
+        try {
+            await deletePost(postId);
+            toast.success("Post deleted successfully");
+            await fetchAllPosts(userId);
+            await fetchUserPosts(userId);
+        } catch (err) {
+            toast.error("Failed to delete post");
         }
     };
 
@@ -78,6 +144,7 @@ function PostPage() {
             await addComment({ userId, postId, comment: newComment });
             setNewComment("");
             await fetchComments(postId);
+            updateCommentCount(postId, 1);
         }
     };
 
@@ -112,14 +179,16 @@ function PostPage() {
             toast.error("User not found. Please log in again.");
             return;
         }
+        const isAlreadyLiked = likedPosts.includes(postId);
         await likeUnlikePost({ userId, postId });
-        fetchAllPosts();
+        updateLikeCount(postId, isAlreadyLiked ? -1 : 1);
     };
+
+    const postsToShow = showUserPosts ? userPosts : allPosts;
 
     return (
         <div className="post_page">
             <ToastContainer />
-            {loading && <Loader display_text="Posting..." />}
 
             <div className="post_container_1">
                 <div className="postform">
@@ -128,7 +197,7 @@ function PostPage() {
                     </div>
                     <div className="PostformContainer">
                         <div className="userProfile_photo">
-                            <img className="profile_image" src="" alt="Profile" />
+                            <img className="profile_image" src={`${baseURL}${user?.profile_image_url}`} alt="Profile" />
                         </div>
                         <div className="PostformFileds">
                             <form onSubmit={handleSubmit}>
@@ -139,24 +208,26 @@ function PostPage() {
                                     value={formData.content}
                                     onChange={handleChange}
                                 />
-                                <div className="post_actions">
-                                    <label htmlFor="file" className="file-upload">
-                                        {selectedImage ? (
-                                            <img src={selectedImage} alt="Selected" className="preview-image" />
-                                        ) : (
-                                            <>
-                                                <FaCamera className="upload-icon" />
-                                                <span>Upload Image</span>
-                                            </>
-                                        )}
-                                        <input
-                                            type="file"
-                                            id="file"
-                                            accept="image/*"
-                                            onChange={handleChange}
-                                            hidden
-                                        />
-                                    </label>
+                                <div className="create_post_actions">
+                                    <div className="image_add_section">
+                                        <label htmlFor="file" className="file-upload">
+                                            {selectedImage ? (
+                                                <img src={selectedImage} alt="Selected" className="preview-image" />
+                                            ) : (
+                                                <>
+                                                    <BiImageAdd color="green" size={40} />
+                                                    <span>Upload Image</span>
+                                                </>
+                                            )}
+                                            <input
+                                                type="file"
+                                                id="file"
+                                                accept="image/*"
+                                                onChange={handleChange}
+                                                hidden
+                                            />
+                                        </label>
+                                    </div>
                                     <button type="submit" className="Post_submit_button">
                                         Post
                                     </button>
@@ -167,49 +238,180 @@ function PostPage() {
                 </div>
             </div>
 
-            {/* All Posts Section */}
             <div className="post_container_2">
+                <div className="postHeadbar">
+                    <div className="post_toggle_dropdown">
+                        <select
+                            className="post_select_dropdown"
+                            value={showUserPosts ? "myPosts" : "allPosts"}
+                            onChange={(e) => {
+                                const value = e.target.value;
+                                setShowUserPosts(value === "myPosts");
+                                if (value === "myPosts" && userId) {
+                                    fetchUserPosts(userId);
+                                } else {
+                                    fetchAllPosts(userId);
+                                }
+                            }}
+                        >
+                            <option value="allPosts">All Posts</option>
+                            <option value="myPosts">My Posts</option>
+                        </select>
+                    </div>
+                </div>
+
                 <div className="allPosts">
-                    {allPosts.length > 0 ? (
-                        allPosts.map((post) => {
+                    {loading ? (
+                        <Loader display_text="Loading posts..." />
+                    ) : error ? (
+                        <p>{error === "No approved posts available" ? "No approved posts available" : `Error: ${error}`}</p>
+                    ) : postsToShow.length > 0 ? (
+                        postsToShow.map((post) => {
                             const isLiked = likedPosts.includes(post.post_id);
+                            const isOwner = post.user_id === userId;
+
                             return (
                                 <div key={post.post_id} className="post_list">
                                     <div className="post_Header">
-                                        <div className="Post_user_proile_image"></div>
-                                        <div className="post_user_name">
-                                            {post.User?.name || "Unknown User"}
+                                        <div className="Post_user_profile_image">
+                                            <img
+                                                src={`${baseURL}${post.User?.profile_image_url || "/default-profile.png"}`}
+                                                alt="User"
+                                                className="post_user_image"
+                                            />
                                         </div>
+                                        <div className="post_user_info">
+                                            <div className="post_user_name">
+                                                {post.User?.name || "Unknown User"}
+                                            </div>
+                                            <div className="post_date">
+                                                {new Date(post.created_at).toLocaleString()}
+                                            </div>
+                                            <div className={`post_status ${post.approval_status}`}>
+                                                {post.approval_status}
+                                            </div>
+                                        </div>
+                                        {isOwner && (
+                                            <div
+                                                className="post_menu"
+                                                onMouseEnter={() => setDropdownPostId(post.post_id)}
+                                                onMouseLeave={() => setDropdownPostId(null)}
+                                            >
+                                                <BsThreeDots size={24} className="menu_icon" />
+                                                {dropdownPostId === post.post_id && (
+                                                    <div className="dropdown_menu">
+                                                        <button
+                                                            className="dropdown_item"
+                                                            onClick={() => {
+                                                                setEditPostId(post.post_id);
+                                                                setEditContent(post.content);
+                                                                setEditImage(null);
+                                                                setEditImagePreview(null);
+                                                                setDropdownPostId(null);
+                                                            }}
+                                                        >
+                                                            Edit
+                                                        </button>
+                                                        <button
+                                                            className="dropdown_item delete"
+                                                            onClick={() => {
+                                                                handleDeletePost(post.post_id);
+                                                                setDropdownPostId(null);
+                                                            }}
+                                                        >
+                                                            Delete
+                                                        </button>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        )}
                                     </div>
-                                    <p className="Post_contnent_p">{post.content}</p>
-                                    {post.image_url && (
-                                        <div className="posted_image">
-                                            <img src={post.image_url} alt="Post" className="post-image" />
+                                    {editPostId === post.post_id ? (
+                                        <div className="edit_post_form">
+                                            <textarea
+                                                value={editContent}
+                                                onChange={(e) => setEditContent(e.target.value)}
+                                                className="edit_post_textarea"
+                                                placeholder="Edit your post..."
+                                            />
+                                            <div className="edit_image_section">
+                                                <label htmlFor={`edit-file-${post.post_id}`} className="file-upload">
+                                                    {editImagePreview ? (
+                                                        <img src={editImagePreview} alt="Selected" className="preview-image" />
+                                                    ) : post.image_url ? (
+                                                        <img src={post.image_url} alt="Current" className="preview-image" />
+                                                    ) : (
+                                                        <>
+                                                            <BiImageAdd color="green" size={40} />
+                                                            <span>Upload New Image</span>
+                                                        </>
+                                                    )}
+                                                    <input
+                                                        type="file"
+                                                        id={`edit-file-${post.post_id}`}
+                                                        accept="image/*"
+                                                        onChange={handleEditImageChange}
+                                                        hidden
+                                                    />
+                                                </label>
+                                            </div>
+                                            <div className="edit_post_actions">
+                                                <button
+                                                    className="edit_post_save"
+                                                    onClick={() => handleEditPost(post.post_id)}
+                                                >
+                                                    Save
+                                                </button>
+                                                <button
+                                                    className="edit_post_cancel"
+                                                    onClick={() => {
+                                                        setEditPostId(null);
+                                                        setEditContent("");
+                                                        setEditImage(null);
+                                                        if (editImagePreview) URL.revokeObjectURL(editImagePreview);
+                                                        setEditImagePreview(null);
+                                                    }}
+                                                >
+                                                    Cancel
+                                                </button>
+                                            </div>
                                         </div>
+                                    ) : (
+                                        <>
+                                            <p className="Post_contnent_p">{post.content}</p>
+                                            {post.image_url && (
+                                                <div className="posted_image">
+                                                    <img src={post.image_url} alt="Post" className="post-image" />
+                                                </div>
+                                            )}
+                                        </>
                                     )}
                                     <div className="post_footer_actions">
-                                        <button
-                                            className={`like_button ${isLiked ? "liked" : ""}`}
-                                            onClick={() => handleLikePost(post.post_id)}
-                                        >
-                                            <BiLike size={28} />
-                                        </button>
-                                        <span>{post.likeCount}</span>
-                                        <button
-                                            className="comment_button"
-                                            onClick={() => handleCommentToggle(post.post_id)}
-                                        >
-                                            <FaRegComment size={28} />
-                                            {post.commentCount > 0 && (
-                                                <span className="comment_count_badge">{post.commentCount}</span>
-                                            )}
-                                        </button>
-                                        <button className="share_button">
-                                            <BiShareAlt size={28} />
-                                        </button>
+                                        <div className="post_actions">
+                                            <button
+                                                className={`like_button ${isLiked ? "liked" : ""}`}
+                                                onClick={() => handleLikePost(post.post_id)}
+                                            >
+                                                <BiLike size={28} />
+                                                {post.likeCount > 0 && (
+                                                    <span className="like_count_badge">{post.likeCount}</span>
+                                                )}
+                                            </button>
+                                            <button
+                                                className="comment_button"
+                                                onClick={() => handleCommentToggle(post.post_id)}
+                                            >
+                                                <FaRegComment size={28} />
+                                                {post.commentCount > 0 && (
+                                                    <span className="comment_count_badge">{post.commentCount}</span>
+                                                )}
+                                            </button>
+                                            <button className="share_button">
+                                                <BiShareAlt size={28} />
+                                            </button>
+                                        </div>
                                     </div>
 
-                                    {/* Comment Section */}
                                     {activePostId === post.post_id && (
                                         <div className="comment_section">
                                             <div className="comment_list">
@@ -218,55 +420,88 @@ function PostPage() {
                                                 ) : comments.length > 0 ? (
                                                     comments.map((comment) => (
                                                         <div key={comment.comment_id} className="comment_item">
-                                                            <div className="comment_text">
-                                                                <strong>{comment.User?.name || "Unknown"}:</strong> {comment.comment}
+                                                            <div className="comment_header">
+                                                                <img
+                                                                    src={`${baseURL}${comment.User?.profile_image_url || "/default-profile.png"}`}
+                                                                    alt="User"
+                                                                    className="comment_user_image"
+                                                                />
+                                                                <div className="comment_user_info">
+                                                                    <strong className="comment_user_name">{comment.User?.name || "Unknown"}</strong>
+                                                                    <br />
+                                                                    <span className="comment_date">
+                                                                        {new Date(comment.created_at).toLocaleDateString('en-US', {
+                                                                            year: 'numeric',
+                                                                            month: 'long',
+                                                                            day: 'numeric'
+                                                                        })}
+                                                                    </span>
+                                                                </div>
                                                             </div>
-                                                            <div className="comment_actions">
-                                                                {comment.user_id == userId && (
+                                                            <div className="comment_body">
+                                                                <p className="comment_text">{comment.comment}</p>
+                                                                <div className="comment_actions">
                                                                     <button
-                                                                        onClick={async () => {
-                                                                            await handleDeleteComment(comment.comment_id, post.post_id);
-                                                                            await fetchAllPosts();
-                                                                        }}
+                                                                        className="reply_button"
+                                                                        onClick={() => handleReplyToggle(comment.comment_id)}
                                                                     >
-                                                                        Delete
+                                                                        Reply
                                                                     </button>
-                                                                )}
-                                                                <button
-                                                                    onClick={() => handleReplyToggle(comment.comment_id)} >
-                                                                    replies
-                                                                </button>
+                                                                    {comment.user_id === userId && (
+                                                                        <button
+                                                                            className="delete_button"
+                                                                            onClick={() => handleDeleteComment(comment.comment_id, post.post_id)}
+                                                                        >
+                                                                            Delete
+                                                                        </button>
+                                                                    )}
+                                                                </div>
                                                             </div>
 
-                                                            {/* Reply Input */}
-                                                            {activeCommentId == comment.comment_id && (
-                                                                <div className="replty_section_hero">
-                                                                    {comment.Replies && (
+                                                            {activeCommentId === comment.comment_id && (
+                                                                <div className="reply_section_hero">
+                                                                    {comment.Replies && comment.Replies.length > 0 && (
                                                                         <div className="replies_section">
                                                                             {comment.Replies.map((reply) => (
                                                                                 <div key={reply.reply_id} className="reply_item">
-                                                                                    <strong>{reply.User?.name || "Unknown"}:</strong> {reply.reply}
+                                                                                    <div className="reply_header">
+                                                                                        <img
+                                                                                            src={`${baseURL}${reply.User?.profile_image_url || "/default-profile.png"}`}
+                                                                                            alt="User"
+                                                                                            className="reply_user_image"
+                                                                                        />
+                                                                                        <div className="reply_user_info">
+                                                                                            <strong className="reply_user_name">{reply.User?.name || "Unknown"}</strong>
+                                                                                            <br />
+                                                                                            <span className="reply_date">
+                                                                                                {new Date(reply.created_at).toLocaleDateString('en-US', {
+                                                                                                    year: 'numeric',
+                                                                                                    month: 'long',
+                                                                                                    day: 'numeric'
+                                                                                                })}
+                                                                                            </span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <p className="reply_text">{reply.reply}</p>
                                                                                 </div>
                                                                             ))}
                                                                         </div>
                                                                     )}
-
-                                                                    <div className="reply_section">
+                                                                    <div className="reply_input_section">
                                                                         <input
                                                                             type="text"
                                                                             placeholder="Write a reply..."
                                                                             value={replyContent[comment.comment_id] || ""}
-                                                                            onChange={(e) =>
-                                                                                handleReplyChange(comment.comment_id, e.target.value)
-                                                                            }
+                                                                            onChange={(e) => handleReplyChange(comment.comment_id, e.target.value)}
+                                                                            className="reply_input"
                                                                         />
                                                                         <button
+                                                                            className="reply_submit_button"
                                                                             onClick={() => handleReplySubmit(comment.comment_id, post.post_id)}
                                                                         >
                                                                             Reply
                                                                         </button>
                                                                     </div>
-
                                                                 </div>
                                                             )}
                                                         </div>
@@ -281,12 +516,11 @@ function PostPage() {
                                                     placeholder="Write a comment..."
                                                     value={newComment}
                                                     onChange={(e) => setNewComment(e.target.value)}
+                                                    className="comment_input"
                                                 />
                                                 <button
-                                                    onClick={async () => {
-                                                        await handleAddComment(post.post_id);
-                                                        await fetchAllPosts();
-                                                    }}
+                                                    onClick={() => handleAddComment(post.post_id)}
+                                                    className="comment_submit_button"
                                                 >
                                                     Add
                                                 </button>
@@ -301,8 +535,6 @@ function PostPage() {
                     )}
                 </div>
             </div>
-
-            <div className="post_container_3"></div>
         </div>
     );
 }

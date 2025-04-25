@@ -27,6 +27,7 @@ function PaymentSuccess() {
         try {
             const decodedData = atob(dataquery);
             const parsedData = JSON.parse(decodedData);
+            console.log("Decoded payment data:", parsedData);
             setData(parsedData);
 
             // After decoding the payment data, verify the payment
@@ -41,8 +42,7 @@ function PaymentSuccess() {
     const verifyPayment = async (paymentData) => {
         try {
             // Adjust the URL to your base URL and API endpoint
-            const response = await axios.post(
-                `${IMAGE_URL}/farmer/verifyPayment/${orderId}`, // Use the base URL
+            const response = await axios.post(`${IMAGE_URL}/farmer/verifyPayment/${orderId}`, // Use the base URL
                 {
                     transaction_uuid: paymentData.transaction_uuid,
                     total_amount: paymentData.total_amount,
@@ -60,6 +60,15 @@ function PaymentSuccess() {
         } catch (err) {
             console.error("Error verifying payment:", err);
             setPaymentStatus("Error verifying payment.");
+            console.log("Sending payment data to backend:", {
+                transaction_uuid: paymentData.transaction_uuid,
+                total_amount: paymentData.total_amount,
+                product_code: paymentData.product_code,
+                transaction_code: paymentData.transaction_code,
+                status: paymentData.status,
+                signature: paymentData.signature
+            });
+
         }
     };
 

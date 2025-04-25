@@ -3,4 +3,13 @@
 
 :root {
   font-family: inria sans;
+  --primary-green: rgba(115, 184, 91, 1);
+  --dark-green: rgba(63, 120, 53, 1);
+  --light-green: rgba(217, 241, 204, 1);
+  --beige-bg: rgba(245, 242, 229, 1);
+  --accent-blue: rgba(97, 173, 235, 1);
+
+  --text-dark: rgba(34, 34, 34, 1);
+  --text-secondary: rgba(85, 85, 85, 1);
+  --divider: rgba(230, 230, 230, 1);
 }

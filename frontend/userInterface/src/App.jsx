@@ -7,8 +7,8 @@ import ForgotPass from "./Pages/Authen/ForgotPass";
 import ResetPass from "./Pages/Authen/ResetPass";
 
 import Dashboard from "./Pages/Farmer/Dashboard";
+import UserProfile from "./Pages/Farmer/ProfilePage";
 import PostPage from "./Pages/Farmer/PostPage";
-import PostProfile_page from "./Pages/Farmer/PostProfile_page";
 import VideosPage from "./Pages/Farmer/VideosPage";
 import MarketPage from "./Pages/Farmer/MarketPage";
 import CartPage from "./Pages/Farmer/CartPage";
@@ -24,6 +24,7 @@ import CropGuide from "./Pages/Farmer/CropGuide";
 import AdminDash from "./Pages/AdminP/AdminDash";
 import AdminVideo from "./Pages/AdminP/AdminVideo";
 import AdminVerifyPost from "./Pages/AdminP/AdminVerifyPost";
+import AdminVerifyProduct from "./Pages/AdminP/AdminVerifyProduct";
 
 
 import ProtectedRoute from "./ProtectedRoute";
@@ -40,7 +41,7 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/forgot-pass" element={<ForgotPass />} />
-        <Route path="/reset-pass/:token" element={<ResetPass />} />
+        <Route path="/reset-pass" element={<ResetPass />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
 
         {/* Admin Routes */}
@@ -64,19 +65,25 @@ function App() {
           }
           />
 
+          <Route path="verify-product" element={
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <AdminVerifyProduct />
+            </ProtectedRoute>}
+          />
+
         </Route >
 
         {/* Farmer Routes */}
         < Route path="/farmer/*" element={<FarmerLayout />} >
 
+          <Route path="profile" element={
+            <ProtectedRoute allowedRoles={["farmer"]}>
+              <UserProfile />
+            </ProtectedRoute>} />
+
           <Route path="dashboard" element={
             <ProtectedRoute allowedRoles={["farmer"]}>
               <Dashboard />
-            </ProtectedRoute>} />
-
-          <Route path="post-profile" element={
-            <ProtectedRoute allowedRoles={["farmer"]}>
-              <PostProfile_page />
             </ProtectedRoute>} />
 
           <Route path="post" element={

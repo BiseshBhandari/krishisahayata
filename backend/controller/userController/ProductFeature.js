@@ -52,12 +52,25 @@ exports.addProduct = async (req, res) => {
 
 exports.getAllProducts = async (req, res) => {
     try {
-        const products = await Product.findAll();
-        res.status(200).json({ success: true, message: 'Product retrived Successfully', products: products });
+        const products = await Product.findAll({
+            where: {
+                approvalStatus: 'approved',
+                stockStatus: 'in-Stock'
+            }
+        });
+        res.status(200).json({
+            success: true,
+            message: 'Products retrieved successfully',
+            products: products
+        });
     } catch (error) {
-        res.status(500).json({ message: 'Error retrieving products.', error: error.message });
+        res.status(500).json({
+            message: 'Error retrieving products.',
+            error: error.message
+        });
     }
 };
+
 
 exports.getUserProducts = async (req, res) => {
     const { user_id } = req.params;

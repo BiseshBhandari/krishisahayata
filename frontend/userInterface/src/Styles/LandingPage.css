@@ -1,9 +1,29 @@
+🌿 Theme Variables
+:root {
+    --primary-green: rgba(115, 184, 91, 1);
+    --earthy-brown: rgba(153, 101, 21, 1);
+    --soil-black: rgba(41, 41, 41, 1);
+    --sky-blue: rgba(129, 199, 245, 1);
+    --wheat-beige: rgba(245, 242, 229, 1);
+    --fresh-leaf-tint: rgba(217, 241, 204, 1);
+
+    --text-dark: rgba(34, 34, 34, 1);
+    --text-secondary: rgba(100, 100, 100, 1);
+}
+
+/* Global Page Background */
+.whole {
+    background-color: var(--wheat-beige);
+    color: var(--text-dark);
+}
+
+/* FIRST SECTION */
 .first_section {
     width: 100%;
     height: 60vh;
     display: flex;
     justify-content: center;
-    margin: 40px 0px 0px 0px;
+    margin: 40px 0 0 0;
 }
 
 .heroText {
@@ -12,7 +32,6 @@
     flex-direction: column;
     flex-wrap: wrap;
     align-items: center;
-
 }
 
 .heroImage {
@@ -24,7 +43,9 @@
     height: 100%;
     display: block;
     margin: 2px auto;
-    border-radius: 1px;
+    border-radius: 12px;
+    box-shadow: 3px 4px 10px rgba(41, 41, 41, 0.2);
+    /* Soil Black soft shadow */
 }
 
 .headings-text {
@@ -32,11 +53,12 @@
 }
 
 .headings {
-    color: rgb(71, 71, 71);
+    color: var(--text-dark);
     font-size: 60px;
     font-weight: bold;
     margin-top: 20px;
-    text-shadow: 5px 3px 1px rgb(202, 197, 197);
+    text-shadow: 2px 2px var(--fresh-leaf-tint);
+    /* Subtle green shadow */
 }
 
 .sub-heading-text {
@@ -44,20 +66,20 @@
 }
 
 .sub-headings {
-    color: rgb(71, 71, 71);
+    color: var(--text-secondary);
     font-size: 30px;
     line-height: 56px;
-    text-shadow: 5px 3px 1px rgb(239, 237, 237);
+    text-shadow: 1px 1px var(--wheat-beige);
 }
 
-
+/* SECOND SECTION */
 .second_section {
     width: 100%;
     height: 50vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 40px 0px 0px 0px;
+    margin: 40px 0 0 0;
     padding: 10px;
 }
 
@@ -67,16 +89,17 @@
     height: auto;
     text-align: center;
     line-height: 40px;
-    color: rgb(71, 71, 71);
-
+    color: var(--text-dark);
 }
 
 .second-head {
     font-size: 36px;
+    color: var(--earthy-brown);
 }
 
 .second_section-head .p {
     font-size: 25px;
+    color: var(--text-secondary);
 }
 
 .second-section-cards {
@@ -88,22 +111,35 @@
     justify-content: center;
 }
 
+/* Individual Card */
 .second-card {
     width: 22%;
     height: 23vh;
     padding: 15px 25px;
-    border-radius: 5px;
-    box-shadow: 3px 5px 8px 0px rgb(210, 208, 208);
+    border-radius: 12px;
+    background-color: var(--fresh-leaf-tint);
+    box-shadow: 0px 4px 12px rgba(41, 41, 41, 0.15);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.second-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0px 8px 16px rgba(41, 41, 41, 0.25);
+}
+
+.second_icon {
+    color: var(--primary-green);
 }
 
 .second_title {
-    color: rgb(71, 71, 71);
+    color: var(--text-dark);
     font-size: 25px;
-    font-weight: bolder;
-    margin: 13px 0px 10px 0px;
+    font-weight: bold;
+    margin: 13px 0 10px 0;
 }
 
 .second_text {
-    color: rgb(71, 71, 71);
+    color: var(--text-secondary);
     font-size: 18px;
 }
+

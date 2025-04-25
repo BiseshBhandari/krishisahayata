@@ -56,6 +56,7 @@
     flex-direction: column;
     gap: 20px;
     width: 100%;
+    margin-bottom: 400px;
 }
 
 .sidebar-link {
@@ -91,24 +92,31 @@
     justify-content: center;
 }
 
-.sidebar.closed .logoutAdmin {}
+.sidebar.closed .logoutAdmin span {
+    display: none;
+}
 
 .button_logout {
-    margin-top: 400px;
-    padding: 3px;
     width: 100%;
-    display: flex;
-    justify-content: center;
-
 }
 
 .logoutAdmin {
-    background-color: rgb(217, 56, 56);
-    padding: 12px 35px 12px 35px;
-    width: inherit;
+    background-color: rgb(242, 93, 93);
+    width: 100%;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
     border: none;
     color: white;
     font-size: 18px;
     font-weight: bold;
     border-radius: 8px;
+    transition: background 0.3s;
+    cursor: pointer;
+}
+
+.logoutAdmin:hover {
+    background-color: rgb(180, 40, 40);
 }

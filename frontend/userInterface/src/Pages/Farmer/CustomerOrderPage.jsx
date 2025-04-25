@@ -13,8 +13,6 @@ function CustomerOrderPage() {
         }
     }, []);
 
-    console.log(customerOrders);
-
     return (
         <div className="customer-orders-container">
             <h1 className="orders-title">My Orders</h1>
@@ -28,13 +26,35 @@ function CustomerOrderPage() {
                     {customerOrders.map((order) => (
                         <div key={order.id} className="order-card">
                             <h2 className="order-id">Order ID: {order.id}</h2>
-                            <p className="order-status">Status: {order.orderStatus}</p>
-                            <p className="payment-status">Payment: {order.paymentStatus}</p>
-                            <p className="deliver-status">Order is: {order.deliveryStatus}</p>
+
+                            <p className="order-status">
+                                Status: <span className={`status-badge ${
+                                    order.orderStatus === "Pending" ? "status-pending" : "status-confirmed"
+                                }`}>{order.orderStatus}</span>
+                            </p>
+
+                            <p className="payment-status">
+                                Payment: <span className={`status-badge ${
+                                    order.paymentStatus === "Paid" ? "status-paid" :
+                                    order.paymentStatus === "Failed" ? "status-failed" : "status-pending"
+                                }`}>{order.paymentStatus}</span>
+                            </p>
+
+                            <p className="deliver-status">
+                                Order is: <span className={`status-badge ${
+                                    order.deliveryStatus === "Pending" ? "status-pending" :
+                                    order.deliveryStatus === "Packed" ? "status-packed" : "status-delivered"
+                                }`}>{order.deliveryStatus}</span>
+                            </p>
+
                             <div className="order-items">
                                 {order.OrderItems.map((item) => (
                                     <div key={item.id} className="order-item">
-                                        <img src={`${baseURL}${item.Product.imageUrl}`} alt={item.Product.name} className="customer-order-product-image" />
+                                        <img
+                                            src={`${baseURL}${item.Product.imageUrl}`}
+                                            alt={item.Product.name}
+                                            className="customer-order-product-image"
+                                        />
                                         <div className="order-details">
                                             <p className="product-name">{item.Product.name}</p>
                                             <p>Quantity: {item.quantity}</p>
@@ -43,7 +63,10 @@ function CustomerOrderPage() {
                                     </div>
                                 ))}
                             </div>
-                            <p className="order-date">Ordered on: {new Date(order.createdAt).toLocaleDateString()}</p>
+
+                            <p className="order-date">
+                                Ordered on: {new Date(order.createdAt).toLocaleDateString()}
+                            </p>
                         </div>
                     ))}
                 </div>

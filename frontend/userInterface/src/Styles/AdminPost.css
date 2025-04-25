@@ -1,112 +1,71 @@
-/* Container for the entire verification page */
-.verify_Post_page {
+.verify_post_page {
     padding: 20px;
     background-color: #f9fafb;
     min-height: 100vh;
 }
 
-/* Grid layout for all post cards */
-.VerifyPost_container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 16px;
-}
-
-/* Each post card */
-.Pending_post_list {
-    background-color: white;
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
-    border-radius: 16px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    height: auto;
-    transition: transform 0.3s ease;
-}
-
-.Pending_post_list:hover {
-    transform: translateY(-4px);
-}
-
-/* Image section */
-.Pending_post_list_image {
-    width: 100%;
-    height: 220px;
-    background-color: #e5e7eb;
-    overflow: hidden;
-}
-
-.Pending_post_list_image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-
-/* User info */
-.Pending_post_list_user {
-    display: flex;
-    align-items: center;
-    padding: 10px 16px;
-    gap: 12px;
-}
-
-.Pending_post_list_user_image {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    overflow: hidden;
-    flex-shrink: 0;
-    background-color: #ddd;
-}
-
-.Pending_post_list_user_image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-}
-
-/* User name */
-.Pending_post_list_user h2 {
-    font-size: 16px;
-    font-weight: 600;
+.table_heading {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 16px;
     color: #111827;
 }
 
-/* Post content */
-.Pending_post_list_content {
-    padding: 0 16px;
+.table_wrapper {
+    overflow-x: auto;
 }
 
-.Pending_post_list_content p {
+.post_table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.post_table thead {
+    background-color: #f3f4f6;
+    color: #374151;
+}
+
+.post_table th,
+.post_table td {
+    padding: 12px 16px;
+    text-align: left;
+    border-bottom: 1px solid #e5e7eb;
     font-size: 14px;
+}
+
+.post_table th {
+    font-weight: 600;
+}
+
+.post_table td {
     color: #4b5563;
-    margin-top: 8px;
 }
 
-/* Action buttons */
-.Pending_post_list_actions {
-    display: flex;
-    justify-content: space-between;
-    padding: 16px;
-    border-top: 1px solid #e5e7eb;
-    gap: 10px;
+.table_post_image {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
 }
 
+/* Buttons */
 .approve_button,
 .reject_button {
-    flex: 1;
-    padding: 10px 0;
-    border-radius: 8px;
-    font-weight: 600;
-    font-size: 14px;
+    padding: 6px 10px;
+    margin: 2px;
     border: none;
+    border-radius: 6px;
     cursor: pointer;
-    display: flex;
-    justify-content: center;
+    font-size: 14px;
+    display: inline-flex;
     align-items: center;
-    gap: 6px;
-    transition: background-color 0.3s;
+    justify-content: center;
+    transition: background-color 0.3s ease;
 }
 
 .approve_button {
@@ -125,59 +84,4 @@
 
 .reject_button:hover {
     background-color: #dc2626;
-}
-
-/* Optional: Modal styling for future improvements */
-.modal_overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 999;
-}
-
-.modal_content {
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    text-align: center;
-    width: 320px;
-}
-
-.modal_content input {
-    width: 100%;
-    padding: 10px;
-    margin-top: 12px;
-    border: 1px solid #d1d5db;
-    border-radius: 6px;
-}
-
-.modal_buttons {
-    margin-top: 16px;
-    display: flex;
-    justify-content: space-between;
-}
-
-.modal_buttons button {
-    flex: 1;
-    margin: 0 4px;
-    padding: 10px;
-    border: none;
-    border-radius: 6px;
-    font-weight: 600;
-    color: white;
-    cursor: pointer;
-}
-
-.modal_buttons button:first-child {
-    background-color: #10b981;
-}
-
-.modal_buttons button:last-child {
-    background-color: #ef4444;
 }

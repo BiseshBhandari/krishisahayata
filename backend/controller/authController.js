@@ -38,44 +38,59 @@ exports.register = async (req, res) => {
 
 };
 
-//api to login user into the system
 exports.login = async (req, res) => {
-
     const { email, password } = req.body;
 
     try {
-        const checkEmail = await User.findOne({ where: { email } });
+        const user = await User.findOne({ where: { email } });
 
-        if (!checkEmail) {
-            return res.status(404).json({ message: 'User not avaialbe' });
+        if (!user) {
+            return res.status(404).json({ message: 'User not found with this email' });
         }
 
-        const checkPassword = await bcrypt.compare(password, checkEmail.password_hash)
+        const isPasswordCorrect = await bcrypt.compare(password, user.password_hash);
 
-        if (!checkPassword) {
-            return res.status(401).json({ message: 'Provide Correct Password' })
+        if (!isPasswordCorrect) {
+            return res.status(401).json({ message: 'Incorrect password' });
         }
 
         const token = jwt.sign(
-            { userName: checkEmail.name, role: checkEmail.role, Id: checkEmail.user_id }, 'secretKey', { expiresIn: '2h' }
+            {
+                userName: user.name,
+                role: user.role,
+                Id: user.user_id
+            },
+            'secretKey',
+            { expiresIn: '2h' }
         );
 
         const userData = {
-            user_ID: checkEmail.user_id,
-            userName: checkEmail.name,
-            email: checkEmail.email,
-            role: checkEmail.role
-        }
+            user_id: user.user_id,
+            name: user.name,
+            email: user.email,
+            role: user.role,
+            location: user.location,
+            mobile_number: user.mobile_number,
+            profile_image_url: user.profile_image_url,
+        };
 
-        return res.status(200).json({ message: 'Login Sucessfull', token, user: userData })
+        return res.status(200).json({
+            message: 'Login successful',
+            token,
+            user: userData
+        });
 
     } catch (error) {
-        return res.status(500).json({ message: 'Error while logging in', error: error.message })
+        console.error('Login error:', error.message);
+        return res.status(500).json({
+            message: 'An error occurred during login',
+            error: error.message
+        });
     }
-
 };
 
-//api to send mail for forgot  password
+
+
 exports.forgotPassword = async (req, res) => {
     const { email } = req.body;
 
@@ -83,58 +98,87 @@ exports.forgotPassword = async (req, res) => {
         const checkUser = await User.findOne({ where: { email } });
 
         if (!checkUser) {
-            return res.status(500).json({ message: 'Sorry User not found' });
+            return res.status(404).json({ message: 'Sorry, user not found' });
         }
 
-        const verification_token = jwt.sign({ userId: checkUser.user_id, }, process.env.JWT_SECRET, { expiresIn: '8m' });
+        let resetCode;
+        let isCodeUnique = false;
+
+        while (!isCodeUnique) {
+            resetCode = Math.floor(1000 + Math.random() * 9000).toString();
+            const existingCode = await User.findOne({ where: { reset_Token: resetCode } });
+            if (!existingCode) {
+                isCodeUnique = true;
+            }
+        }
+
+        const expiryTime = Date.now() + 8 * 60 * 1000; // 8 minutes
 
         await checkUser.update({
-            reset_Token: verification_token,
-            reset_token_exp: Date.now() + 8 * 60 * 1000
-        })
-        
+            reset_Token: resetCode,
+            reset_token_exp: expiryTime
+        });
+
         await transporter.sendMail({
             from: process.env.MY_MAIL,
             to: email,
-            subject: 'Password reset mail',
-            text: `CLick to reset Password: ${process.env.RESET_LINK}/${verification_token}`
+            subject: 'Your Password Reset Code',
+            html: `
+                <div style="font-family: Arial, sans-serif; color: #333;">
+                    <h2>Password Reset Request</h2>
+                    <p>Hi ${checkUser.name || 'there'},</p>
+                    <p>We received a request to reset your password. Use the code below to proceed:</p>
+                    <div style="font-size: 24px; font-weight: bold; margin: 20px 0; color: #007BFF;">${resetCode}</div>
+                    <p>This code is valid for <strong>8 minutes</strong>.</p>
+                    <p>If you did not request this, you can safely ignore this email.</p>
+                    <br />
+                    <p>Thanks,<br>Your App Team</p>
+                </div>
+            `
         });
 
-        return res.status(200).json({ message: 'Reset Mail Sent Successfully' });
+        return res.status(200).json({ message: 'Email sent successfully', code: resetCode });
 
     } catch (error) {
-        return res.status(500).json({ message: "Error occured in the system", error: error.message });
+        return res.status(500).json({ message: "An error occurred in the system", error: error.message });
     }
 };
 
-//api for the reset password function
+// Reset Password using 4-digit reset code
 exports.resetPassword = async (req, res) => {
-
-    const { token } = req.params;
-    const { new_password } = req.body;
+    const { reset_code, new_password } = req.body;
 
     try {
-        const tokenDecode = jwt.verify(token, process.env.JWT_SECRET);
+        const user = await User.findOne({ where: { reset_Token: reset_code } });
 
-        const findUser = await User.findOne({ where: { user_id: tokenDecode.userId, reset_Token: token } });
-
-        if (!findUser || findUser.reset_token_exp < Date.now()) {
-            return res.status(400).json({ message: 'Expired token' });
+        if (!user) {
+            return res.status(400).json({ message: 'Invalid or expired reset code' });
         }
 
-        const hashsalt = await bcrypt.genSalt(10);
+        if (!user.reset_token_exp || user.reset_token_exp < Date.now()) {
+            return res.status(400).json({ message: 'Reset code has expired' });
+        }
 
-        const newHash = await bcrypt.hash(new_password, hashsalt);
+        const isSamePassword = await bcrypt.compare(new_password, user.password_hash);
+        if (isSamePassword) {
+            return res.status(400).json({ message: 'New password must be different from the old password' });
+        }
 
-        await findUser.update({
-            password_hash: newHash,
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(new_password, salt);
+
+        await user.update({
+            password_hash: hashedPassword,
             reset_Token: null,
             reset_token_exp: null
         });
 
-        return res.status(200).json({ message: 'Password updated sucessfully' });
+        return res.status(200).json({ message: 'Password updated successfully' });
 
     } catch (error) {
-        return res.status(400).json({ message: 'Token did not match', error: error.message })
+        return res.status(500).json({
+            message: 'Something went wrong while resetting your password',
+            error: error.message
+        });
     }
 };

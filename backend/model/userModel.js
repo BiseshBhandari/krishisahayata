@@ -25,6 +25,19 @@ const User = sequelize.define('User', {
         type: DataTypes.ENUM('admin', 'farmer'),
         defaultValue: 'farmer',
     },
+    location: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    },
+    mobile_number: {
+        type: DataTypes.STRING,
+        allowNull: true,
+        unique: true,
+    },
+    profile_image_url: {
+        type: DataTypes.STRING,
+        allowNull: true,
+    },
     created_at: {
         type: DataTypes.DATE,
         defaultValue: DataTypes.NOW,
@@ -41,6 +54,5 @@ const User = sequelize.define('User', {
     tableName: 'users',
     timestamps: false,
 });
-
 
 module.exports = User;

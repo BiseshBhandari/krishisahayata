@@ -1,6 +1,7 @@
 const express = require('express');
 const adminController = require('../controller/admin_controller/videoFeature');
 const { getPendingPosts, approvePost } = require('../controller/admin_controller/verifyPosts');
+const productVerificationController = require('../controller/admin_controller/verifyProduct');
 
 const router = express.Router();
 
@@ -12,5 +13,9 @@ router.delete('/deleteVideo/:tutorial_id', adminController.deleteVideo);
 // post verification routes
 router.get('/verifyPost', getPendingPosts);
 router.put('/approvePost/:post_id', approvePost);
+
+//product verification routes
+router.get('/verifyProduct', productVerificationController.getPendingProducts);
+router.put('/approveProduct/:productId', productVerificationController.approveProduct);
 
 module.exports = router;

@@ -5,17 +5,24 @@ const { addProduct, getAllProducts, getUserProducts, deleteProduct, updateProduc
 const cartController = require('../controller/userController/cartFeature');
 const orderController = require('../controller/userController/orderFeature');
 const cropGuideController = require('../controller/userController/cropGuideFeature');
-const commmentController = require('../controller/userController/commentFeature')
+const commmentController = require('../controller/userController/commentFeature');
+const profileController = require('../controller/userController/profileFeature');
 const router = express.Router();
+
+router.get("/profile/:user_id", profileController.viewProfile);
+router.put("/updateProfile/:user_id", profileController.updateProfile);
 
 router.get('/videos', getallVideos);
 
+
 router.post('/addPost/:user_id', userController.addPost);
-router.get('/posts', userController.getAllPosts);
+router.get('/posts/:user_id', userController.getAllPosts);
 router.get('/userPost/:user_id', userController.getUserPost);
+router.put('/updatePost/:post_id', userController.editPost);
 router.delete('/deletePost/:post_id', userController.deletePost);
 router.put("/likePost", userController.likeUnlikePost);
 router.get('/getLikedposts/:user_id', userController.getLikedPosts);
+
 
 router.post('/addComment', commmentController.addComment);
 router.get('/getComments/:postId', commmentController.getComments);

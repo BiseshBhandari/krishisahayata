@@ -53,101 +53,105 @@ function SellerOrderDetailPage() {
 
     return (
         <div className="seller-orders-container">
-            <div className="filter-sidebar">
-                <h2 className="filter-title">Filters</h2>
+            <div className="seller_mini_container">
 
-                <div className="filter-section">
-                    <label htmlFor="delivery-status">Filter by Delivery Status:</label>
-                    <select
-                        id="delivery-status"
-                        value={filterStatus}
-                        onChange={(e) => setFilterStatus(e.target.value)}
-                    >
-                        <option value="All">All</option>
-                        <option value="Pending">Pending</option>
-                        <option value="Packed">Packed</option>
-                        <option value="Delivered">Delivered</option>
-                    </select>
-                </div>
+                <div className="filter-sidebar">
+                    <h2 className="filter-title">Filters</h2>
 
-                <div className="filter-section">
-                    <label htmlFor="date-from">From Date:</label>
-                    <input
-                        type="date"
-                        id="date-from"
-                        value={dateFrom}
-                        onChange={(e) => setDateFrom(e.target.value)}
-                    />
-                    <label htmlFor="date-to">To Date:</label>
-                    <input
-                        type="date"
-                        id="date-to"
-                        value={dateTo}
-                        onChange={(e) => setDateTo(e.target.value)}
-                    />
-                </div>
-
-                <div className="filter-section">
-                    <label htmlFor="sort-order">Sort by Order ID:</label>
-                    <select
-                        id="sort-order"
-                        value={sortOrder}
-                        onChange={(e) => setSortOrder(e.target.value)}
-                    >
-                        <option value="ascending">Ascending</option>
-                        <option value="descending">Descending</option>
-                    </select>
-                </div>
-            </div>
-
-            <div className="seller-orders-content">
-                {filteredOrders.length === 0 ? (
-                    <p className="no-orders">No orders found based on the applied filters.</p>
-                ) : (
-                    <div className="seller-orders-list">
-                        {filteredOrders.map((order) => (
-                            <div key={order.id} className="seller-order-card">
-                                <h2 className="order-id">Order ID: {order.id}</h2>
-                                <p className="user-name">Receiver's Name: {order.User.name}</p>
-                                <p className="user-email">Receiver's Email: {order.User.email}</p>
-
-                                <p className="order-status">Status: {order.orderStatus}</p>
-                                <p className="payment-status">Payment: {order.paymentStatus}</p>
-
-                                <div className="delivery-status-update">
-                                    <label>Delivery Status:</label>
-                                    <select
-                                        value={order.deliveryStatus}
-                                        onChange={(e) => handleUpdateStatus(order.id, e.target.value)}
-                                    >
-                                        <option value="Pending">Pending</option>
-                                        <option value="Packed">Packed</option>
-                                        <option value="Delivered">Delivered</option>
-                                    </select>
-                                </div>
-
-                                <div className="order-items">
-                                    {order.OrderItems.map((item) => (
-                                        <div key={item.id} className="order-item">
-                                            <img
-                                                src={`${baseURL}${item.Product.imageUrl}`}
-                                                alt={item.Product.name}
-                                                className="order-product-image"
-                                            />
-                                            <div className="order-details">
-                                                <p className="product-name">{item.Product.name}</p>
-                                                <p>Quantity Ordered: {item.quantity}</p>
-                                                <p>Total Price: RS.{item.total}</p>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                                <p className="order-date">Ordered on: {new Date(order.createdAt).toLocaleDateString()}</p>
-                            </div>
-                        ))}
+                    <div className="filter-section">
+                        <label htmlFor="delivery-status">Filter by Delivery Status:</label>
+                        <select
+                            id="delivery-status"
+                            value={filterStatus}
+                            onChange={(e) => setFilterStatus(e.target.value)}
+                        >
+                            <option value="All">All</option>
+                            <option value="Pending">Pending</option>
+                            <option value="Packed">Packed</option>
+                            <option value="Delivered">Delivered</option>
+                        </select>
                     </div>
-                )}
+
+                    <div className="filter-section">
+                        <label htmlFor="date-from">From Date:</label>
+                        <input
+                            type="date"
+                            id="date-from"
+                            value={dateFrom}
+                            onChange={(e) => setDateFrom(e.target.value)}
+                        />
+                        <label htmlFor="date-to">To Date:</label>
+                        <input
+                            type="date"
+                            id="date-to"
+                            value={dateTo}
+                            onChange={(e) => setDateTo(e.target.value)}
+                        />
+                    </div>
+
+                    <div className="filter-section">
+                        <label htmlFor="sort-order">Sort by Order ID:</label>
+                        <select
+                            id="sort-order"
+                            value={sortOrder}
+                            onChange={(e) => setSortOrder(e.target.value)}
+                        >
+                            <option value="ascending">Ascending</option>
+                            <option value="descending">Descending</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div className="seller-orders-content">
+                    {filteredOrders.length === 0 ? (
+                        <p className="no-orders">No orders found based on the applied filters.</p>
+                    ) : (
+                        <div className="seller-orders-list">
+                            {filteredOrders.map((order) => (
+                                <div key={order.id} className="seller-order-card">
+                                    <h2 className="order-id">Order ID: {order.id}</h2>
+                                    <p className="user-name">Receiver's Name: {order.User.name}</p>
+                                    <p className="user-email">Receiver's Email: {order.User.email}</p>
+
+                                    <p className="order-status">Status: {order.orderStatus}</p>
+                                    <p className="payment-status">Payment: {order.paymentStatus}</p>
+
+                                    <div className="delivery-status-update">
+                                        <label>Delivery Status:</label>
+                                        <select
+                                            value={order.deliveryStatus}
+                                            onChange={(e) => handleUpdateStatus(order.id, e.target.value)}
+                                        >
+                                            <option value="Pending">Pending</option>
+                                            <option value="Packed">Packed</option>
+                                            <option value="Delivered">Delivered</option>
+                                        </select>
+                                    </div>
+
+                                    <div className="order-items">
+                                        {order.OrderItems.map((item) => (
+                                            <div key={item.id} className="order-item">
+                                                <img
+                                                    src={`${baseURL}${item.Product.imageUrl}`}
+                                                    alt={item.Product.name}
+                                                    className="order-product-image"
+                                                />
+                                                <div className="order-details">
+                                                    <p className="product-name">{item.Product.name}</p>
+                                                    <p>Quantity Ordered: {item.quantity}</p>
+                                                    <p>Total Price: RS.{item.total}</p>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    <p className="order-date">Ordered on: {new Date(order.createdAt).toLocaleDateString()}</p>
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
             </div>
+
         </div>
     );
 }

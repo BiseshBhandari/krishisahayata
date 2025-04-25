@@ -4,32 +4,24 @@ import { ToastContainer, toast } from "react-toastify";
 import { useProductStore } from "../../Store/useProductStoe";
 import { useCartStore } from "../../Store/useCartStore";
 import Loader from "../../Components/Loader";
-import "../../Styles/MarketPage.css"
+import ProductDetailModal from "../../Components/ProductDetailModal"; // imported modal component
+
+import "../../Styles/MarketPage.css";
 
 function MarketPage() {
     const [showModal, setShowModal] = useState(false);
-
     const [user_id, setUser_id] = useState(null);
-
     const [selectedProduct, setSelectedProduct] = useState(null);
-
     const [quantity, setQuantity] = useState(1);
-
-    const [] = useState(null);
-
     const { addProduct, fetchAllProducts, products, loading, error } = useProductStore();
-
     const { addCartItem, cartloading } = useCartStore();
 
     const [selectedCategory, setSelectedCategory] = useState("All");
-
-    const [selectedStock, setSelectedStock_status] = useState("all");
-
     const [searchQuery, setSearchQuery] = useState("");
+    const [minPrice, setMinPrice] = useState("");
+    const [maxPrice, setMaxPrice] = useState("");
 
     const baseURL = 'http://localhost:3000';
-    // const baseURL = import.meta.env.VITE_BACKEND_BASE_URL;
-
 
     const [formData, setFormData] = useState({
         name: "",
@@ -40,8 +32,6 @@ function MarketPage() {
         stockQuantity: "",
         file: null
     });
-
-
 
     const handleSelectProduct = (product) => {
         setSelectedProduct(product);
@@ -56,18 +46,18 @@ function MarketPage() {
         fetchAllProducts();
     }, [fetchAllProducts]);
 
-
     const filteredProducts = products.filter((product) => {
-
         const matchesCategory =
             selectedCategory === "All" || product.category === selectedCategory;
 
         const matchesSearch =
-            product.name.toLowerCase().includes(searchQuery.toLowerCase())
+            product.name.toLowerCase().includes(searchQuery.toLowerCase());
 
-        const matchStock =
-            selectedStock === "all" || product.stockStatus === selectedStock;
-        return matchesCategory && matchesSearch && matchStock;
+        const matchesPrice =
+            (!minPrice || parseFloat(product.price) >= parseFloat(minPrice)) &&
+            (!maxPrice || parseFloat(product.price) <= parseFloat(maxPrice));
+
+        return matchesCategory && matchesSearch && matchesPrice;
     });
 
     const handleChange = (e) => {
@@ -116,7 +106,6 @@ function MarketPage() {
     };
 
     const handleAddCartItem = async () => {
-
         if (!selectedProduct) {
             return toast.error("Selected product not found.");
         }
@@ -141,6 +130,7 @@ function MarketPage() {
         <div className="MarketContainer">
             <ToastContainer />
             {loading && <Loader display_text="Adding..." />}
+
             <div className="MarketFilters">
                 <div className="product_Categories">
                     <div className="prodict_categories_title">
@@ -157,8 +147,7 @@ function MarketPage() {
                             (category) => (
                                 <button
                                     key={category}
-                                    className={`category ${selectedCategory === category ? "active" : ""
-                                        }`}
+                                    className={`category ${selectedCategory === category ? "active" : ""}`}
                                     onClick={() => setSelectedCategory(category)}
                                 >
                                     {category}
@@ -168,40 +157,44 @@ function MarketPage() {
                     </div>
                 </div>
 
-                <div className="Product_stock">
-                    <div className="product_stock_title">
-                        <p>Stock filter:</p>
+                <div className="price_filter_container">
+                    <div className="price_filter_title">
+                        <p>Filter by Price:</p>
                     </div>
-                    <div className="stock_filter">
-
-                        <button
-                            className={`category ${selectedCategory === "All" ? "active" : ""}`}
-                            onClick={() => setSelectedStock_status("all")}
-                        >
-                            All
-                        </button>
-                        {Array.from(new Set(products.map((product) => product.stockStatus))).map(
-                            (stockStatus) => (
-                                <button
-                                    key={stockStatus}
-                                    className={`category ${selectedStock === stockStatus ? "active" : ""
-                                        }`}
-                                    onClick={() => setSelectedStock_status(stockStatus)}
-                                >
-                                    {stockStatus}
-                                </button>
-                            )
-                        )}
+                    <div className="price_inputs">
+                        <input
+                            type="number"
+                            placeholder="Min Price"
+                            className="price-input"
+                            value={minPrice}
+                            onChange={(e) => setMinPrice(e.target.value)}
+                        />
+                        <input
+                            type="number"
+                            placeholder="Max Price"
+                            className="price-input"
+                            value={maxPrice}
+                            onChange={(e) => setMaxPrice(e.target.value)}
+                        />
                     </div>
                 </div>
             </div>
+
             <div className="ProuctDisplay">
                 <div className="ProductDisplay_head">
                     <div className="search_bar_container">
-                        <input type="search" className="product_search_bar" placeholder="Search here....." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} />
+                        <input
+                            type="search"
+                            className="product_search_bar"
+                            placeholder="Search here....."
+                            value={searchQuery}
+                            onChange={(e) => setSearchQuery(e.target.value)}
+                        />
                     </div>
                     <div className="add_product_btn_container">
-                        <button className="add_product_btn" onClick={() => setShowModal(true)}> Add Product</button>
+                        <button className="add_product_btn" onClick={() => setShowModal(true)}>
+                            Add Product
+                        </button>
                     </div>
                 </div>
 
@@ -209,9 +202,17 @@ function MarketPage() {
                     <div className="product-card-list">
                         {filteredProducts?.length ? (
                             filteredProducts.map((product) => (
-                                <div key={product.product_id} className="product-card" onClick={() => handleSelectProduct(product)}>
+                                <div
+                                    key={product.product_id}
+                                    className="product-card"
+                                    onClick={() => handleSelectProduct(product)}
+                                >
                                     <div className="product_image_con">
-                                        <img src={`${baseURL}${product.imageUrl}`} alt={product.name} className="product-image" />
+                                        <img
+                                            src={`${baseURL}${product.imageUrl}`}
+                                            alt={product.name}
+                                            className="product-image"
+                                        />
                                     </div>
                                     <div className="product-info">
                                         <div className="name_price">
@@ -232,7 +233,6 @@ function MarketPage() {
                             <p className="no-products">No products available</p>
                         )}
                     </div>
-
                 </div>
             </div>
 
@@ -246,7 +246,6 @@ function MarketPage() {
                                     <label className="product-label">Product Name</label>
                                     <input type="text" name="name" placeholder="Enter Product Name" className="product-input" onChange={handleChange} required />
                                 </div>
-
                                 <div className="product-fields">
                                     <label className="product-label">Price</label>
                                     <input type="number" name="price" placeholder="Enter Price" className="product-input" onChange={handleChange} required />
@@ -264,7 +263,6 @@ function MarketPage() {
                                         <option value="Others">Others</option>
                                     </select>
                                 </div>
-
                                 <div className="product-fields">
                                     <label className="product-label">Discount Price</label>
                                     <input type="number" name="discountPrice" placeholder="Enter Discount Price" className="product-input" onChange={handleChange} />
@@ -276,7 +274,6 @@ function MarketPage() {
                                     <label className="product-label">Upload Image</label>
                                     <input type="file" name="file" accept="image/*" className="product-input" onChange={handleChange} required />
                                 </div>
-
                                 <div className="product-fields">
                                     <label className="product-label">Stock Quantity</label>
                                     <input type="number" name="stockQuantity" placeholder="Enter Stock Quantity" className="product-input" onChange={handleChange} required />
@@ -297,36 +294,17 @@ function MarketPage() {
             )}
 
             {selectedProduct && (
-                <div className="product-modal-overlay">
-                    <div className="product-modal-content">
-                        <span className="product-close-modal" onClick={() => setSelectedProduct(null)}>&times;</span>
-                        <div className="product-details">
-                            <div className="product-image-container">
-                                <img src={`${baseURL}${selectedProduct.imageUrl}`} alt={selectedProduct.name} className="product-modal-image" />
-                            </div>
-                            <div className="product-details-info">
-                                <h3 className="product-modal-name">{selectedProduct.name}</h3>
-                                <p className="product-modal-price">RS. {selectedProduct.discountPrice || selectedProduct.price}</p>
-                                <p className="product-modal-description">{selectedProduct.description}</p>
-                                <p className={`product-modal-stock-status ${selectedProduct.stockStatus === "out-of-stock" ? "out" : "in"}`}>
-                                    {selectedProduct.stockStatus}
-                                </p>
-
-                                <div className="quantity-selector">
-                                    <button onClick={() => setQuantity((prev) => Math.max(1, prev - 1))}>-</button>
-                                    <input type="number" name="productQuantity" value={quantity} readOnly />
-                                    <button onClick={() => setQuantity((prev) => prev + 1)}>+</button>
-                                </div>
-                                <button className="add-to-cart-button" onClick={handleAddCartItem} disabled={cartloading}>
-                                    {cartloading ? "Adding..." : "Add to Cart"}
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <ProductDetailModal
+                    product={selectedProduct}
+                    quantity={quantity}
+                    setQuantity={setQuantity}
+                    onClose={() => setSelectedProduct(null)}
+                    onAddToCart={handleAddCartItem}
+                    baseURL={baseURL}
+                />
             )}
         </div>
     );
-};
+}
 
 export default MarketPage;

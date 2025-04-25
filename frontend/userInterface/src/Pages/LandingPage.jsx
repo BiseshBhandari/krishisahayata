@@ -89,7 +89,6 @@ function LandingPage() {
             </div>
             <div className="third_section-videos">
                 <div className="video_head">
-                    <p>Popular Videos</p>
                 </div>
             </div>
 
@@ -104,3 +103,4 @@ function LandingPage() {
 }
 
 export default LandingPage;
+

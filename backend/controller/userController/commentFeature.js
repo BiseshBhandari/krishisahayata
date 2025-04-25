@@ -31,15 +31,15 @@ exports.getComments = async (req, res) => {
             include: [
                 {
                     model: User,
-                    attributes: ['name']
+                    attributes: ['name', 'profile_image_url']
                 },
                 {
                     model: Reply,
-                    attributes: ['reply_id', 'reply', 'created_at'], 
+                    attributes: ['reply_id', 'reply', 'created_at'],
                     include: [
                         {
                             model: User,
-                            attributes: ['name']
+                            attributes: ['name', 'profile_image_url']
                         }
                     ]
                 }

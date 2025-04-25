@@ -37,7 +37,7 @@ exports.createOrder = async (req, res) => {
 
         res.status(201).json({ success: true, order });
     } catch (error) {
-        console.error(error);
+        console.error(error); 
         res.status(500).json({ error: "Error creating order" });
     }
 };
@@ -94,12 +94,41 @@ exports.getOrders = async (req, res) => {
     }
 };
 
+exports.cancelOrder = async (req, res) => {
+    const { orderId } = req.params;
+    const { userId } = req.body;
+
+    try {
+        const order = await Order.findOne({ where: { id: orderId, userId } });
+
+        if (!order) {
+            return res.status(404).json({ error: "Order not found" });
+        }
+
+        if (order.orderStatus !== "Pending" || order.paymentStatus !== "Pending") {
+            return res.status(400).json({ error: "Cannot cancel order. It's already confirmed or paid." });
+        }
+
+        // Delete order items first
+        await OrderItem.destroy({ where: { orderId } });
+
+        // Delete the order
+        await order.destroy();
+
+        res.status(200).json({ success: true, message: "Order cancelled successfully" });
+    } catch (error) {
+        console.error("Error cancelling order:", error.message);
+        res.status(500).json({ error: "Internal server error" });
+    }
+};
 
 exports.verifyEsewaPayment = async (req, res) => {
     const { transaction_uuid, total_amount, product_code, transaction_code, status, signature } = req.body;
     const { order_id } = req.params;
 
-    if (!transaction_uuid || !transaction_code || !total_amount || !status || !signature) {
+    const cleanedTotalAmount = total_amount.replace(/,/g, '');
+
+    if (!transaction_uuid || !transaction_code || !cleanedTotalAmount || !status || !signature) {
         return res.status(400).json({ error: "Missing required fields" });
     }
 
@@ -109,46 +138,45 @@ exports.verifyEsewaPayment = async (req, res) => {
             return res.status(404).json({ error: "Order not found" });
         }
 
-        const esewaResponse = await axios.get(
-            `https://rc.esewa.com.np/api/epay/transaction/status/?product_code=${product_code}&total_amount=${total_amount}&transaction_uuid=${transaction_uuid}`
-        );
+        const esewaResponse = await axios.get(`https://rc.esewa.com.np/api/epay/transaction/status/?product_code=${product_code}&total_amount=${cleanedTotalAmount}&transaction_uuid=${transaction_uuid}`);
 
         const esewaData = esewaResponse.data;
         console.log("eSewa Response:", esewaData);
 
-        if (esewaData.status == "COMPLETE") {
+        if (esewaData.status === "COMPLETE") {
+            // Update order status
             await order.update({
                 paymentStatus: "Paid",
                 orderStatus: "Confirmed",
             });
-            console.log("Payment verified and order updated");
-            return res.status(200).json({ success: true, message: "Payment verified and order updated" });
-            // return res.status(400).json({ error: "Payment not completed" });
+
+            // Find all ordered items for this order
+            const orderItems = await OrderItem.findAll({ where: { orderId: order_id } });
+
+            // Decrease stock for each product
+            for (const item of orderItems) {
+                const product = await Product.findOne({ where: { product_id: item.productId } });
+                if (product) {
+                    let newStock = product.stockQuantity - item.quantity;
+                    let newStatus = newStock <= 0 ? "out-of-stock" : "in-Stock";
+
+                    await product.update({
+                        stockQuantity: newStock,
+                        stockStatus: newStatus,
+                    });
+                }
+            }
+
+            console.log("Payment verified, order updated, and stock adjusted");
+            return res.status(200).json({ success: true, message: "Payment verified, order updated, and stock adjusted" });
+        } else {
+            await order.destroy();
+            console.log("Payment not completed. Order deleted.");
+            return res.status(400).json({ error: "Payment not completed. Order deleted." });
         }
 
-        // const secret = "8gBm/:&EnhH.1/q";
-        // const message = `transaction_code=${transaction_code},status=${status},total_amount=${total_amount},transaction_uuid=${transaction_uuid},product_code=${product_code}`;
-        // const generatedHash = CryptoJS.HmacSHA256(message, secret);
-        // const generatedSignature = CryptoJS.enc.Base64.stringify(generatedHash);
-
-        // if (signature !== generatedSignature) {
-        //     console.log("Invalid payment signature");
-        //     return res.status(400).json({ error: "Invalid payment signature" });
-        // }
-
-        // await order.update({
-        //     paymentStatus: "Paid",
-        //     orderStatus: "Confirmed",
-        // });
-
-        await order.destroy();
-        console.log("Payment not completed. Order deleted.");
-        return res.status(400).json({ error: "Payment not completed. Order deleted." });
-
-        // return res.status(200).json({ success: true, message: "Payment verified and order updated" });
-
     } catch (error) {
-        console.error("Error verifying payment:", error);
+        console.error("Error verifying payment:", error.message);
         return res.status(500).json({ error: "Internal server error" });
     }
 };
@@ -197,7 +225,7 @@ exports.getSellerOrderDetails = async (req, res) => {
                     include: [
                         {
                             model: Product,
-                            where: { user_ID: sellerId }, // Ensures only seller's products are included
+                            where: { user_ID: sellerId },
                             attributes: ['name', 'price', 'imageUrl']
                         }
                     ]
