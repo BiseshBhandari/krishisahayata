@@ -1,35 +1,263 @@
-.admin_dash {
-    width: inherit;
-    height: 721px;
+/* General Layout */
+.dashboard-container {
     display: flex;
-    flex-direction: row;
-    position: relative;
-
+    min-height: 100vh;
+    background-color: #f4f7fa;
 }
 
-.Dash_component {
-    /* background-color: rebeccapurple; */
-    width: 81%;
-    padding: 5px;
+.dashboard-content {
+    flex: 1;
+    padding: 24px;
 }
 
-.fist-row {
-    /* background-color: gray; */
+/* Typography */
+.dashboard-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 24px;
+}
+
+.metric-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 8px;
+}
+
+.metric-value {
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.metric-subtext {
+    font-size: 14px;
+    color: #777;
+    margin-top: 4px;
+}
+
+.chart-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 16px;
+}
+
+.pending-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #555;
+    margin-bottom: 16px;
+}
+
+.pending-subtitle {
+    font-size: 16px;
+    font-weight: 500;
+    color: #555;
+    margin-bottom: 12px;
+}
+
+.pending-timestamp {
+    font-size: 12px;
+    color: #777;
+    margin-top: 4px;
+}
+
+.pending-empty {
+    font-size: 14px;
+    color: #777;
+}
+
+/* Metrics Grid */
+.metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+@media (max-width: 768px) {
+    .metrics-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.metric-card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.metric-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Metric Colors */
+.metric-value.users {
+    color: #007bff;
+}
+
+.metric-value.posts {
+    color: #28a745;
+}
+
+.metric-value.products {
+    color: #6f42c1;
+}
+
+.metric-value.videos {
+    color: #ffc107;
+}
+
+.metric-value.comments {
+    color: #fd7e14;
+}
+
+.metric-value.likes {
+    color: #dc3545;
+}
+
+.metric-value.orders {
+    color: #6610f2;
+}
+
+.metric-value.replies {
+    color: #20c997;
+}
+
+/* Charts Grid */
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+@media (max-width: 768px) {
+    .charts-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.chart-card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.chart-container {
+    height: 300px;
+}
+
+/* Pending Items */
+.pending-card {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.pending-sections {
     display: flex;
-    flex-direction: row;
-    justify-content: space-around;
-    margin-top: 30px;
-    padding: 5px;
+    flex-direction: column;
+    gap: 24px;
 }
 
-.tutorial,
-.user,
-.post {
-    /* background-color: red; */
-    width: 270px;
-    height: 150px;
-    box-shadow: 2px 2px 5px rgb(180, 177, 177);
-    border-radius: 2px;
-    border: 2px solid rgb(180, 177, 177);
+.pending-section {
+    display: flex;
+    flex-direction: column;
+}
 
+.pending-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.pending-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.pending-details {
+    flex: 1;
+}
+
+.pending-details p {
+    margin: 0;
+    font-size: 14px;
+    color: #333;
+}
+
+.pending-details p strong {
+    color: #555;
+}
+
+.pending-image {
+    width: 96px;
+    height: 96px;
+    object-fit: cover;
+    margin-top: 8px;
+    border-radius: 4px;
+}
+
+.pending-actions {
+    display: flex;
+    gap: 8px;
+}
+
+/* Buttons */
+.btn {
+    padding: 8px 16px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-approve {
+    background-color: #28a745;
+}
+
+.btn-approve:hover {
+    background-color: #218838;
+}
+
+.btn-reject {
+    background-color: #dc3545;
+}
+
+.btn-reject:hover {
+    background-color: #c82333;
+}
+
+.btn-delete {
+    background-color: #6c757d;
+}
+
+.btn-delete:hover {
+    background-color: #5a6268;
+}
+
+/* Loading and Error States */
+.loading {
+    text-align: center;
+    font-size: 16px;
+    color: #555;
+}
+
+.error {
+    text-align: center;
+    font-size: 16px;
+    color: #dc3545;
 }

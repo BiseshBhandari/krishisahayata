@@ -37,7 +37,7 @@ exports.createOrder = async (req, res) => {
 
         res.status(201).json({ success: true, order });
     } catch (error) {
-        console.error(error); 
+        console.error(error);
         res.status(500).json({ error: "Error creating order" });
     }
 };
@@ -166,14 +166,14 @@ exports.verifyEsewaPayment = async (req, res) => {
                     });
                 }
             }
+            await Cart.destroy({ where: { userId: order.userId } });
 
             console.log("Payment verified, order updated, and stock adjusted");
             return res.status(200).json({ success: true, message: "Payment verified, order updated, and stock adjusted" });
-        } else {
-            await order.destroy();
-            console.log("Payment not completed. Order deleted.");
-            return res.status(400).json({ error: "Payment not completed. Order deleted." });
         }
+        await order.destroy();
+        console.log("Payment not completed. Order deleted.");
+        return res.status(400).json({ error: "Payment not completed. Order deleted." });
 
     } catch (error) {
         console.error("Error verifying payment:", error.message);
@@ -182,99 +182,99 @@ exports.verifyEsewaPayment = async (req, res) => {
 };
 
 
-exports.getCustomerOrderHistory = async (req, res) => {
-    const { userId } = req.params;
+    exports.getCustomerOrderHistory = async (req, res) => {
+        const { userId } = req.params;
 
-    try {
-        const orders = await Order.findAll({
-            where: { userId },
-            include: [
-                {
-                    model: OrderItem,
-                    include: [
-                        {
-                            model: Product,
-                            attributes: ['name', 'price', 'imageUrl'],
-                        }
-                    ]
-                }
-            ],
-            order: [['createdAt', 'DESC']]
-        });
+        try {
+            const orders = await Order.findAll({
+                where: { userId },
+                include: [
+                    {
+                        model: OrderItem,
+                        include: [
+                            {
+                                model: Product,
+                                attributes: ['name', 'price', 'imageUrl'],
+                            }
+                        ]
+                    }
+                ],
+                order: [['createdAt', 'DESC']]
+            });
 
-        if (!orders.length) {
-            return res.status(404).json({ error: "No orders found" });
+            if (!orders.length) {
+                return res.status(404).json({ error: "No orders found" });
+            }
+
+            res.status(200).json({ success: true, orders: orders });
+        } catch (error) {
+            console.error("Error fetching order history:", error);
+            res.status(500).json({ error: "Error fetching order history" });
+        }
+    };
+
+    // Fetch orders related to products created by a user (seller view)
+    exports.getSellerOrderDetails = async (req, res) => {
+        const { sellerId } = req.params;
+
+        try {
+            const orders = await Order.findAll({
+                include: [
+                    {
+                        model: OrderItem,
+                        include: [
+                            {
+                                model: Product,
+                                where: { user_ID: sellerId },
+                                attributes: ['name', 'price', 'imageUrl']
+                            }
+                        ]
+                    },
+                    {
+                        model: User,
+                        attributes: ['name', 'email']
+                    }
+                ],
+                order: [['createdAt', 'asc']]
+            });
+
+            // Filter out orders where no order items belong to the seller
+            const filteredOrders = orders.filter(order =>
+                order.OrderItems.some(orderItem => orderItem.Product)
+            );
+
+            if (!filteredOrders.length) {
+                return res.status(404).json({ error: "No orders found for your products" });
+            }
+
+            res.status(200).json({ success: true, orders: filteredOrders });
+        } catch (error) {
+            console.error("Error fetching seller order details:", error);
+            res.status(500).json({ error: "Error fetching seller order details" });
+        }
+    };
+
+
+    exports.updateDeliveryStatus = async (req, res) => {
+        const { orderId } = req.params;
+        const { deliveryStatus } = req.body;
+
+        if (!deliveryStatus) {
+            return res.status(400).json({ error: "Delivery status is required" });
         }
 
-        res.status(200).json({ success: true, orders: orders });
-    } catch (error) {
-        console.error("Error fetching order history:", error);
-        res.status(500).json({ error: "Error fetching order history" });
-    }
-};
+        try {
+            const order = await Order.findOne({ where: { id: orderId } });
 
-// Fetch orders related to products created by a user (seller view)
-exports.getSellerOrderDetails = async (req, res) => {
-    const { sellerId } = req.params;
+            if (!order) {
+                return res.status(404).json({ error: "Order not found" });
+            }
 
-    try {
-        const orders = await Order.findAll({
-            include: [
-                {
-                    model: OrderItem,
-                    include: [
-                        {
-                            model: Product,
-                            where: { user_ID: sellerId },
-                            attributes: ['name', 'price', 'imageUrl']
-                        }
-                    ]
-                },
-                {
-                    model: User,
-                    attributes: ['name', 'email']
-                }
-            ],
-            order: [['createdAt', 'asc']]
-        });
+            await order.update({ deliveryStatus });
 
-        // Filter out orders where no order items belong to the seller
-        const filteredOrders = orders.filter(order =>
-            order.OrderItems.some(orderItem => orderItem.Product)
-        );
-
-        if (!filteredOrders.length) {
-            return res.status(404).json({ error: "No orders found for your products" });
+            res.status(200).json({ success: true, message: "Delivery status updated successfully", order });
+        } catch (error) {
+            console.error("Error updating delivery status:", error);
+            res.status(500).json({ error: "Internal server error" });
         }
-
-        res.status(200).json({ success: true, orders: filteredOrders });
-    } catch (error) {
-        console.error("Error fetching seller order details:", error);
-        res.status(500).json({ error: "Error fetching seller order details" });
-    }
-};
-
-
-exports.updateDeliveryStatus = async (req, res) => {
-    const { orderId } = req.params;
-    const { deliveryStatus } = req.body;
-
-    if (!deliveryStatus) {
-        return res.status(400).json({ error: "Delivery status is required" });
-    }
-
-    try {
-        const order = await Order.findOne({ where: { id: orderId } });
-
-        if (!order) {
-            return res.status(404).json({ error: "Order not found" });
-        }
-
-        await order.update({ deliveryStatus });
-
-        res.status(200).json({ success: true, message: "Delivery status updated successfully", order });
-    } catch (error) {
-        console.error("Error updating delivery status:", error);
-        res.status(500).json({ error: "Internal server error" });
-    }
-};
+    };

@@ -1,18 +1,22 @@
 const express = require('express');
 const adminController = require('../controller/admin_controller/videoFeature');
-const { getPendingPosts, approvePost } = require('../controller/admin_controller/verifyPosts');
+const postVerifictionController = require('../controller/admin_controller/verifyPosts');
 const productVerificationController = require('../controller/admin_controller/verifyProduct');
-
+const adminDashController = require('../controller/admin_controller/adminDash');
 const router = express.Router();
 
-// video routes
+router.get('/metrics/:admin_id', adminDashController.getMetrics);
+router.get('/pending-items/:admin_id', adminDashController.getPendingItems);
+router.get('/post-trends/:admin_id', adminDashController.getPostTrends);
+router.get('/product-status/:admin_id', adminDashController.getProductStatus);
+
 router.post('/upload_video/:admin_id', adminController.uploadVideo);
 router.get('/videos/:admin_id', adminController.getAdminVideos);
 router.delete('/deleteVideo/:tutorial_id', adminController.deleteVideo);
 
 // post verification routes
-router.get('/verifyPost', getPendingPosts);
-router.put('/approvePost/:post_id', approvePost);
+router.get('/verifyPost', postVerifictionController.getPendingPosts);
+router.put('/approvePost/:post_id', postVerifictionController.approvePost);
 
 //product verification routes
 router.get('/verifyProduct', productVerificationController.getPendingProducts);

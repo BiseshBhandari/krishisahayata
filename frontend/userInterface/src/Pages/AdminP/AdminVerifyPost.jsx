@@ -14,6 +14,9 @@ function AdminVerifyPost() {
         error
     } = usePostStore();
 
+    const baseURL = 'http://localhost:3000';
+
+
     useEffect(() => {
         fetchPendingPosts();
     }, []);
@@ -49,7 +52,7 @@ function AdminVerifyPost() {
                                 <tr key={post.post_id}>
                                     <td>
                                         <img
-                                            src={post.image_url}
+                                            src={`${baseURL}${post.image_url}`}
                                             alt="Post"
                                             className="table_post_image"
                                         />

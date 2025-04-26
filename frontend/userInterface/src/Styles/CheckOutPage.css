@@ -1,102 +1,161 @@
+:root {
+    --primary-green: #73b85b;
+    --dark-green: #3f7835;
+    --light-green: #d9f1cc;
+    --beige-bg: #f5f2e5;
+    --text-dark: #222222;
+    --text-secondary: #555555;
+    --divider: #d9d9d9;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    --error-red: #ef4444;
+    --warning-orange: #f09a23;
+    --dark-orange: #d87e1c;
+}
+
 /* General Page Styling */
 .checkout-page {
-    background-color: #f8f9fa;
+    background-color: var(--beige-bg);
     min-height: 100vh;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Inter', sans-serif;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 20px;
 }
 
+/* Checkout Container */
 .checkout-container {
     background-color: #ffffff;
     width: 100%;
     max-width: 800px;
-    padding: 40px;
+    padding: 32px;
     border-radius: 12px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+    box-shadow: var(--shadow);
+    transition: transform 0.3s ease;
+}
+
+.checkout-container:hover {
+    transform: translateY(-4px);
 }
 
 .page-title {
     text-align: center;
-    font-size: 2.5em;
-    font-weight: 600;
-    margin-bottom: 25px;
-    color: #343a40;
+    font-size: 2.25em;
+    font-weight: 700;
+    margin-bottom: 24px;
+    color: var(--text-dark);
+    letter-spacing: -0.02em;
 }
 
 /* Order Summary */
 .order-summary {
-    background-color: #f1f3f5;
-    padding: 25px;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 30px;
+    background-color: var(--light-green);
+    padding: 24px;
+    border-radius: 8px;
+    margin-bottom: 24px;
+    border: 1px solid var(--divider);
 }
 
 .summary-title {
-    text-align: center;
-    font-size: 1.8em;
-    font-weight: 500;
-    margin-bottom: 15px;
-    color: #495057;
+    font-size: 1.5em;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: var(--text-dark);
+    text-align: left;
+}
+
+.order-details {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
 }
 
 .order-details p {
-    margin-bottom: 12px;
-    font-size: 1.2em;
+    font-size: 1.125em;
     font-weight: 500;
-    color: #212529;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.order-details p strong {
+    color: var(--text-dark);
+}
+
+/* Payment Form */
+.payment-form {
+    margin-top: 24px;
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid var(--divider);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+}
+
+/* Hidden inputs (for debugging visibility) */
+.payment-form input[type="hidden"] {
+    display: none;
 }
 
 /* Buttons */
-.proceed-button,
 .payment-submit-button {
-    background-color: #28a745;
+    background: linear-gradient(135deg, var(--primary-green), var(--dark-green));
     color: white;
     padding: 14px;
     border: none;
     border-radius: 6px;
     cursor: pointer;
     width: 100%;
-    font-size: 17px;
-    font-weight: 500;
+    font-size: 1.125em;
+    font-weight: 600;
     transition: all 0.3s ease;
-    margin-top: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
-.proceed-button:hover,
 .payment-submit-button:hover {
-    background-color: #218838;
+    background: var(--dark-green);
+    transform: scale(1.02);
 }
 
-/* Payment Form */
-.payment-form {
-    margin-top: 30px;
-    padding: 25px;
-    background-color: #fff;
-    border: 1px solid #dee2e6;
-    border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+.payment-submit-button:active {
+    transform: scale(0.98);
+}
+
+/* Loading State */
+.checkout-container p {
+    text-align: center;
+    font-size: 1.25em;
+    color: var(--text-secondary);
+    margin-top: 24px;
 }
 
 /* Responsive Styles */
 @media (max-width: 768px) {
     .checkout-container {
-        padding: 25px;
-    }
-
-    .page-title {
-        font-size: 2em;
-    }
-
-    .order-summary {
         padding: 20px;
     }
 
-    .proceed-button,
+    .page-title {
+        font-size: 1.75em;
+    }
+
+    .summary-title {
+        font-size: 1.25em;
+    }
+
+    .order-details p {
+        font-size: 1em;
+    }
+
     .payment-submit-button {
-        font-size: 15px;
+        font-size: 1em;
+        padding: 12px;
+    }
+
+    .order-summary {
+        padding: 16px;
+    }
+
+    .payment-form {
+        padding: 16px;
     }
 }

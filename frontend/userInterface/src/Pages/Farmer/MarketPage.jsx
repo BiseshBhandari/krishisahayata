@@ -257,9 +257,11 @@ function MarketPage() {
                                     <label className="product-label">Category</label>
                                     <select name="category" className="product-input" onChange={handleChange} required>
                                         <option value="">Select Category</option>
-                                        <option value="Electronics">Electronics</option>
+                                        <option value="Machinery">Machinery</option>
                                         <option value="Clothing">Clothing</option>
-                                        <option value="Home">Home</option>
+                                        <option value="Products">Products</option>
+                                        <option value="Fruits">Fruits</option>
+                                        <option value="Tools">Tools</option>
                                         <option value="Others">Others</option>
                                     </select>
                                 </div>

@@ -113,7 +113,7 @@
 
 .search_bar_container {
     flex: 1;
-    max-width: 400px;
+    max-width: 100%px;
 }
 
 .product_search_bar {

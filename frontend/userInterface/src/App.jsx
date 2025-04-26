@@ -11,6 +11,7 @@ import UserProfile from "./Pages/Farmer/ProfilePage";
 import PostPage from "./Pages/Farmer/PostPage";
 import VideosPage from "./Pages/Farmer/VideosPage";
 import MarketPage from "./Pages/Farmer/MarketPage";
+import MyProducts from "./Pages/Farmer/MyProducts";
 import CartPage from "./Pages/Farmer/CartPage";
 import CheckoutPage from "./Pages/Farmer/CheckOutPage";
 import PaymentSuccess from "./Pages/PaymentSuccess";
@@ -99,6 +100,12 @@ function App() {
           <Route path="market" element={
             <ProtectedRoute allowedRoles={["farmer"]}>
               <MarketPage />
+            </ProtectedRoute>
+          } />
+
+          <Route path="my-products" element={
+            <ProtectedRoute allowedRoles={["farmer"]}>
+              <MyProducts />
             </ProtectedRoute>
           } />
 

@@ -64,7 +64,7 @@ export const useProductStore = create((set, get) => ({
         set({ loading: true, error: null });
 
         try {
-            const response = await sendDynamicRequest("get", `farmer/userProducts/${user_ID}`);
+            const response = await sendDynamicRequest("get", `farmer/userProduct/${user_ID}`);
             set({
                 userProducts: response.products || [],
                 loading: false,
@@ -76,6 +76,58 @@ export const useProductStore = create((set, get) => ({
                 loading: false,
                 error: err.message,
             });
+        }
+    },
+
+    deleteProduct: async (productId) => {
+        if (!productId) return;
+
+        set({ loading: true, error: null });
+
+        try {
+            const response = await sendDynamicRequest("delete", `farmer/deleteProduct/${productId}`);
+
+            if (response?.success) {
+                set((state) => ({
+                    products: state.products.filter(product => product.id !== productId),
+                    userProducts: state.userProducts.filter(product => product.id !== productId),
+                    pendingProducts: state.pendingProducts.filter(product => product.id !== productId),
+                    loading: false,
+                    error: null
+                }));
+            } else {
+                throw new Error("Failed to delete product");
+            }
+        } catch (err) {
+            set({ loading: false, error: err.message || "Error deleting product" });
+        }
+    },
+
+    // Update product
+    updateProduct: async (productId, updatedData) => {
+        if (!productId || !updatedData) return;
+
+        set({ loading: true, error: null });
+
+        try {
+            const response = await sendDynamicRequest("put", `farmer/updateProduct/${productId}`, updatedData);
+
+            if (response?.success) {
+                set((state) => {
+                    const updateList = (list) => list.map(p => p.id === productId ? response.product : p);
+                    return {
+                        products: updateList(state.products),
+                        userProducts: updateList(state.userProducts),
+                        pendingProducts: updateList(state.pendingProducts),
+                        loading: false,
+                        error: null
+                    };
+                });
+            } else {
+                throw new Error("Failed to update product");
+            }
+        } catch (err) {
+            set({ loading: false, error: err.message || "Error updating product" });
         }
     },
 

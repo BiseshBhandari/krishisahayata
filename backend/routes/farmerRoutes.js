@@ -23,7 +23,6 @@ router.delete('/deletePost/:post_id', userController.deletePost);
 router.put("/likePost", userController.likeUnlikePost);
 router.get('/getLikedposts/:user_id', userController.getLikedPosts);
 
-
 router.post('/addComment', commmentController.addComment);
 router.get('/getComments/:postId', commmentController.getComments);
 router.delete('/deleteComment/:commentId', commmentController.deleteComment);

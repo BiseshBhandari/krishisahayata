@@ -3,6 +3,9 @@ import { useCartStore } from "../../Store/useCartStore";
 import { useOrderStore } from "../../Store/useOrderStore";
 import { useNavigate } from "react-router-dom";
 import "../../Styles/CartPage.css";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 
 function CartPage() {
     const {
@@ -33,11 +36,15 @@ function CartPage() {
     const handleRemoveItem = (productId) => {
         const userID = localStorage.getItem("userID");
         removeCartItem(userID, productId);
+        toast.success("Item removed from cart!");
+
     };
 
     const handleClearCart = () => {
         const userID = localStorage.getItem("userID");
         clearCart(userID);
+        toast.success("whole cart is Cleared!");
+
     };
 
     const handleOrderNow = async () => {
@@ -59,6 +66,8 @@ function CartPage() {
     return (
         <div className="cart-container">
             <div className="cartHeader">
+                <ToastContainer />
+
                 <div className="titleContainer">
                     <h2 className="cart-title">Shopping Cart</h2>
                 </div>

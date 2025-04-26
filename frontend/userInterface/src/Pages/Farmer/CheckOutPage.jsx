@@ -12,6 +12,8 @@ function CheckOutPage() {
         }
     }, [getOrders]);
 
+    console.log("Orders:", orders);
+
     return (
         <div className="checkout-page">
             <div className="checkout-container">

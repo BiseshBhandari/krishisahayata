@@ -33,7 +33,7 @@ exports.addPost = async (req, res) => {
             const savePath = path.join(uploadDir, imageName);
             await imageFile.mv(savePath);
 
-            image_url = `/uploads/postPhotos/${imageName}`;
+            image_url = `/uploads/postImages/${imageName}`;
         }
 
         const newPost = await Post.create({

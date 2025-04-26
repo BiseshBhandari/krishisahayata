@@ -1,214 +1,288 @@
+/* General Layout */
 .admin-video {
-    padding: 10px;
-    color: rgb(71, 71, 71);
-    background-color: #f5f7fa;
-    min-height: 100vh;
+    width: 100%;
+    padding: 15px;
+    background-color: #f4f7fa;
+    min-height: 90vh;
 }
 
-.video_header {
+/* Header */
+.admin-video-header {
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
-    padding: 10px 20px;
     align-items: center;
+    padding: 15px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+    margin-bottom: 24px;
 }
 
-.Video_Head {
-    font-size: 32px;
-    font-weight: bold;
-    color: #2d2d2d;
-    text-shadow: 2px 2px 0px #dcdcdc;
+.video-head {
+    font-size: 28px;
+    font-weight: 700;
+    color: #333;
 }
 
-.add_video_button {
+.add-video-button {
     padding: 10px 20px;
-    background-color: rgb(30, 180, 239);
-    color: white;
     font-size: 16px;
-    font-weight: bold;
+    font-weight: 500;
+    color: #fff;
+    background-color: #007bff;
     border: none;
-    border-radius: 6px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    transition: 0.3s;
+    border-radius: 4px;
     cursor: pointer;
+    transition: background-color 0.2s;
 }
 
-.add_video_button:hover {
-    background-color: white;
-    color: rgb(30, 180, 239);
-    border: 2px solid rgb(30, 180, 239);
+.add-video-button:hover {
+    background-color: #0056b3;
 }
 
-/* Modal Styling */
+/* Modal Overlay */
 .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 1000;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.6);
+    background-color: rgba(0, 0, 0, 0.5);
     display: flex;
-    align-items: center;
     justify-content: center;
-    padding: 0 20px;
+    align-items: center;
+    z-index: 1000;
 }
 
+/* Upload Modal Content */
 .modal-content {
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
+    background-color: #fff;
+    padding: 24px;
+    border-radius: 8px;
     width: 100%;
     max-width: 500px;
-    box-shadow: 0px 12px 30px rgba(0, 0, 0, 0.3);
     position: relative;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
 .close-modal {
     position: absolute;
     top: 10px;
-    right: 15px;
-    font-size: 28px;
-    font-weight: bold;
+    right: 10px;
+    font-size: 24px;
+    color: #555;
     cursor: pointer;
 }
 
 .close-modal:hover {
-    color: red;
+    color: #333;
 }
 
-.video_form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.fields {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
-.fields label {
-    font-size: 16px;
-    font-weight: 600;
-}
-
-.fields select,
-.fields input {
-    padding: 10px;
-    border-radius: 6px;
-    border: 1px solid #ccc;
-    font-size: 15px;
-    width: 100%;
-}
-
-.fields input:focus,
-.fields select:focus {
-    border-color: rgb(30, 180, 239);
-    outline: none;
-    box-shadow: 0 0 4px rgba(30, 180, 239, 0.5);
-}
-
-.fields input[type="file"] {
-    border: 2px dashed #ccc;
-    background-color: #f9f9f9;
-    cursor: pointer;
-}
-
-.fields input[type="file"]:hover {
-    border-color: rgb(30, 180, 239);
-    background-color: #eef9ff;
-}
-
-.Video_submitButton {
-    text-align: center;
-}
-
-.add_video {
-    padding: 10px 20px;
-    font-weight: bold;
-    background-color: white;
-    color: gray;
-    border: 2px solid rgb(30, 180, 239);
-    border-radius: 6px;
-    cursor: pointer;
-    transition: 0.3s ease-in-out;
-}
-
-.add_video:hover {
-    background-color: rgb(30, 180, 239);
-    color: white;
-}
-
-.video_list {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: 20px;
-    padding: 20px;
-}
-
-.video_item {
-    background: #ffffff;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.05);
-    transition: transform 0.2s ease-in-out;
-    display: flex;
-    flex-direction: column;
-    padding: 15px;
-}
-
-.video_item:hover {
-    transform: scale(1.015);
-    box-shadow: 0px 12px 30px rgba(0, 0, 0, 0.1);
-}
-
-.video_item video {
-    width: 100%;
-    height: 250px;
+/* Video Playback Modal Content */
+.video-modal-content {
+    background-color: #fff;
+    padding: 24px;
     border-radius: 8px;
-    margin-bottom: 10px;
-    object-fit: contain;
-}
-
-.video_info {
     width: 100%;
-    padding: 5px;
-    text-align: left;
+    max-width: 800px;
+    position: relative;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
 
-.video_info_head {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.video_info h3 {
-    font-size: 16px;
+.video-modal-title {
+    font-size: 20px;
     font-weight: 600;
-    color: #2c2c2c;
-    margin: 0;
+    color: #333;
+    margin-bottom: 16px;
 }
 
-.video_item p {
+.video-player {
+    width: 100%;
+    max-height: 400px;
+    border-radius: 4px;
+}
+
+/* Form */
+.video-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: #555;
+    margin-bottom: 8px;
+}
+
+.form-input,
+.form-select,
+.form-file {
+    padding: 10px;
+    font-size: 14px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+    transition: border-color 0.2s;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-file:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+.form-submit {
+    display: flex;
+    justify-content: center;
+}
+
+.submit-button {
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 500;
+    color: #fff;
+    background-color: #28a745;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.submit-button:hover {
+    background-color: #218838;
+}
+
+/* Video Table */
+.video-table-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.video-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.video-table th,
+.video-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.video-table th {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+    background-color: #f8f9fa;
+}
+
+.video-table td {
     font-size: 14px;
     color: #555;
-    margin: 4px 0;
 }
 
-.delete_btn {
-    background-color: rgb(220, 50, 50);
-    color: white;
-    padding: 6px 10px;
-    border: none;
-    border-radius: 5px;
-    font-size: 14px;
+.video-row {
     cursor: pointer;
-    display: flex;
-    align-items: center;
-    transition: 0.3s ease-in-out;
+    transition: background-color 0.2s;
 }
 
-.delete_btn:hover {
-    background-color: rgb(190, 40, 40);
+.video-row:hover {
+    background-color: #f1f3f5;
+}
+
+/* Actions */
+.delete-button {
+    padding: 8px;
+    font-size: 14px;
+    color: #dc3545;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.delete-button:hover {
+    color: #c82333;
+}
+
+/* Delete Confirmation Modal */
+.modal-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 16px;
+}
+
+.confirm-text {
+    font-size: 16px;
+    color: #555;
+    margin-bottom: 24px;
+}
+
+.confirm-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.confirm-button {
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.confirm-button.cancel {
+    background-color: #ddd;
+    color: #333;
+}
+
+.confirm-button.cancel:hover {
+    background-color: #c0c0c0;
+}
+
+.confirm-button.delete {
+    background-color: #dc3545;
+    color: #fff;
+}
+
+.confirm-button.delete:hover {
+    background-color: #c82333;
+}
+
+/* Loading and Error States */
+.loading-text,
+.error-text,
+.empty-text {
+    text-align: center;
+    font-size: 16px;
+    margin: 20px 0;
+}
+
+.loading-text {
+    color: #555;
+}
+
+.error-text {
+    color: #dc3545;
+}
+
+.empty-text {
+    color: #777;
 }
