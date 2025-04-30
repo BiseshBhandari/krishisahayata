@@ -28,12 +28,6 @@ const Tutorial = sequelize.define('Tutorial', {
     user_ID: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        // references: {
-        //     model: User,
-        //     key: 'user_id',
-        // },
-        // onUpdate: 'CASCADE',
-        // onDelete: 'CASCADE',
     },
     created_at: {
         type: DataTypes.DATE,

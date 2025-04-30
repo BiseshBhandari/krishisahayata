@@ -5,15 +5,12 @@ const User = require('../model/userModel');
 const transporter = require('../config/mail_config');
 require('dotenv').config();
 
-// api to register the user in the system
 exports.register = async (req, res) => {
-
     const { name, email, password } = req.body;
 
     try {
-
         if (!email || !validator.isEmail(email)) {
-            return res.status(400).json({ message: 'Provide a correct mail' });
+            return res.status(400).json({ message: 'Provide a correct email' });
         }
 
         const checkExistence = await User.findOne({ where: { email } });
@@ -25,17 +22,74 @@ exports.register = async (req, res) => {
         const hashsalt = await bcrypt.genSalt(10);
         const hashPassword = await bcrypt.hash(password, hashsalt);
 
+        let verificationCode;
+        let isCodeUnique = false;
+
+        while (!isCodeUnique) {
+            verificationCode = Math.floor(1000 + Math.random() * 9000).toString();
+            const existingCode = await User.findOne({ where: { reset_Token: verificationCode } });
+            if (!existingCode) {
+                isCodeUnique = true;
+            }
+        }
+
         const newUser = await User.create({
             name,
             email,
-            password_hash: hashPassword
-        })
+            password_hash: hashPassword,
+            is_verified: false,
+            reset_Token: verificationCode,
+            reset_token_exp: Date.now() + 15 * 60 * 1000 // 15 minutes
+        });
 
-        return res.status(201).json({ message: 'User created Sucessfully' })
+        await transporter.sendMail({
+            from: process.env.MY_MAIL,
+            to: email,
+            subject: 'Verify Your Email Address',
+            html: `
+                <div style="font-family: Arial, sans-serif; color: #333;">
+                    <h2>Email Verification</h2>
+                    <p>Hi ${name || 'there'},</p>
+                    <p>Thank you for registering! Please use the code below to verify your email:</p>
+                    <div style="font-size: 24px; font-weight: bold; margin: 20px 0; color: #007BFF;">${verificationCode}</div>
+                    <p>This code is valid for <strong>15 minutes</strong>.</p>
+                    <p>If you did not register, please ignore this email.</p>
+                    <br />
+                    <p>Thanks,<br>Your App Team</p>
+                </div>
+            `
+        });
+
+        return res.status(201).json({ message: 'User registered successfully. Please verify your email.', email });
     } catch (error) {
         return res.status(500).json({ message: 'Error registering user', error: error.message });
     }
+};
 
+exports.verifyEmail = async (req, res) => {
+    const { email, verification_code } = req.body;
+
+    try {
+        const user = await User.findOne({ where: { email, reset_Token: verification_code } });
+
+        if (!user) {
+            return res.status(400).json({ message: 'Invalid or incorrect verification code' });
+        }
+
+        if (!user.reset_token_exp || user.reset_token_exp < Date.now()) {
+            return res.status(400).json({ message: 'Verification code has expired' });
+        }
+
+        await user.update({
+            is_verified: true,
+            reset_Token: null,
+            reset_token_exp: null
+        });
+
+        return res.status(200).json({ message: 'Email verified successfully' });
+    } catch (error) {
+        return res.status(500).json({ message: 'Error verifying email', error: error.message });
+    }
 };
 
 exports.login = async (req, res) => {
@@ -46,6 +100,10 @@ exports.login = async (req, res) => {
 
         if (!user) {
             return res.status(404).json({ message: 'User not found with this email' });
+        }
+
+        if (!user.is_verified) {
+            return res.status(403).json({ message: 'Please verify your email before logging in' });
         }
 
         const isPasswordCorrect = await bcrypt.compare(password, user.password_hash);
@@ -60,7 +118,7 @@ exports.login = async (req, res) => {
                 role: user.role,
                 Id: user.user_id
             },
-            'secretKey',
+            process.env.JWT_SECRET,
             { expiresIn: '2h' }
         );
 
@@ -88,8 +146,6 @@ exports.login = async (req, res) => {
         });
     }
 };
-
-
 
 exports.forgotPassword = async (req, res) => {
     const { email } = req.body;
@@ -144,7 +200,6 @@ exports.forgotPassword = async (req, res) => {
     }
 };
 
-// Reset Password using 4-digit reset code
 exports.resetPassword = async (req, res) => {
     const { reset_code, new_password } = req.body;
 

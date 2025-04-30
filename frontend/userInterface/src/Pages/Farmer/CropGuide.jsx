@@ -1,23 +1,5 @@
-// import React from "react";
-
-// function CropGuide() {
-//     return (
-//         <div className="container">
-//            <div className="guide_form">
-
-//            </div>
-//            <div className="recomeded">
-
-//            </div>
-
-//         </div>
-//     );
-// }
-
-// export default CropGuide;
-
 import React, { useState } from "react";
-import axios from "axios";
+import sendDynamicRequest from "../../instance/apiUrl";
 import "../../Styles/CropGuide.css";
 
 function CropGuide() {
@@ -42,12 +24,32 @@ function CropGuide() {
         setError("");
         setRecommendation(null);
 
+        const payload = {
+            temperature: Number(formData.temperature),
+            humidity: Number(formData.humidity),
+            ph: Number(formData.ph),
+            rainfall: Number(formData.rainfall),
+        };
+
+        if (
+            isNaN(payload.temperature) ||
+            isNaN(payload.humidity) ||
+            isNaN(payload.ph) ||
+            isNaN(payload.rainfall)
+        ) {
+            setError("Please enter valid numeric values for all fields.");
+            setLoading(false);
+            return;
+        }
+
         try {
-            const response = await axios.post("http://localhost:3000/farmer/getCropGuide", formData);
-            setRecommendation(response.data);
+            const response = await sendDynamicRequest("post", "farmer/getCropGuide", payload);
+            setRecommendation(response);
         } catch (err) {
-            setError("Failed to fetch recommendation");
-            console.error(err);
+            const errorMessage =
+                err.response?.data?.message || "Failed to fetch recommendation. Please try again.";
+            setError(errorMessage);
+            console.error("Error details:", err.response || err.message);
         } finally {
             setLoading(false);
         }
@@ -64,7 +66,9 @@ function CropGuide() {
 
                     {["temperature", "humidity", "ph", "rainfall"].map((field) => (
                         <div className="input-group" key={field}>
-                            <label htmlFor={field}>{field}</label>
+                            <label htmlFor={field}>
+                                {field.charAt(0).toUpperCase() + field.slice(1)}
+                            </label>
                             <input
                                 type="number"
                                 name={field}
@@ -72,6 +76,8 @@ function CropGuide() {
                                 value={formData[field]}
                                 onChange={handleChange}
                                 required
+                                step="0.1" // Allow decimal inputs
+                                min="0" // Prevent negative values
                             />
                         </div>
                     ))}
@@ -91,22 +97,22 @@ function CropGuide() {
                         recommendation.success ? (
                             <div>
                                 <p>
-                                    ✅ Recommended crop:{" "}
+                                    Recommended crop:{" "}
                                     <span className="success">{recommendation.recommended_fruit}</span>
                                 </p>
-                                <p style={{ marginTop: "1rem" }}>Helpful Resources:</p>
+                                <p style={{ marginTop: "1rem" }} className="help_header">Helpful Resources:</p>
                                 <ul className="link-list">
-                                    {recommendation.links.map((link, i) => (
-                                        <li key={i}>
-                                            <a href={link} target="_blank" rel="noopener noreferrer">
-                                                {link}
+                                    {recommendation.links?.map((link, i) => (
+                                        <li key={i} className="crop-link-item">
+                                            <a href={link} target="_blank" rel="noopener noreferrer" className="crop_info_link">
+                                                {link.split("/").pop()}
                                             </a>
                                         </li>
                                     ))}
                                 </ul>
                             </div>
                         ) : (
-                            <p className="error">{recommendation.error}</p>
+                            <p className="error">{recommendation.error || "No recommendation available."}</p>
                         )
                     ) : (
                         <p style={{ color: "#666" }}>Submit form to get a recommendation.</p>

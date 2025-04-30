@@ -23,7 +23,6 @@ function CartPage() {
     const { createOrder, isSubmittingOrder } = useOrderStore();
     const navigate = useNavigate();
 
-    // const IMAGE_URL = import.meta.env.VITE_BACKEND_BASE_URL;
     const IMAGE_URL = 'http://localhost:3000';
 
     useEffect(() => {

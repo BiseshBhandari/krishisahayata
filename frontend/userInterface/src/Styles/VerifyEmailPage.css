@@ -1,0 +1,157 @@
+/* Import Inria Sans font */
+@import url('https://fonts.googleapis.com/css2?family=Inria+Sans:wght@300;400;700&display=swap');
+
+/* Root variables for color palette */
+:root {
+    --primary-green: rgba(115, 184, 91, 1);
+    --dark-green: rgba(63, 120, 53, 1);
+    --light-green: rgba(217, 241, 204, 1);
+    --beige-bg: rgba(245, 242, 229, 1);
+    --accent-blue: rgba(97, 173, 235, 1);
+    --text-dark: rgba(34, 34, 34, 1);
+    --text-secondary: rgba(85, 85, 85, 1);
+    --divider: rgba(230, 230, 230, 1);
+}
+
+.verify-email-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: var(--beige-bg);
+    font-family: 'Inria Sans', sans-serif;
+    padding: 20px;
+}
+
+.verify-email-card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(34, 34, 34, 0.1);
+    padding: 40px;
+    max-width: 480px;
+    width: 100%;
+    text-align: center;
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.verify-email-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin-bottom: 16px;
+}
+
+.verify-email-subtitle {
+    font-size: 16px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 32px;
+}
+
+.verify-email-subtitle strong {
+    color: var(--text-dark);
+}
+
+.verify-email-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.verify-email-label {
+    font-size: 14px;
+    font-weight: 400;
+    color: var(--text-dark);
+    text-align: left;
+}
+
+.verify-email-input {
+    padding: 12px 16px;
+    font-size: 16px;
+    border: 1px solid var(--divider);
+    border-radius: 8px;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.verify-email-input:focus {
+    outline: none;
+    border-color: var(--primary-green);
+    box-shadow: 0 0 0 3px var(--light-green);
+}
+
+.verify-email-help {
+    font-size: 12px;
+    color: var(--text-secondary);
+    text-align: left;
+}
+
+.verify-email-button {
+    padding: 14px;
+    background-color: var(--primary-green);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+}
+
+.verify-email-button:hover {
+    background-color: var(--dark-green);
+}
+
+.verify-email-button:active {
+    transform: scale(0.98);
+}
+
+.verify-email-footer {
+    margin-top: 24px;
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.verify-email-link {
+    color: var(--accent-blue);
+    text-decoration: none;
+    font-weight: 700;
+    transition: color 0.3s ease;
+}
+
+.verify-email-link:hover {
+    color: var(--primary-green);
+    text-decoration: underline;
+}
+
+/* Animation for card entrance */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive design */
+@media (max-width: 480px) {
+    .verify-email-card {
+        padding: 24px;
+    }
+
+    .verify-email-title {
+        font-size: 24px;
+    }
+
+    .verify-email-subtitle {
+        font-size: 14px;
+    }
+
+    .verify-email-button {
+        padding: 12px;
+        font-size: 14px;
+    }
+}

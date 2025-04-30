@@ -1,8 +1,7 @@
-
-
 import React, { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "react-toastify/dist/ReactToastify.css";
 import '../../Styles/ResetPass.css';
 
@@ -14,6 +13,8 @@ function ResetPass() {
         confirmPassword: ""
     });
 
+    const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [timer, setTimer] = useState(300); // 5-minute timer
 
     useEffect(() => {
@@ -84,7 +85,7 @@ function ResetPass() {
             </div>
             <div className="reset-form">
                 <form onSubmit={handleSubmit}>
-                    <input
+                    <input className="reset-code"
                         type="text"
                         name="resetCode"
                         placeholder="Reset Code"
@@ -92,22 +93,43 @@ function ResetPass() {
                         onChange={handleInputChange}
                         required
                     />
-                    <input
-                        type="password"
-                        name="newPassword"
-                        placeholder="New Password"
-                        value={formData.newPassword}
-                        onChange={handleInputChange}
-                        required
-                    />
-                    <input
-                        type="password"
-                        name="confirmPassword"
-                        placeholder="Confirm New Password"
-                        value={formData.confirmPassword}
-                        onChange={handleInputChange}
-                        required
-                    />
+
+                    <div className="password-field">
+                        <input
+                            type={showPassword ? "text" : "password"}
+                            name="newPassword"
+                            placeholder="New Password"
+                            value={formData.newPassword}
+                            onChange={handleInputChange}
+                            required
+                        />
+                        <button
+                            type="button"
+                            className="show-pass-btn"
+                            onClick={() => setShowPassword(!showPassword)}
+                        >
+                            {showPassword ? <FaEyeSlash /> : <FaEye />}
+                        </button>
+                    </div>
+
+                    <div className="password-field">
+                        <input
+                            type={showConfirmPassword ? "text" : "password"}
+                            name="confirmPassword"
+                            placeholder="Confirm New Password"
+                            value={formData.confirmPassword}
+                            onChange={handleInputChange}
+                            required
+                        />
+                        <button
+                            type="button"
+                            className="show-pass-btn"
+                            onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                        >
+                            {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
+                        </button>
+                    </div>
+
                     <button type="submit" className="reset-btn">Reset Password</button>
                 </form>
             </div>
@@ -116,5 +138,3 @@ function ResetPass() {
 }
 
 export default ResetPass;
-
-

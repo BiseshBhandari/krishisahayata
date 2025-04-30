@@ -4,14 +4,13 @@ import { useAdminStore } from '../../Store/adminStore';
 import '../../Styles/AdminDash.css';
 
 function AdminDash() {
-    const { metrics, pendingItems, postTrends, productStatus, loading, error, fetchDashboardData, approvePost, deletePost, approveProduct, deleteProduct } = useAdminStore();
-    const adminId = JSON.parse(localStorage.getItem('user'))?.user_id || 1; // Replace with actual admin ID from auth
+    const { metrics, postTrends, productStatus, loading, error, fetchDashboardData} = useAdminStore();
+    const adminId = JSON.parse(localStorage.getItem('user'))?.user_id || 1;
 
     useEffect(() => {
         fetchDashboardData(adminId);
     }, [adminId, fetchDashboardData]);
 
-    // Bar Chart Options and Series for Post Approval Status
     const postChartOptions = {
         chart: {
             type: 'bar',
@@ -42,7 +41,6 @@ function AdminDash() {
         data: [postTrends.approved || 0, postTrends.pending || 0, postTrends.rejected || 0],
     }];
 
-    // Pie Chart Options and Series for Product Status
     const productChartOptions = {
         chart: {
             type: 'pie',
@@ -133,105 +131,6 @@ function AdminDash() {
                                         type="pie"
                                         height={300}
                                     />
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* Pending Items */}
-                        <div className="pending-card">
-                            <h2 className="pending-title">Pending Approval</h2>
-                            <div className="pending-sections">
-                                <div className="pending-section">
-                                    <h3 className="pending-subtitle">Pending Posts</h3>
-                                    {pendingItems.posts?.length > 0 ? (
-                                        <ul className="pending-list">
-                                            {pendingItems.posts.map(post => (
-                                                <li key={post.post_id} className="pending-item">
-                                                    <div className="pending-details">
-                                                        <p>
-                                                            <strong>{post.User?.name || 'Unknown'}</strong>: {post.content?.substring(0, 50)}...
-                                                        </p>
-                                                        <p className="pending-timestamp">{new Date(post.created_at).toLocaleString()}</p>
-                                                        {post.image_url && (
-                                                            <img
-                                                                src={`http://localhost:3000${post.image_url}`}
-                                                                alt="Post"
-                                                                className="pending-image"
-                                                            />
-                                                        )}
-                                                    </div>
-                                                    <div className="pending-actions">
-                                                        <button
-                                                            onClick={() => approvePost(post.post_id, adminId, 'approved')}
-                                                            className="btn btn-approve"
-                                                        >
-                                                            Approve
-                                                        </button>
-                                                        <button
-                                                            onClick={() => approvePost(post.post_id, adminId, 'rejected')}
-                                                            className="btn btn-reject"
-                                                        >
-                                                            Reject
-                                                        </button>
-                                                        <button
-                                                            onClick={() => deletePost(post.post_id, adminId)}
-                                                            className="btn btn-delete"
-                                                        >
-                                                            Delete
-                                                        </button>
-                                                    </div>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    ) : (
-                                        <p className="pending-empty">No pending posts.</p>
-                                    )}
-                                </div>
-                                <div className="pending-section">
-                                    <h3 className="pending-subtitle">Pending Products</h3>
-                                    {pendingItems.products?.length > 0 ? (
-                                        <ul className="pending-list">
-                                            {pendingItems.products.map(product => (
-                                                <li key={product.productId} className="pending-item">
-                                                    <div className="pending-details">
-                                                        <p>
-                                                            <strong>{product.User?.name || 'Unknown'}</strong>: {product.name?.substring(0, 50)}...
-                                                        </p>
-                                                        <p className="pending-timestamp">{new Date(product.created_at).toLocaleString()}</p>
-                                                        {product.imageUrl && (
-                                                            <img
-                                                                src={`http://localhost:3000${product.imageUrl}`}
-                                                                alt="Product"
-                                                                className="pending-image"
-                                                            />
-                                                        )}
-                                                    </div>
-                                                    <div className="pending-actions">
-                                                        <button
-                                                            onClick={() => approveProduct(product.productId, adminId, 'approved')}
-                                                            className="btn btn-approve"
-                                                        >
-                                                            Approve
-                                                        </button>
-                                                        <button
-                                                            onClick={() => approveProduct(product.productId, adminId, 'rejected')}
-                                                            className="btn btn-reject"
-                                                        >
-                                                            Reject
-                                                        </button>
-                                                        <button
-                                                            onClick={() => deleteProduct(product.productId, adminId)}
-                                                            className="btn btn-delete"
-                                                        >
-                                                            Delete
-                                                        </button>
-                                                    </div>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    ) : (
-                                        <p className="pending-empty">No pending products.</p>
-                                    )}
                                 </div>
                             </div>
                         </div>

@@ -3,7 +3,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    background-color: #f8f9fa;
+    background-color: var(--beige-bg);
     min-height: 100vh;
     padding: 20px;
     font-family: 'Arial', sans-serif;
@@ -81,9 +81,10 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 20px;
+    padding: 20px;
     width: 100%;
+
     max-width: 1000px;
-    margin: auto;
 }
 
 /* Video Card */

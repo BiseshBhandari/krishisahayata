@@ -21,3 +21,14 @@ transporter.verify((error, sccess) => {
 });
 
 module.exports = transporter;
+
+
+// if (process.env.NODE_ENV !== 'test') {
+//     transporter.verify((error, success) => {
+//         if (error) {
+//             console.error('Error while configuring nodemailer', error);
+//         } else {
+//             console.log('Configuration successful of Nodemailer');
+//         }
+//     });
+// }

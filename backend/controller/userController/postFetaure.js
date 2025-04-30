@@ -77,7 +77,7 @@ exports.getAllPosts = async (req, res) => {
         });
 
         // console.log("Fetched posts:", posts);
-        return res.status(200).json({ posts }); // Changed 'post' to 'posts' for consistency
+        return res.status(200).json({ posts }); 
     } catch (error) {
         console.error("Error fetching posts:", error);
         return res.status(500).json({ message: "Internal server error", error: error.message });

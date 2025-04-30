@@ -76,11 +76,7 @@ function VideosPage() {
                             <p>{video.description}</p>
                             <button className="category-tag">{video.category}</button>
                         </div>
-                        <div className="video-actions">
-                            <button className="icon-button"><FaThumbsUp /> Like</button>
-                            <button className="icon-button"><FaComment /> Comment</button>
-                            <button className="icon-button"><FaShareAlt /> Share</button>
-                        </div>
+
                     </div>
                 ))}
             </div>

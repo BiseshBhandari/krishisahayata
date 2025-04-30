@@ -5,6 +5,7 @@ import RegisterPage from "./Pages/Authen/RegisterPage";
 import LoginPage from "./Pages/Authen/LoginPage";
 import ForgotPass from "./Pages/Authen/ForgotPass";
 import ResetPass from "./Pages/Authen/ResetPass";
+import EmailVerify from "./Pages/Authen/EmailVerify";
 
 import Dashboard from "./Pages/Farmer/Dashboard";
 import UserProfile from "./Pages/Farmer/ProfilePage";
@@ -43,6 +44,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/forgot-pass" element={<ForgotPass />} />
         <Route path="/reset-pass" element={<ResetPass />} />
+        <Route path="/verify-email" element={<EmailVerify />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
 
         {/* Admin Routes */}

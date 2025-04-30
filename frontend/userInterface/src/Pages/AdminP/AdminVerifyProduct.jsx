@@ -18,13 +18,15 @@ function AdminVerifyProduct() {
         fetchPendingProducts();
     }, []);
 
+    const IMAGE_URL = 'http://localhost:3000';
+
     const handleVerification = async (productId, verifyStatus) => {
         if (verifyStatus === "approved") {
             await approveProduct(productId);
             toast.success("Product approved successfully");
         } else {
             await rejectProduct(productId);
-            toast.error("Product rejected");
+            toast.error("Product rejected successfully");
         }
         fetchPendingProducts();
     };
@@ -63,7 +65,7 @@ function AdminVerifyProduct() {
                                     <tr key={product.product_id}>
                                         <td>
                                             <img
-                                                src={product.imageUrl}
+                                                src={`${IMAGE_URL}${product.imageUrl}`}
                                                 alt={product.name}
                                                 className="table_product_image"
                                             />

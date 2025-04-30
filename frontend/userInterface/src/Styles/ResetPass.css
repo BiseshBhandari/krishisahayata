@@ -1,4 +1,4 @@
-.reset-container {
+/* .reset-container {
     max-width: 500px;
     background-color: #ffffff;
     margin: 11rem auto;
@@ -61,4 +61,96 @@
 
 .reset-btn:hover {
     background-color: #5fa449;
+} */
+
+.reset-container {
+    max-width: 500px;
+    background-color: #ffffff;
+    margin: 11rem auto;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    font-family: 'Inria Sans', sans-serif;
+    text-align: center;
+    color: #333;
+}
+
+.reset-header h1 {
+    font-size: 32px;
+    color: #73b85b;
+    margin-bottom: 10px;
+}
+
+.reset-header p {
+    color: #555;
+    font-size: 16px;
+    margin-bottom: 8px;
+}
+
+.reset-header small {
+    display: block;
+    margin-bottom: 25px;
+    font-size: 14px;
+    color: #888;
+}
+
+.reset-code {
+    margin-bottom: 20px;
+}
+
+.reset-form input[type="text"],
+.reset-form input[type="password"] {
+    width: 100%;
+    height: 45px;
+    border-radius: 8px;
+    border: 2px solid #ccc;
+    padding: 10px 40px 10px 10px;
+    /* padding-right for icon space */
+    font-size: 16px;
+    transition: 0.3s;
+}
+
+.reset-form input:focus {
+    border-color: #4CAF50;
+    box-shadow: 0 0 6px rgba(76, 175, 80, 0.5);
+    outline: none;
+}
+
+.reset-btn {
+    background-color: #73b85b;
+    color: white;
+    border: none;
+    font-size: 16px;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+    width: 100%;
+    margin-top: 15px;
+}
+
+.reset-btn:hover {
+    background-color: #5fa449;
+}
+
+.password-field {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.show-pass-btn {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    color: #555;
+}
+
+.show-pass-btn:focus {
+    outline: none;
 }

@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import { IoCheckmarkCircle } from "react-icons/io5";
-import axios from "axios";
+import sendDynamicRequest from "../instance/apiUrl";
 import "../Styles/PaymentSuccess.css";
 
-// Define your base URL here
 const IMAGE_URL = 'http://localhost:3000';
 
 function PaymentSuccess() {
@@ -30,7 +29,6 @@ function PaymentSuccess() {
             console.log("Decoded payment data:", parsedData);
             setData(parsedData);
 
-            // After decoding the payment data, verify the payment
             verifyPayment(parsedData);
 
         } catch (error) {
@@ -41,18 +39,16 @@ function PaymentSuccess() {
 
     const verifyPayment = async (paymentData) => {
         try {
-            // Adjust the URL to your base URL and API endpoint
-            const response = await axios.post(`${IMAGE_URL}/farmer/verifyPayment/${orderId}`, // Use the base URL
-                {
-                    transaction_uuid: paymentData.transaction_uuid,
-                    total_amount: paymentData.total_amount,
-                    product_code: paymentData.product_code,
-                    transaction_code: paymentData.transaction_code,
-                    status: paymentData.status,
-                    signature: paymentData.signature
-                }
-            );
-            if (response.data.success) {
+            const response = sendDynamicRequest('post', `/farmer/verifyPayment/${orderId}`, {
+                transaction_uuid: paymentData.transaction_uuid,
+                total_amount: paymentData.total_amount,
+                product_code: paymentData.product_code,
+                transaction_code: paymentData.transaction_code,
+                status: paymentData.status,
+                signature: paymentData.signature
+            });
+
+            if (response.success) {
                 setPaymentStatus("Payment verified and order updated.");
             } else {
                 setPaymentStatus("Payment verification failed.");
@@ -68,7 +64,6 @@ function PaymentSuccess() {
                 status: paymentData.status,
                 signature: paymentData.signature
             });
-
         }
     };
 

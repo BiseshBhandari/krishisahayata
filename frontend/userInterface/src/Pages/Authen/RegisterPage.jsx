@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
 import registerimage from '../../assets/Images/register-image.png';
 import '../../Styles/RegisterPage.css';
 
@@ -12,9 +13,10 @@ function RegisterPage() {
         password: "",
         confirm_pass: "",
     });
-
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -49,6 +51,7 @@ function RegisterPage() {
             return;
         }
 
+        setIsLoading(true);
         try {
             const response = await fetch("http://localhost:3000/auth/register", {
                 method: "POST",
@@ -65,13 +68,16 @@ function RegisterPage() {
             const data = await response.json();
 
             if (response.ok) {
-                toast.success(data.message || "Registration successful!");
+                toast.success(data.message || "Registration successful! Please verify your email.");
                 setFormData({ UserName: "", email: "", password: "", confirm_pass: "" });
+                navigate('/verify-email', { state: { email: email.trim() } });
             } else {
                 toast.error(data.message || "Registration failed.");
             }
         } catch (err) {
             toast.error("An error occurred. Please try again later.");
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -91,7 +97,7 @@ function RegisterPage() {
                     <h2>Getting Started</h2>
                     <p className="register-sub">Create an account to explore</p>
                 </div>
-                <div className="from">
+                <div className="from relative">
                     <form onSubmit={handleSubmit}>
                         <input
                             type="text"
@@ -100,6 +106,7 @@ function RegisterPage() {
                             placeholder="User Name"
                             value={formData.UserName}
                             onChange={handleInputChange}
+                            disabled={isLoading}
                         /> <br />
                         <input
                             type="email"
@@ -108,6 +115,7 @@ function RegisterPage() {
                             placeholder="Email"
                             value={formData.email}
                             onChange={handleInputChange}
+                            disabled={isLoading}
                         />
                         <div className="password-input">
                             <input
@@ -117,11 +125,13 @@ function RegisterPage() {
                                 placeholder="Password"
                                 value={formData.password}
                                 onChange={handleInputChange}
+                                disabled={isLoading}
                             />
                             <button
                                 type="button"
                                 className="register_show_pass"
                                 onClick={() => setShowPassword(!showPassword)}
+                                disabled={isLoading}
                             >
                                 {showPassword ? <FaEyeSlash /> : <FaEye />}
                             </button>
@@ -134,17 +144,31 @@ function RegisterPage() {
                                 placeholder="Confirm Password"
                                 value={formData.confirm_pass}
                                 onChange={handleInputChange}
+                                disabled={isLoading}
                             />
                             <button
                                 type="button"
                                 className="register_show_pass"
                                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                disabled={isLoading}
                             >
                                 {showConfirmPassword ? <FaEyeSlash /> : <FaEye />}
                             </button>
                         </div>
                         <br />
-                        <button className="register" type="submit">Sign Up</button>
+                        <button
+                            className="register relative"
+                            type="submit"
+                            disabled={isLoading}
+                        >
+                            {isLoading ? (
+                                <span className="flex items-center justify-center">
+                                    Signing Up...
+                                </span>
+                            ) : (
+                                "Sign Up"
+                            )}
+                        </button>
                         <div className="foote">
                             <p>Already have an account? <a href="/login">LOGIN</a></p>
                         </div>

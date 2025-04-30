@@ -177,5 +177,30 @@ export const useProductStore = create((set, get) => ({
                 error: err.message
             });
         }
+    },
+
+    rejectProduct: async (productId) => {
+        if (!productId) return;
+
+        set({ loading: true, error: null });
+
+        try {
+            const response = await sendDynamicRequest("put", `admin/rejectProduct/${productId}`);
+
+            if (response?.success) {
+                set((state) => ({
+                    pendingProducts: state.pendingProducts.filter(product => product.id !== productId),
+                    loading: false,
+                    error: null
+                }));
+            } else {
+                throw new Error("Failed to reject product");
+            }
+        } catch (err) {
+            set({
+                loading: false,
+                error: err.message || "Error rejecting product"
+            });
+        }
     }
 }));

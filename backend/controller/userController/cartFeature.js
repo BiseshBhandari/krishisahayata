@@ -59,8 +59,6 @@ exports.getCart = async (req, res) => {
 
         const totalCartValue = await calculateTotalCartValue(userId);
 
-        // const totalCartValue = cartItems.reduce((sum, item) => sum + item.total, 0);
-
         res.json({ success: true, cart: cartItems, totalPrice: totalCartValue });
     } catch (error) {
         res.status(500).json({ error: "Error fetching cart" });

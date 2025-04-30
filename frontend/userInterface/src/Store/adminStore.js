@@ -1,9 +1,8 @@
 import { create } from 'zustand';
-import sendDynamicRequest from '../instance/apiUrl'; // Adjust path
+import sendDynamicRequest from '../instance/apiUrl';
 
 export const useAdminStore = create((set, get) => ({
     metrics: {},
-    pendingItems: { posts: [], products: [] },
     postTrends: { approved: 0, pending: 0, rejected: 0 },
     productStatus: { approved: 0, pending: 0, rejected: 0 },
     loading: false,
@@ -15,16 +14,14 @@ export const useAdminStore = create((set, get) => ({
         set({ loading: true, error: null });
 
         try {
-            const [metricsRes, pendingItemsRes, postTrendsRes, productStatusRes] = await Promise.all([
+            const [metricsRes, postTrendsRes, productStatusRes] = await Promise.all([
                 sendDynamicRequest('get', `admin/metrics/${adminId}`),
-                sendDynamicRequest('get', `admin/pending-items/${adminId}`),
                 sendDynamicRequest('get', `admin/post-trends/${adminId}`),
                 sendDynamicRequest('get', `admin/product-status/${adminId}`),
             ]);
 
             set({
                 metrics: metricsRes.metrics || {},
-                pendingItems: pendingItemsRes.pendingItems || { posts: [], products: [] },
                 postTrends: postTrendsRes.postTrends || { approved: 0, pending: 0, rejected: 0 },
                 productStatus: productStatusRes.productStatus || { approved: 0, pending: 0, rejected: 0 },
                 loading: false,
